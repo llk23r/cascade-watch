@@ -131,9 +131,10 @@
     $('big-of').innerHTML = 'of ' + sc.n_ranked + ' moving slopes<br><span>last pass, public ' + Math.round(D.context.timing.hours_on_asf) + ' hours before the collapse</span>';
     var pass = D.scorecard.pass;
     var zs = D.context.zone_summary;
-    $('verdict').innerHTML = '<span class="pill bad">Exact slope: ' + (pass.passed ? 'caught' : 'missed') + '</span>' +
-      (zs ? '<span class="pill good">' + zs.zone_km + ' km zone, top ' + zs.top_n + ': on the list before both disasters</span>' : '') +
-      '<span class="pill calm">Found after the fact · now fixed in advance</span>';
+    var ratio = zs && zs.budhigandaki.expected_by_chance ? zs.budhigandaki.hits / zs.budhigandaki.expected_by_chance : null;
+    $('verdict').innerHTML = (zs ? '<span class="pill good">' + zs.zone_km + ' km zone, top ' + zs.top_n + ': listed before both disasters</span>' : '') +
+      (ratio ? '<span class="pill good">' + (ratio >= 1.8 && ratio <= 2.2 ? '≈2×' : ratio.toFixed(1) + '×') + ' chance on an unseen disaster</span>' : '') +
+      '<span class="pill calm">Exact slope: ' + (pass.passed ? 'caught' : 'not yet') + '</span>';
 
     // sources
     var srcs = [
