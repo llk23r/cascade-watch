@@ -1,0 +1,42 @@
+{
+ "targetFrames": [
+  {
+   "camera": {
+    "extrinsics": {
+     "position": [
+      -2944.5770663463018,
+      7800.0,
+      -24871.500000000156
+     ],
+     "quaternion": [
+      0.027573816415230656,
+      0.9054971293676252,
+      0.05955444389524134,
+      -0.41924682654448087
+     ],
+     "coordinateSystem": "rub"
+    },
+    "intrinsics": {
+     "width": 1280,
+     "height": 720,
+     "fx": 1108.5125168440818,
+     "fy": 1108.5125168440818,
+     "cx": 640.0,
+     "cy": 360.0
+    }
+   },
+   "depth": {
+    "logDepthAsset": {
+     "assetId": "asset_b556452bf0b84ca99f88f037e52aa525"
+    },
+    "zMin": 7768.592460199316,
+    "zMax": 58573.91753605014
+   }
+  }
+ ],
+ "enhancePrompt": false,
+ "modelParameters": {
+  "seed": 2608
+ },
+ "prompt": "Aerial photograph of the Langtang Himalaya in Nepal in the late-August monsoon: steep slopes with green forest and alpine meadow low down, dark grey rock faces higher up, hanging glaciers and fresh snow on the high ridges, a narrow valley with a pale grey glacial river on its floor, wisps of monsoon cloud clinging to the ridges, soft overcast daylight, photorealistic documentary photography, natural colour, high detail, no text, no people."
+}

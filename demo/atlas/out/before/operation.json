@@ -1,0 +1,55 @@
+{
+  "id": "636920ecefc14c019f3d05ec9910163c",
+  "ownerId": "acct_2cb3ecc76f774e12ac182b56f204fb18",
+  "metadata": {
+    "@type": "type.worldlabs.ai/wlt.marble.v2.atlasChisel.metadata",
+    "state": "SUCCEEDED",
+    "status": "SUCCEEDED",
+    "surface": "DEVELOPER_API",
+    "task": "atlasChisel",
+    "taskVersion": "v1"
+  },
+  "done": true,
+  "error": null,
+  "expiresAtSecs": null,
+  "createdAtSecs": 1794754836,
+  "response": {
+    "frames": [
+      {
+        "camera": {
+          "extrinsics": {
+            "coordinateSystem": "rub",
+            "position": [
+              -2944.577392578125,
+              7800,
+              -24871.5
+            ],
+            "quaternion": [
+              0.027619730922871132,
+              0.9055721387115457,
+              0.0595662116061441,
+              -0.4190800860074805
+            ]
+          },
+          "intrinsics": {
+            "cx": 640,
+            "cy": 360,
+            "fx": 1108.5125732421875,
+            "fy": 1108.5125732421875,
+            "height": 720,
+            "width": 1280
+          }
+        },
+        "depth": null,
+        "imageAsset": {
+          "assetId": "asset_bc3effd1c353e77cf6e57c98cc2d2a85",
+          "path": "frames_0_image.jpg"
+        },
+        "maskAsset": null
+      }
+    ],
+    "promptUsed": "Aerial photograph of the Langtang Himalaya in Nepal in the late-August monsoon: steep slopes with green forest and alpine meadow low down, dark grey rock faces higher up, hanging glaciers and fresh snow on the high ridges, a narrow valley with a pale grey glacial river on its floor, wisps of monsoon cloud clinging to the ridges, soft overcast daylight, photorealistic documentary photography, natural colour, high detail, no text, no people.",
+    "requestId": "aaa350fd-46c5-48fc-a5da-d15ecab09c94"
+  },
+  "name": "accounts/acct_2cb3ecc76f774e12ac182b56f204fb18/projects/proj_6b315c0236414780b6f58cf3d7cd529f/operations/636920ecefc14c019f3d05ec9910163c"
+}

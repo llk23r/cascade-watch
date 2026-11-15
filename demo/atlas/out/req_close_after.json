@@ -1,0 +1,51 @@
+{
+ "targetFrames": [
+  {
+   "camera": {
+    "extrinsics": {
+     "position": [
+      5791.001563813928,
+      6900.0,
+      -19455.040000000212
+     ],
+     "quaternion": [
+      0.05741443714475763,
+      0.921748994814555,
+      0.1499217245157216,
+      -0.3529955374844566
+     ],
+     "coordinateSystem": "rub"
+    },
+    "intrinsics": {
+     "width": 1280,
+     "height": 720,
+     "fx": 1024.2140985862723,
+     "fy": 1024.2140985862723,
+     "cx": 640.0,
+     "cy": 360.0
+    }
+   },
+   "imageAsset": {
+    "assetId": "asset_66a1871bdcf14065ada6a156cfefdac3"
+   },
+   "maskAsset": {
+    "assetId": "asset_3b2af70d02a0498a87ad9583c699bcd9"
+   },
+   "depth": {
+    "logDepthAsset": {
+     "assetId": "asset_b6ee077cdef24841bad656dc2d700077"
+    },
+    "zMin": 3453.6324477461308,
+    "zMax": 33800.678430615684,
+    "maskAsset": {
+     "assetId": "asset_750d71925ebf456ba4726601f7fea618"
+    }
+   }
+  }
+ ],
+ "prompt": "The same mountain face seconds after a catastrophic ice and rock avalanche. Inside the edited area: a huge fresh scar of raw, shattered light-grey bedrock and fractured blue-white glacier ice where the slope has just collapsed; below it a churning torrent of dark brown mud, boulders and ice blocks pouring down the gully onto the valley floor, with a billowing cloud of ice spray and rock dust rising above the flow. Photorealistic aerial documentary photograph, same light, colours and detail as the rest of the image.",
+ "enhancePrompt": false,
+ "modelParameters": {
+  "seed": 2608
+ }
+}

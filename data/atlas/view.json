@@ -1,0 +1,213 @@
+{
+ "width": 1600,
+ "height": 900,
+ "outline": [
+  [
+   745.4,
+   387.8
+  ],
+  [
+   767.8,
+   410.5
+  ],
+  [
+   792.6,
+   430.6
+  ],
+  [
+   817.3,
+   445.8
+  ],
+  [
+   831.3,
+   451.2
+  ],
+  [
+   858.3,
+   465.1
+  ],
+  [
+   877.0,
+   488.0
+  ],
+  [
+   889.7,
+   510.2
+  ],
+  [
+   930.9,
+   515.1
+  ],
+  [
+   927.8,
+   575.2
+  ],
+  [
+   962.0,
+   627.0
+  ],
+  [
+   992.8,
+   648.9
+  ],
+  [
+   1011.1,
+   680.5
+  ],
+  [
+   1015.8,
+   715.4
+  ],
+  [
+   980.6,
+   723.3
+  ],
+  [
+   949.2,
+   728.8
+  ],
+  [
+   916.3,
+   723.2
+  ],
+  [
+   881.9,
+   723.2
+  ],
+  [
+   848.5,
+   735.2
+  ],
+  [
+   818.2,
+   730.6
+  ],
+  [
+   786.1,
+   701.7
+  ],
+  [
+   743.5,
+   654.4
+  ],
+  [
+   700.8,
+   600.4
+  ],
+  [
+   677.8,
+   580.3
+  ],
+  [
+   652.6,
+   556.2
+  ],
+  [
+   632.2,
+   535.2
+  ],
+  [
+   617.6,
+   506.9
+  ],
+  [
+   605.1,
+   462.8
+  ],
+  [
+   602.0,
+   431.9
+  ],
+  [
+   631.8,
+   410.4
+  ],
+  [
+   662.2,
+   395.7
+  ],
+  [
+   713.8,
+   377.9
+  ],
+  [
+   730.5,
+   384.2
+  ],
+  [
+   745.4,
+   387.8
+  ]
+ ],
+ "path": [
+  [
+   988.4,
+   681.4
+  ],
+  [
+   988.1,
+   736.4
+  ],
+  [
+   951.6,
+   792.7
+  ],
+  [
+   913.8,
+   830.5
+  ],
+  [
+   891.5,
+   879.8
+  ]
+ ],
+ "label": "AI visualization, not a photograph",
+ "how": "World Labs Atlas (atlasChisel) painted the appearance of the real terrain: depth rendered from the Copernicus DEM for this camera. The 'after' view is an Atlas inpaint limited to the UNOSAT detachment zone and the routed flood corridor. The yellow outline (UNOSAT 4257) and the red route (D8 flow routing on the DEM) are data, projected with the same camera.",
+ "camera": {
+  "extrinsics": {
+   "position": [
+    5791.001563813928,
+    6900.0,
+    -19455.040000000212
+   ],
+   "quaternion": [
+    0.05741443714475763,
+    0.921748994814555,
+    0.1499217245157216,
+    -0.3529955374844566
+   ],
+   "coordinateSystem": "rub"
+  },
+  "intrinsics": {
+   "width": 1280,
+   "height": 720,
+   "fx": 1024.2140985862723,
+   "fy": 1024.2140985862723,
+   "cx": 640.0,
+   "cy": 360.0
+  }
+ },
+ "camera_lonlat_alt": [
+  85.484,
+  28.326,
+  6900.0
+ ],
+ "look_at": [
+  85.5213,
+  28.2891
+ ],
+ "depth_source": "Copernicus DEM GLO-30 via Terrarium tiles in data/terrain, zoom 13",
+ "atlas": {
+  "task": "atlasChisel",
+  "seed": 2608,
+  "before": {
+   "operation": "7e45694138a34cdf9663dd7af1c0ada7",
+   "prompt": "Aerial photograph high in the Langtang Himalaya, Nepal, late-August monsoon. A steep mountain face with a hanging glacier and fresh snow on its upper slopes above dark, fractured grey rock and moraine; a deep valley below with green alpine meadow on the lower slopes and a glacial stream on the valley floor; jagged snowy ridges on the horizon; wisps of low monsoon cloud; soft overcast daylight. Photorealistic documentary photography, natural colour, crisp detail, no text, no people."
+  },
+  "after": {
+   "operation": "a7ac831ab3374c86bb1d8e16ff7b61cb",
+   "prompt": "Edit: show the catastrophic ice-rock avalanche happening right now. In the masked area the hanging glacier and bedrock have just collapsed: a raw fresh scar of shattered grey rock and blue ice, and a violent dark-brown debris flow of mud, boulders and ice blocks surging down the gully into the valley, with a huge billowing white-grey cloud of ice spray and rock dust rising high above the flow. Dramatic, photorealistic aerial news photograph.",
+   "mask": "UNOSAT outline + routed flood corridor (300 m wide) projected into this camera"
+  }
+ }
+}

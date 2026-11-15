@@ -53,7 +53,7 @@ with sync_playwright() as p:
     ctx.close(); b.close()
 
 dur = min(30.0, total - lead)
-mp4 = OUT / "cascade-watch-30s.mp4"
+mp4 = OUT / "app-screen-tour.mp4"   # the film itself is built by demo/film/render.py
 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{lead:.2f}", "-i", vid, "-t", f"{dur:.2f}",
                 "-vf", "fps=30,scale=1440:-2", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "22", "-movflags", "+faststart", str(mp4)], check=True)
 shutil.rmtree(tmp, ignore_errors=True)

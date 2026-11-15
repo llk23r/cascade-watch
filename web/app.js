@@ -656,6 +656,7 @@
         '<h2 class="title">The alert came ' + A.toFixed(1) + ' minutes after the mountain fell</h2>' +
         '<p>' + esc(D.context.story.morning) + '</p>' +
         '<div class="cta"><button type="button" class="btn primary large" id="cta-play" data-label="Play the wave">' + icon('play') + 'Play the wave</button><span class="hint">or press <kbd>Space</kbd></span></div>' +
+        atlasCard() +
         '<div class="group facts">' + (D.context.facts_order || []).map(factRow).join('') + '</div>' +
         '<p class="sub">' + esc(D.context.story.morning2) + '</p>' +
         '<div class="callout q">' + icon('target') + '<div><b>The question this replay answers</b><span>With rules fixed in advance, would NISAR have put this valley on a watch list before it fell?</span></div></div>' + dataSlot() + '</div>';
@@ -737,6 +738,7 @@
     });
   }
   function bindChapter() {
+    bindAtlas();
     var dc = $('datacard'); if (dc) dc.addEventListener('toggle', function () { S.dataOpen = dc.open; if (dc.open) { dataKey = ''; paintData(); } });
     var cta = $('cta-play'); if (cta) cta.addEventListener('click', function () { S.playing ? stop() : play(); });
     if (S.ch === 2) {
@@ -1066,6 +1068,25 @@
       '<p class="note">Granule links need a free NASA Earthdata login. The pipeline reads only the study box out of each file (HTTP range requests); see the README to rebuild everything from scratch.</p>';
   }
 
+  /* ---------------------------------------------------------------- see the place (World Labs Atlas) */
+  function atlasCard() {
+    var V = D.atlas; if (!V) return '';
+    var poly = V.outline.map(function (q) { return q.join(','); }).join(' ');
+    var path = V.path.length ? 'M' + V.path.map(function (q) { return q.join(' '); }).join('L') : '';
+    return '<div class="card atlas-card"><div class="sec-h" style="margin:0 0 8px">See the place <small>before and after</small></div>' +
+      '<div class="ba" id="ba" style="--x:50%"><img src="' + DATA + 'atlas/before.jpg" alt="AI visualization of the Langtang source slope before the collapse"><img class="after" src="' + DATA + 'atlas/after.jpg" alt="AI visualization of the same slope after the collapse">' +
+      '<svg viewBox="0 0 ' + V.width + ' ' + V.height + '" class="ba-ov" id="ba-ov"><polygon points="' + poly + '" fill="rgba(255,214,10,.16)" stroke="#ffd60a" stroke-width="5"/><path d="' + path + '" fill="none" stroke="#ff453a" stroke-width="7" stroke-linecap="round"/></svg>' +
+      '<span class="ba-tag l">Before · summer</span><span class="ba-tag r">After · visualized</span><i class="ba-bar"></i>' +
+      '<input type="range" min="0" max="100" value="50" id="ba-r" aria-label="Slide between the view before and after the collapse"></div>' +
+      '<label class="ba-opt"><input type="checkbox" class="sw" id="ba-data" checked> Show the data on top <small>UNOSAT outline · routed flood path</small></label>' +
+      '<p class="note"><b>' + esc(V.label) + '.</b> ' + esc(V.how) + ' <a href="' + DATA + 'atlas/view.json" target="_blank" rel="noopener">Prompts, seed and camera</a></p></div>';
+  }
+  function bindAtlas() {
+    var r = $('ba-r'); if (!r) return;
+    r.addEventListener('input', function () { $('ba').style.setProperty('--x', r.value + '%'); });
+    $('ba-data').addEventListener('change', function (e) { $('ba-ov').style.opacity = e.target.checked ? 1 : 0; });
+  }
+
   /* ---------------------------------------------------------------- backtest */
   function paintBacktest() {
     var box = $('backtest'); if (!box) return;
@@ -1215,8 +1236,9 @@
     fetchJSON('windows.json'), fetchJSON('scorecard.json'), fetchJSON('truth.geojson'), fetchJSON('replay.json'),
     fetchJSON('control.json', true), fetchJSON('source_series.json', true), fetchJSON('context.json'), fetchJSON('img/bounds.json'),
     fetchJSON('rivers.geojson', true), fetchJSON('glaciers.geojson', true), fetchJSON('observed.geojson', true),
-    fetchJSON('config.json'), fetchJSON('provenance.json', true), fetchJSON('backtest_plan.json', true), fetchJSON('backtest.json', true)
+    fetchJSON('config.json'), fetchJSON('provenance.json', true), fetchJSON('backtest_plan.json', true), fetchJSON('backtest.json', true), fetchJSON('atlas/view.json', true)
   ]).then(function (r) {
+    D.atlas = r[15];
     D.observed = r[10]; D.config = r[11]; D.prov = r[12]; D.btPlan = r[13]; D.bt = r[14];
     var C = D.config;   // the committed, pre-registered rules: the page never carries its own copy
     S.w = { coherenceFloor: C.score.coherence_floor_for_visibility, motionSigma: 0, opposingBonus: C.score.opposing_bonus, iceBonus: C.score.ice_bonus,

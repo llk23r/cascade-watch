@@ -1,0 +1,55 @@
+{
+  "id": "66d3b2e815c844fe88dc8ad9c6135174",
+  "ownerId": "acct_2cb3ecc76f774e12ac182b56f204fb18",
+  "metadata": {
+    "@type": "type.worldlabs.ai/wlt.marble.v2.atlasChisel.metadata",
+    "state": "SUCCEEDED",
+    "status": "SUCCEEDED",
+    "surface": "DEVELOPER_API",
+    "task": "atlasChisel",
+    "taskVersion": "v1"
+  },
+  "done": true,
+  "error": null,
+  "expiresAtSecs": null,
+  "createdAtSecs": 1794754919,
+  "response": {
+    "frames": [
+      {
+        "camera": {
+          "extrinsics": {
+            "coordinateSystem": "rub",
+            "position": [
+              -2944.577392578125,
+              7800,
+              -24871.5
+            ],
+            "quaternion": [
+              0.027619730922871132,
+              0.9055721387115457,
+              0.0595662116061441,
+              -0.4190800860074805
+            ]
+          },
+          "intrinsics": {
+            "cx": 640,
+            "cy": 360,
+            "fx": 1108.5125732421875,
+            "fy": 1108.5125732421875,
+            "height": 720,
+            "width": 1280
+          }
+        },
+        "depth": null,
+        "imageAsset": {
+          "assetId": "asset_deeaad39de1ebefad64c6d9258a326c1",
+          "path": "frames_0_image.jpg"
+        },
+        "maskAsset": null
+      }
+    ],
+    "promptUsed": "The same Himalayan valley minutes after a catastrophic ice and rock avalanche. Inside the edited area on the upper slope: a fresh, raw, light-grey scar of shattered bedrock and broken blue-white glacier ice where a hanging glacier and the rock beneath it have just broken away. Along the valley floor below: a dark brown, churning debris flood of mud, boulders and ice blocks, scouring the river banks and stripping the forest, with spray and dust rising above it. Photorealistic aerial documentary photograph, same overcast monsoon light and colours as the rest of the image.",
+    "requestId": "70f91431-0094-4561-97ff-e08f77a44034"
+  },
+  "name": "accounts/acct_2cb3ecc76f774e12ac182b56f204fb18/projects/proj_6b315c0236414780b6f58cf3d7cd529f/operations/66d3b2e815c844fe88dc8ad9c6135174"
+}

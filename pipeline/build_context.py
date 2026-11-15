@@ -260,6 +260,7 @@ def main():
         sah={"text": f"Sah (2026) tested routine Sentinel-1 products at this slope and found no motion above {ef['sentinel1_sah']['detection_bound_48d']['value']:g} mm a month (48-day pairs).", "source": "sah"},
         timing=dict(days_before=days_before, hours_on_asf=round(hours_on_asf, 1), last_pass=lp["id"], on_asf_before=len(on_asf), n_pre=len(pre)),
         why_missing=why_missing,
+        detachment_km2=ef['geometry']['detachment_area_unosat']['value'],
         meena=meena,
         era5=era,
         sensitivity=sens,

@@ -4,3 +4,12 @@ __pycache__/
 *.pyc
 .DS_Store
 *.profraw
+demo/film/_frames/
+demo/film/atlas/*.jpg
+demo/atlas/out/*_preview.png
+demo/atlas/out/*_check.png
+demo/atlas/out/both.png
+demo/atlas/out/checks.png
+demo/atlas/out/closes.png
+demo/atlas/out/ba*.jpg
+demo/atlas/out/crop*.jpg

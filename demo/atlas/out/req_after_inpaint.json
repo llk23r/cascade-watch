@@ -1,0 +1,51 @@
+{
+ "targetFrames": [
+  {
+   "camera": {
+    "extrinsics": {
+     "position": [
+      -2944.5770663463018,
+      7800.0,
+      -24871.500000000156
+     ],
+     "quaternion": [
+      0.027573816415230656,
+      0.9054971293676252,
+      0.05955444389524134,
+      -0.41924682654448087
+     ],
+     "coordinateSystem": "rub"
+    },
+    "intrinsics": {
+     "width": 1280,
+     "height": 720,
+     "fx": 1108.5125168440818,
+     "fy": 1108.5125168440818,
+     "cx": 640.0,
+     "cy": 360.0
+    }
+   },
+   "imageAsset": {
+    "assetId": "asset_c53784ad7f5848938a9177d115c4017b"
+   },
+   "maskAsset": {
+    "assetId": "asset_fbacf319730b435ba270ed2c958e6a45"
+   },
+   "depth": {
+    "logDepthAsset": {
+     "assetId": "asset_b556452bf0b84ca99f88f037e52aa525"
+    },
+    "zMin": 7768.592460199316,
+    "zMax": 58573.91753605014,
+    "maskAsset": {
+     "assetId": "asset_750d71925ebf456ba4726601f7fea618"
+    }
+   }
+  }
+ ],
+ "prompt": "The same Himalayan valley minutes after a catastrophic ice and rock avalanche. Inside the edited area on the upper slope: a fresh, raw, light-grey scar of shattered bedrock and broken blue-white glacier ice where a hanging glacier and the rock beneath it have just broken away. Along the valley floor below: a dark brown, churning debris flood of mud, boulders and ice blocks, scouring the river banks and stripping the forest, with spray and dust rising above it. Photorealistic aerial documentary photograph, same overcast monsoon light and colours as the rest of the image.",
+ "enhancePrompt": false,
+ "modelParameters": {
+  "seed": 2608
+ }
+}

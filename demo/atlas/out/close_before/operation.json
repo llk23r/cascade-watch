@@ -1,0 +1,55 @@
+{
+  "id": "7e45694138a34cdf9663dd7af1c0ada7",
+  "ownerId": "acct_2cb3ecc76f774e12ac182b56f204fb18",
+  "metadata": {
+    "@type": "type.worldlabs.ai/wlt.marble.v2.atlasChisel.metadata",
+    "state": "SUCCEEDED",
+    "status": "SUCCEEDED",
+    "surface": "DEVELOPER_API",
+    "task": "atlasChisel",
+    "taskVersion": "v1"
+  },
+  "done": true,
+  "error": null,
+  "expiresAtSecs": null,
+  "createdAtSecs": 1794755023,
+  "response": {
+    "frames": [
+      {
+        "camera": {
+          "extrinsics": {
+            "coordinateSystem": "rub",
+            "position": [
+              5790.99853515625,
+              6900.00048828125,
+              -19455.0390625
+            ],
+            "quaternion": [
+              0.05741331479833715,
+              0.921747800026534,
+              0.14992186065830515,
+              -0.3529987820472807
+            ]
+          },
+          "intrinsics": {
+            "cx": 640,
+            "cy": 360,
+            "fx": 1024.214111328125,
+            "fy": 1024.214111328125,
+            "height": 720,
+            "width": 1280
+          }
+        },
+        "depth": null,
+        "imageAsset": {
+          "assetId": "asset_a391c4fe6d40692f5ec3f9b7b63793d3",
+          "path": "frames_0_image.jpg"
+        },
+        "maskAsset": null
+      }
+    ],
+    "promptUsed": "Aerial photograph high in the Langtang Himalaya, Nepal, late-August monsoon. A steep mountain face with a hanging glacier and fresh snow on its upper slopes above dark, fractured grey rock and moraine; a deep valley below with green alpine meadow on the lower slopes and a glacial stream on the valley floor; jagged snowy ridges on the horizon; wisps of low monsoon cloud; soft overcast daylight. Photorealistic documentary photography, natural colour, crisp detail, no text, no people.",
+    "requestId": "d9d9646c-6bd3-43ee-a39f-90a117866951"
+  },
+  "name": "accounts/acct_2cb3ecc76f774e12ac182b56f204fb18/projects/proj_6b315c0236414780b6f58cf3d7cd529f/operations/7e45694138a34cdf9663dd7af1c0ada7"
+}

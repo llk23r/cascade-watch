@@ -79,6 +79,15 @@ The page follows the system light or dark appearance, reduced motion, reduced tr
 
 `raw/event/{timeline,facts,villages_arrival}.json` are compiled by hand from the fetched sources. Every item carries its source URL and a verbatim quote, and the replay only uses items that have one.
 
+## The 30-second film and the Atlas visuals
+
+`demo/cascade-watch-30s.mp4` (29.9 s, 1080p, original score) tells it in seven beats: the place, the problem, the satellite, the question, the tool, what we found (including the miss), and the sources. Every number in it is read from `/data` when it renders.
+
+- **Composition:** `demo/film/index.html` + `film.js` draw each frame from a time value; `demo/film/render.py` captures 30 fps frame by frame, `score.py` synthesises the soundtrack (no samples, no licensed music), ffmpeg muxes.
+- **Opening shot, and "See the place" in The Morning:** an AI visualization, labelled as such. `demo/atlas/render_depth.py` ray-marches the real Copernicus DEM into a depth map for a camera above the source; World Labs Atlas (`atlasChisel`) paints that geometry. The "after" view is an Atlas inpaint confined to the UNOSAT detachment zone and the routed flood corridor. The yellow outline and red route on top are data, projected with the same camera; `demo/atlas/parallax.py` moves the camera with true parallax from the DEM depth. Prompts, seed, operation ids and camera are in `data/atlas/view.json`. Atlas renders the look of the place, not what happened: the measured story is in the rest of the app.
+
+Rebuild: `python demo/atlas/parallax.py && python demo/film/render.py` (with the page served on port 8765).
+
 ## Pipeline
 
 | Stage | Script | What it does |
@@ -127,7 +136,7 @@ All thresholds and weights are in [`pipeline/config.json`](pipeline/config.json)
 - Interactive, open-source (MIT), runs from static files with no backend and no keys.
 - Visualises Earth-surface change: glacier and slope motion per pass, coherence loss, before/after backscatter change.
 - Every source is cited in the app (Sources panel) and here.
-- `demo/cascade-watch-30s.mp4`: a 30-second tour of the app.
+- `demo/cascade-watch-30s.mp4`: a 29.9-second film (problem, approach, tool, data, sources, findings).
 
 ## Layout
 

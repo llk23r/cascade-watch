@@ -176,6 +176,7 @@
   "n_pre": 7
  },
  "why_missing": "In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.75 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold.",
+ "detachment_km2": 1.9568,
  "meena": [
   {
    "id": "A098_20260620_20260702",

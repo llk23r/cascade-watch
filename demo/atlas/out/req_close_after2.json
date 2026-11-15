@@ -1,0 +1,51 @@
+{
+ "targetFrames": [
+  {
+   "camera": {
+    "extrinsics": {
+     "position": [
+      5791.001563813928,
+      6900.0,
+      -19455.040000000212
+     ],
+     "quaternion": [
+      0.05741443714475763,
+      0.921748994814555,
+      0.1499217245157216,
+      -0.3529955374844566
+     ],
+     "coordinateSystem": "rub"
+    },
+    "intrinsics": {
+     "width": 1280,
+     "height": 720,
+     "fx": 1024.2140985862723,
+     "fy": 1024.2140985862723,
+     "cx": 640.0,
+     "cy": 360.0
+    }
+   },
+   "imageAsset": {
+    "assetId": "asset_66a1871bdcf14065ada6a156cfefdac3"
+   },
+   "maskAsset": {
+    "assetId": "asset_3b2af70d02a0498a87ad9583c699bcd9"
+   },
+   "depth": {
+    "logDepthAsset": {
+     "assetId": "asset_b6ee077cdef24841bad656dc2d700077"
+    },
+    "zMin": 3453.6324477461308,
+    "zMax": 33800.678430615684,
+    "maskAsset": {
+     "assetId": "asset_3b2af70d02a0498a87ad9583c699bcd9"
+    }
+   }
+  }
+ ],
+ "prompt": "Edit: show the catastrophic ice-rock avalanche happening right now. In the masked area the hanging glacier and bedrock have just collapsed: a raw fresh scar of shattered grey rock and blue ice, and a violent dark-brown debris flow of mud, boulders and ice blocks surging down the gully into the valley, with a huge billowing white-grey cloud of ice spray and rock dust rising high above the flow. Dramatic, photorealistic aerial news photograph.",
+ "enhancePrompt": true,
+ "modelParameters": {
+  "seed": 2608
+ }
+}

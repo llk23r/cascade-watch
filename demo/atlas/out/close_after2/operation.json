@@ -1,0 +1,55 @@
+{
+  "id": "a7ac831ab3374c86bb1d8e16ff7b61cb",
+  "ownerId": "acct_2cb3ecc76f774e12ac182b56f204fb18",
+  "metadata": {
+    "@type": "type.worldlabs.ai/wlt.marble.v2.atlasChisel.metadata",
+    "state": "SUCCEEDED",
+    "status": "SUCCEEDED",
+    "surface": "DEVELOPER_API",
+    "task": "atlasChisel",
+    "taskVersion": "v1"
+  },
+  "done": true,
+  "error": null,
+  "expiresAtSecs": null,
+  "createdAtSecs": 1794755129,
+  "response": {
+    "frames": [
+      {
+        "camera": {
+          "extrinsics": {
+            "coordinateSystem": "rub",
+            "position": [
+              5790.99853515625,
+              6900.00048828125,
+              -19455.0390625
+            ],
+            "quaternion": [
+              0.05741331479833715,
+              0.921747800026534,
+              0.14992186065830515,
+              -0.3529987820472807
+            ]
+          },
+          "intrinsics": {
+            "cx": 640,
+            "cy": 360,
+            "fx": 1024.214111328125,
+            "fy": 1024.214111328125,
+            "height": 720,
+            "width": 1280
+          }
+        },
+        "depth": null,
+        "imageAsset": {
+          "assetId": "asset_34a933a23c79d0998ce78f211a0c6bab",
+          "path": "frames_0_image.jpg"
+        },
+        "maskAsset": null
+      }
+    ],
+    "promptUsed": "{\"tags\":[\"avalanche\",\"glacier collapse\",\"debris flow\",\"mountain range\",\"aerial photography\",\"rockfall\",\"ice spray\",\"geological disaster\"],\"short_caption\":\"A catastrophic ice-rock avalanche surges down a steep mountain gully, leaving a raw scar of shattered ice and rock while sending a massive cloud of dust into the air.\",\"long_caption\":\"This dramatic aerial photograph captures a massive ice-rock avalanche in progress within a rugged mountain range. The upper reaches of a steep gully reveal a fresh scar where a hanging glacier and its supporting bedrock have collapsed, exposing shattered blue ice and grey rock. Below this point, a violent, dark-brown debris flow composed of mud, massive boulders, and chunks of ice surges rapidly down the terrain. A towering, billowing cloud of white-grey ice spray and rock dust rises high above the flow, partially obscuring the surrounding rocky slopes. The surrounding peaks remain stable, capped with snow and ice under a clear blue sky, contrasting with the chaotic event occurring within the central gully. The scene is rendered with the sharp detail and high contrast characteristic of an aerial news photograph, emphasizing the raw power of the mountain's collapse.\",\"style_and_atmosphere\":\"The style is a dramatic, photorealistic aerial news photograph. The atmosphere is chaotic and powerful, capturing a high-stakes geological event in a remote alpine environment.\",\"lighting\":\"Bright, direct sunlight from a high angle creates sharp shadows and highlights the textures of the billowing dust clouds and rocky surfaces. The color temperature is natural and cool, typical of high-altitude daylight.\",\"key_subjects_and_objects\":\"The primary subject is the active avalanche, characterized by a dark-brown, churning debris flow of mud, boulders, and ice blocks. Above the flow, a massive, billowing cloud of white and grey ice spray and rock dust expands into the air. The source of the collapse is a jagged, raw scar on the mountainside where shattered blue ice and dark grey bedrock are exposed. The surrounding mountains are composed of dark, weathered rock with patches of permanent snow and smaller, stable glaciers. The valley floor is filled with a mixture of old moraine and the new, fast-moving debris surging along the gully floor.\",\"environment_and_layout\":\"The scene is set in a high-alpine environment featuring steep, jagged mountain peaks and deep glacial gullies. The central feature is a steep, V-shaped gully that serves as the path for the debris flow. The terrain consists of dark grey rock interspersed with patches of green alpine vegetation on lower, more stable slopes. The horizon is lined with a series of distant, snow-capped peaks under a clear, pale blue sky. The ground surface transitions from solid rock faces to loose scree and the active, liquid-like debris of the avalanche.\",\"visible_progression\":\"The ice-rock avalanche is caught in a state of rapid movement, with the debris flow surging down the gully. The billowing cloud of dust and spray is actively expanding upward and outward from the path of the flow, indicating the ongoing nature of the collapse.\",\"text_and_ocr\":{\"verbatim_strings\":[],\"notes\":\"none\"},\"artifacts_and_overlays\":\"none\"}",
+    "requestId": "5820ee2f-ed43-4bea-897d-8114a490de70"
+  },
+  "name": "accounts/acct_2cb3ecc76f774e12ac182b56f204fb18/projects/proj_6b315c0236414780b6f58cf3d7cd529f/operations/a7ac831ab3374c86bb1d8e16ff7b61cb"
+}

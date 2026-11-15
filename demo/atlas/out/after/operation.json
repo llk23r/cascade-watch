@@ -1,0 +1,55 @@
+{
+  "id": "064ab7fc45324bd6bcd4efe0bbf0b293",
+  "ownerId": "acct_2cb3ecc76f774e12ac182b56f204fb18",
+  "metadata": {
+    "@type": "type.worldlabs.ai/wlt.marble.v2.atlasChisel.metadata",
+    "state": "SUCCEEDED",
+    "status": "SUCCEEDED",
+    "surface": "DEVELOPER_API",
+    "task": "atlasChisel",
+    "taskVersion": "v1"
+  },
+  "done": true,
+  "error": null,
+  "expiresAtSecs": null,
+  "createdAtSecs": 1794754836,
+  "response": {
+    "frames": [
+      {
+        "camera": {
+          "extrinsics": {
+            "coordinateSystem": "rub",
+            "position": [
+              -2944.577392578125,
+              7800,
+              -24871.5
+            ],
+            "quaternion": [
+              0.027619730922871132,
+              0.9055721387115457,
+              0.0595662116061441,
+              -0.4190800860074805
+            ]
+          },
+          "intrinsics": {
+            "cx": 640,
+            "cy": 360,
+            "fx": 1108.5125732421875,
+            "fy": 1108.5125732421875,
+            "height": 720,
+            "width": 1280
+          }
+        },
+        "depth": null,
+        "imageAsset": {
+          "assetId": "asset_0f8585b00f5c2134db2f94ddf9d01b96",
+          "path": "frames_0_image.jpg"
+        },
+        "maskAsset": null
+      }
+    ],
+    "promptUsed": "Aerial photograph of the same Langtang Himalaya valley hours after a massive ice and rock avalanche: a fresh raw grey scar on the upper slope where a hanging glacier and bedrock broke away, a dark brown debris flow filling the valley floor, a turbid muddy flood torrent full of boulders scouring away the river banks and forest below, haze of dust and spray in the air, monsoon cloud, overcast light, photorealistic documentary photography, natural colour, high detail, no text, no people.",
+    "requestId": "051474a2-5011-45a8-8f4a-6b0d663c4bd7"
+  },
+  "name": "accounts/acct_2cb3ecc76f774e12ac182b56f204fb18/projects/proj_6b315c0236414780b6f58cf3d7cd529f/operations/064ab7fc45324bd6bcd4efe0bbf0b293"
+}
