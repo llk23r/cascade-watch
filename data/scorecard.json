@@ -7,7 +7,7 @@
    "baseline_rank": 1,
    "n_offsets": 133,
    "source_visible": true,
-   "hit_id": "o216",
+   "hit_id": "o221",
    "top5": [
     {
      "id": "p+7",
@@ -17,41 +17,41 @@
      "lat": 28.3126
     },
     {
-     "id": "o322",
+     "id": "o331",
      "channel": "offsets",
      "dist_truth_km": 12.12,
-     "lon": 85.5521,
-     "lat": 28.1738
+     "lon": 85.5523,
+     "lat": 28.174
     },
     {
-     "id": "o216",
+     "id": "o221",
      "channel": "offsets",
      "dist_truth_km": 1.98,
-     "lon": 85.5553,
+     "lon": 85.5552,
      "lat": 28.2826
     },
     {
-     "id": "o217",
+     "id": "o223",
      "channel": "offsets",
      "dist_truth_km": 0.1,
      "lon": 85.5089,
      "lat": 28.2784
     },
     {
-     "id": "o334",
+     "id": "o344",
      "channel": "offsets",
      "dist_truth_km": 14.35,
-     "lon": 85.601,
-     "lat": 28.1666
+     "lon": 85.6009,
+     "lat": 28.1667
     }
    ]
   },
   "A098_20260527_20260608": {
    "source_rank": 1,
    "blobs_above": 0,
-   "n_ranked": 110,
+   "n_ranked": 108,
    "baseline_rank": 1,
-   "n_offsets": 46,
+   "n_offsets": 44,
    "source_visible": true,
    "hit_id": "p-70",
    "top5": [
@@ -95,9 +95,9 @@
   "A098_20260608_20260620": {
    "source_rank": 4,
    "blobs_above": 3,
-   "n_ranked": 100,
-   "baseline_rank": null,
-   "n_offsets": 76,
+   "n_ranked": 107,
+   "baseline_rank": 15,
+   "n_offsets": 84,
    "source_visible": true,
    "hit_id": "p+8",
    "top5": [
@@ -130,66 +130,66 @@
      "lat": 28.2979
     },
     {
-     "id": "o50",
+     "id": "o51",
      "channel": "offsets",
-     "dist_truth_km": 5.65,
-     "lon": 85.5765,
-     "lat": 28.3325
+     "dist_truth_km": 5.05,
+     "lon": 85.576,
+     "lat": 28.3315
     }
    ]
   },
   "A098_20260620_20260702": {
    "source_rank": 1,
    "blobs_above": 0,
-   "n_ranked": 125,
-   "baseline_rank": 3,
+   "n_ranked": 126,
+   "baseline_rank": 2,
    "n_offsets": 126,
    "source_visible": true,
-   "hit_id": "o223",
+   "hit_id": "o218",
    "top5": [
     {
-     "id": "o223",
+     "id": "o218",
      "channel": "offsets",
      "dist_truth_km": 0.0,
      "lon": 85.5333,
      "lat": 28.2776
     },
     {
-     "id": "o272",
-     "channel": "offsets",
-     "dist_truth_km": 11.5,
-     "lon": 85.6481,
-     "lat": 28.2572
-    },
-    {
-     "id": "o132",
+     "id": "o130",
      "channel": "offsets",
      "dist_truth_km": 13.57,
      "lon": 85.6606,
      "lat": 28.3382
     },
     {
-     "id": "o67",
+     "id": "o267",
+     "channel": "offsets",
+     "dist_truth_km": 11.5,
+     "lon": 85.6481,
+     "lat": 28.2572
+    },
+    {
+     "id": "o68",
      "channel": "offsets",
      "dist_truth_km": 10.75,
      "lon": 85.4339,
-     "lat": 28.3693
+     "lat": 28.3694
     },
     {
-     "id": "o364",
+     "id": "o172",
      "channel": "offsets",
-     "dist_truth_km": 20.52,
-     "lon": 85.6867,
-     "lat": 28.1601
+     "dist_truth_km": 14.98,
+     "lon": 85.6892,
+     "lat": 28.3086
     }
    ]
   },
   "A098_20260702_20260714": {
    "source_rank": 1,
    "blobs_above": 0,
-   "n_ranked": 105,
+   "n_ranked": 103,
    "baseline_rank": null,
-   "n_offsets": 67,
+   "n_offsets": 65,
    "source_visible": true,
    "hit_id": "p-24",
    "top5": [
@@ -233,9 +233,9 @@
   "A098_20260714_20260726": {
    "source_rank": null,
    "blobs_above": null,
-   "n_ranked": 116,
+   "n_ranked": 119,
    "baseline_rank": null,
-   "n_offsets": 98,
+   "n_offsets": 101,
    "source_visible": false,
    "hit_id": null,
    "top5": [
@@ -279,9 +279,9 @@
   "A098_20260726_20260819": {
    "source_rank": 2,
    "blobs_above": 1,
-   "n_ranked": 189,
+   "n_ranked": 193,
    "baseline_rank": 7,
-   "n_offsets": 157,
+   "n_offsets": 161,
    "source_visible": true,
    "hit_id": "p+43",
    "top5": [
@@ -323,13 +323,13 @@
    ]
   },
   "A098_20260819_20260831": {
-   "source_rank": 21,
-   "blobs_above": 20,
+   "source_rank": 10,
+   "blobs_above": 9,
    "n_ranked": 180,
-   "baseline_rank": 13,
-   "n_offsets": 158,
+   "baseline_rank": 14,
+   "n_offsets": 157,
    "source_visible": true,
-   "hit_id": "o284",
+   "hit_id": "o270",
    "top5": [
     {
      "id": "p-36",
@@ -346,18 +346,18 @@
      "lat": 28.3875
     },
     {
-     "id": "o471",
-     "channel": "offsets",
-     "dist_truth_km": 18.1,
-     "lon": 85.6722,
-     "lat": 28.1701
-    },
-    {
-     "id": "o204",
+     "id": "o202",
      "channel": "offsets",
      "dist_truth_km": 8.14,
      "lon": 85.614,
      "lat": 28.3171
+    },
+    {
+     "id": "o468",
+     "channel": "offsets",
+     "dist_truth_km": 18.1,
+     "lon": 85.6722,
+     "lat": 28.1701
     },
     {
      "id": "p-61",
@@ -371,9 +371,9 @@
   "A098_20260831_20260912": {
    "source_rank": 3,
    "blobs_above": 2,
-   "n_ranked": 236,
-   "baseline_rank": 9,
-   "n_offsets": 168,
+   "n_ranked": 239,
+   "baseline_rank": 8,
+   "n_offsets": 172,
    "source_visible": true,
    "hit_id": "p+69",
    "top5": [
@@ -417,9 +417,9 @@
   "A098_20260912_20260924": {
    "source_rank": 22,
    "blobs_above": 21,
-   "n_ranked": 244,
+   "n_ranked": 242,
    "baseline_rank": 5,
-   "n_offsets": 227,
+   "n_offsets": 225,
    "source_visible": true,
    "hit_id": "o327",
    "top5": [
@@ -438,14 +438,14 @@
      "lat": 28.1796
     },
     {
-     "id": "o344",
+     "id": "o345",
      "channel": "offsets",
      "dist_truth_km": 11.5,
      "lon": 85.6485,
      "lat": 28.2576
     },
     {
-     "id": "o189",
+     "id": "o190",
      "channel": "offsets",
      "dist_truth_km": 8.11,
      "lon": 85.6138,
@@ -461,57 +461,57 @@
    ]
   },
   "A098_20260924_20261006": {
-   "source_rank": 8,
-   "blobs_above": 7,
-   "n_ranked": 142,
-   "baseline_rank": 2,
-   "n_offsets": 174,
+   "source_rank": 7,
+   "blobs_above": 6,
+   "n_ranked": 143,
+   "baseline_rank": 3,
+   "n_offsets": 176,
    "source_visible": true,
    "hit_id": "o207",
    "top5": [
     {
-     "id": "o185",
+     "id": "o187",
      "channel": "offsets",
      "dist_truth_km": 11.78,
      "lon": 85.6549,
      "lat": 28.2984
     },
     {
-     "id": "o455",
+     "id": "o459",
      "channel": "offsets",
      "dist_truth_km": 17.87,
      "lon": 85.6269,
      "lat": 28.1456
     },
     {
-     "id": "o464",
-     "channel": "offsets",
-     "dist_truth_km": 15.46,
-     "lon": 85.5318,
-     "lat": 28.142
-    },
-    {
-     "id": "o412",
+     "id": "o418",
      "channel": "offsets",
      "dist_truth_km": 13.91,
-     "lon": 85.5376,
-     "lat": 28.1555
+     "lon": 85.5375,
+     "lat": 28.1556
     },
     {
-     "id": "o94",
+     "id": "o96",
      "channel": "offsets",
      "dist_truth_km": 18.34,
      "lon": 85.7044,
-     "lat": 28.3607
+     "lat": 28.3608
+    },
+    {
+     "id": "o410",
+     "channel": "offsets",
+     "dist_truth_km": 19.16,
+     "lon": 85.6736,
+     "lat": 28.1635
     }
    ]
   },
   "A098_20261006_20261018": {
    "source_rank": 1,
    "blobs_above": 0,
-   "n_ranked": 228,
-   "baseline_rank": 14,
-   "n_offsets": 175,
+   "n_ranked": 230,
+   "baseline_rank": 13,
+   "n_offsets": 177,
    "source_visible": true,
    "hit_id": "p+37",
    "top5": [
@@ -523,7 +523,7 @@
      "lat": 28.2884
     },
     {
-     "id": "o194",
+     "id": "o193",
      "channel": "offsets",
      "dist_truth_km": 8.33,
      "lon": 85.6137,
@@ -544,10 +544,10 @@
      "lat": 28.3386
     },
     {
-     "id": "o405",
+     "id": "o415",
      "channel": "offsets",
      "dist_truth_km": 11.29,
-     "lon": 85.5461,
+     "lon": 85.5462,
      "lat": 28.1798
     }
    ]
@@ -555,9 +555,9 @@
   "D048_20260629_20260711": {
    "source_rank": null,
    "blobs_above": null,
-   "n_ranked": 93,
+   "n_ranked": 90,
    "baseline_rank": null,
-   "n_offsets": 72,
+   "n_offsets": 70,
    "source_visible": false,
    "hit_id": null,
    "top5": [
@@ -579,7 +579,7 @@
      "id": "o39",
      "channel": "offsets",
      "dist_truth_km": 11.15,
-     "lon": 85.5187,
+     "lon": 85.5186,
      "lat": 28.4003
     },
     {
@@ -601,9 +601,9 @@
   "D048_20260711_20260723": {
    "source_rank": null,
    "blobs_above": null,
-   "n_ranked": 83,
+   "n_ranked": 82,
    "baseline_rank": null,
-   "n_offsets": 50,
+   "n_offsets": 49,
    "source_visible": false,
    "hit_id": null,
    "top5": [
@@ -615,11 +615,11 @@
      "lat": 28.4215
     },
     {
-     "id": "o18",
+     "id": "o19",
      "channel": "offsets",
-     "dist_truth_km": 11.88,
-     "lon": 85.5124,
-     "lat": 28.4106
+     "dist_truth_km": 11.95,
+     "lon": 85.512,
+     "lat": 28.4108
     },
     {
      "id": "p-121",
@@ -629,27 +629,27 @@
      "lat": 28.2307
     },
     {
-     "id": "o90",
+     "id": "o93",
      "channel": "offsets",
      "dist_truth_km": 5.14,
      "lon": 85.4608,
-     "lat": 28.3292
+     "lat": 28.3293
     },
     {
-     "id": "o60",
+     "id": "o64",
      "channel": "offsets",
      "dist_truth_km": 13.29,
      "lon": 85.4003,
-     "lat": 28.3667
+     "lat": 28.3669
     }
    ]
   },
   "D048_20260723_20260816": {
-   "source_rank": 13,
-   "blobs_above": 12,
-   "n_ranked": 220,
-   "baseline_rank": 33,
-   "n_offsets": 183,
+   "source_rank": 14,
+   "blobs_above": 13,
+   "n_ranked": 219,
+   "baseline_rank": 29,
+   "n_offsets": 182,
    "source_visible": true,
    "hit_id": "p+41",
    "top5": [
@@ -675,35 +675,35 @@
      "lat": 28.1831
     },
     {
-     "id": "o353",
-     "channel": "offsets",
-     "dist_truth_km": 17.39,
-     "lon": 85.3601,
-     "lat": 28.1784
-    },
-    {
      "id": "p-2",
      "channel": "phase",
      "dist_truth_km": 16.37,
      "lon": 85.4586,
      "lat": 28.436
+    },
+    {
+     "id": "o220",
+     "channel": "offsets",
+     "dist_truth_km": 5.99,
+     "lon": 85.5988,
+     "lat": 28.2654
     }
    ]
   },
   "D048_20260816_20260828": {
    "source_rank": null,
    "blobs_above": null,
-   "n_ranked": 89,
+   "n_ranked": 93,
    "baseline_rank": null,
-   "n_offsets": 46,
+   "n_offsets": 50,
    "source_visible": false,
    "hit_id": null,
    "top5": [
     {
-     "id": "o123",
+     "id": "o124",
      "channel": "offsets",
      "dist_truth_km": 8.83,
-     "lon": 85.6188,
+     "lon": 85.6189,
      "lat": 28.2578
     },
     {
@@ -721,7 +721,7 @@
      "lat": 28.4127
     },
     {
-     "id": "o99",
+     "id": "o97",
      "channel": "offsets",
      "dist_truth_km": 13.77,
      "lon": 85.6525,
@@ -739,14 +739,14 @@
   "D048_20260828_20260909": {
    "source_rank": null,
    "blobs_above": null,
-   "n_ranked": 112,
+   "n_ranked": 108,
    "baseline_rank": null,
-   "n_offsets": 98,
+   "n_offsets": 94,
    "source_visible": false,
    "hit_id": null,
    "top5": [
     {
-     "id": "o236",
+     "id": "o231",
      "channel": "offsets",
      "dist_truth_km": 4.65,
      "lon": 85.4842,
@@ -760,34 +760,34 @@
      "lat": 28.3054
     },
     {
-     "id": "o56",
+     "id": "o223",
+     "channel": "offsets",
+     "dist_truth_km": 8.91,
+     "lon": 85.6197,
+     "lat": 28.255
+    },
+    {
+     "id": "o55",
      "channel": "offsets",
      "dist_truth_km": 17.21,
      "lon": 85.6759,
      "lat": 28.3844
     },
     {
-     "id": "o226",
-     "channel": "offsets",
-     "dist_truth_km": 8.91,
-     "lon": 85.6196,
-     "lat": 28.255
-    },
-    {
-     "id": "o161",
+     "id": "o155",
      "channel": "offsets",
      "dist_truth_km": 13.46,
-     "lon": 85.6749,
-     "lat": 28.317
+     "lon": 85.6752,
+     "lat": 28.3171
     }
    ]
   },
   "D048_20260909_20260921": {
    "source_rank": null,
    "blobs_above": null,
-   "n_ranked": 63,
+   "n_ranked": 61,
    "baseline_rank": null,
-   "n_offsets": 13,
+   "n_offsets": 11,
    "source_visible": false,
    "hit_id": null,
    "top5": [
@@ -831,9 +831,9 @@
   "D048_20260921_20261003": {
    "source_rank": null,
    "blobs_above": null,
-   "n_ranked": 54,
+   "n_ranked": 56,
    "baseline_rank": null,
-   "n_offsets": 49,
+   "n_offsets": 51,
    "source_visible": false,
    "hit_id": null,
    "top5": [
@@ -852,34 +852,34 @@
      "lat": 28.3469
     },
     {
-     "id": "o207",
+     "id": "o206",
      "channel": "offsets",
      "dist_truth_km": 16.33,
      "lon": 85.5749,
      "lat": 28.142
     },
     {
-     "id": "o87",
+     "id": "o88",
      "channel": "offsets",
      "dist_truth_km": 13.5,
      "lon": 85.6672,
      "lat": 28.3051
     },
     {
-     "id": "o18",
+     "id": "o14",
      "channel": "offsets",
      "dist_truth_km": 17.53,
-     "lon": 85.4112,
-     "lat": 28.4251
+     "lon": 85.411,
+     "lat": 28.4256
     }
    ]
   },
   "D048_20261003_20261015": {
    "source_rank": null,
    "blobs_above": null,
-   "n_ranked": 98,
+   "n_ranked": 103,
    "baseline_rank": 19,
-   "n_offsets": 96,
+   "n_offsets": 101,
    "source_visible": false,
    "hit_id": null,
    "top5": [
@@ -894,29 +894,29 @@
      "id": "o262",
      "channel": "offsets",
      "dist_truth_km": 19.38,
-     "lon": 85.6666,
+     "lon": 85.6669,
      "lat": 28.1488
     },
     {
-     "id": "o172",
+     "id": "o171",
      "channel": "offsets",
      "dist_truth_km": 12.53,
-     "lon": 85.6566,
-     "lat": 28.2332
+     "lon": 85.6567,
+     "lat": 28.2331
     },
     {
-     "id": "o114",
+     "id": "o151",
+     "channel": "offsets",
+     "dist_truth_km": 9.03,
+     "lon": 85.6192,
+     "lat": 28.2501
+    },
+    {
+     "id": "o109",
      "channel": "offsets",
      "dist_truth_km": 5.14,
      "lon": 85.4542,
      "lat": 28.2806
-    },
-    {
-     "id": "o90",
-     "channel": "offsets",
-     "dist_truth_km": 13.51,
-     "lon": 85.6726,
-     "lat": 28.3168
     }
    ]
   }

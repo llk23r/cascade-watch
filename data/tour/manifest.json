@@ -1,0 +1,111 @@
+{
+ "voice": "af_heart",
+ "engine": "Kokoro-82M (Apache-2.0), local",
+ "steps": [
+  {
+   "i": 0,
+   "title": "Where it started",
+   "hash": "0f887d1b",
+   "file": "step_00.m4a",
+   "seconds": 14.32
+  },
+  {
+   "i": 1,
+   "title": "The flood",
+   "hash": "e1559fc4",
+   "file": "step_01.m4a",
+   "seconds": 14.25
+  },
+  {
+   "i": 2,
+   "title": "A town on the river",
+   "hash": "f4267055",
+   "file": "step_02.m4a",
+   "seconds": 15.88
+  },
+  {
+   "i": 3,
+   "title": "The question",
+   "hash": "147ca9e1",
+   "file": "step_03.m4a",
+   "seconds": 17.98
+  },
+  {
+   "i": 4,
+   "title": "Radar passes",
+   "hash": "4ccbea4c",
+   "file": "step_04.m4a",
+   "seconds": 8.7
+  },
+  {
+   "i": 5,
+   "title": "What the colours are",
+   "hash": "56cb9991",
+   "file": "step_05.m4a",
+   "seconds": 12.53
+  },
+  {
+   "i": 6,
+   "title": "Motion at the source",
+   "hash": "e4b9b328",
+   "file": "step_06.m4a",
+   "seconds": 23.18
+  },
+  {
+   "i": 7,
+   "title": "The rule",
+   "hash": "ce974b3f",
+   "file": "step_07.m4a",
+   "seconds": 13.57
+  },
+  {
+   "i": 8,
+   "title": "One score, factor by factor",
+   "hash": "0cebf754",
+   "file": "step_08.m4a",
+   "seconds": 16.57
+  },
+  {
+   "i": 9,
+   "title": "On the map",
+   "hash": "029df38e",
+   "file": "step_09.m4a",
+   "seconds": 12.45
+  },
+  {
+   "i": 10,
+   "title": "Every pass",
+   "hash": "c32b6033",
+   "file": "step_10.m4a",
+   "seconds": 15.15
+  },
+  {
+   "i": 11,
+   "title": "The what-if",
+   "hash": "1600620b",
+   "file": "step_11.m4a",
+   "seconds": 17.4
+  },
+  {
+   "i": 12,
+   "title": "The answer",
+   "hash": "0068df49",
+   "file": "step_12.m4a",
+   "seconds": 11.32
+  },
+  {
+   "i": 13,
+   "title": "The real test",
+   "hash": "ccf02acc",
+   "file": "step_13.m4a",
+   "seconds": 23.55
+  },
+  {
+   "i": 14,
+   "title": "Check everything",
+   "hash": "0b3746e9",
+   "file": "step_14.m4a",
+   "seconds": 14.1
+  }
+ ]
+}

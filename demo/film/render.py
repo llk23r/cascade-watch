@@ -43,8 +43,9 @@ with sync_playwright() as p:
     b.close()
 
 subprocess.run([sys.executable, str(HERE / "score.py")], check=True)
+subprocess.run([sys.executable, str(HERE / "narrate.py")], check=True)
 out = ROOT / "demo" / "cascade-watch-30s.mp4"
-subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", str(frames / "f%04d.jpg"), "-i", str(HERE / "score.wav"),
+subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", str(frames / "f%04d.jpg"), "-i", str(HERE / "mix.wav"),
                 "-c:v", "libx264", "-preset", "slow", "-crf", "17", "-pix_fmt", "yuv420p", "-profile:v", "high", "-c:a", "aac", "-b:a", "192k",
                 "-shortest", "-t", f"{dur:.2f}", "-movflags", "+faststart", str(out)], check=True)
 shutil.copy(frames / f"f{int(1.2 * FPS):04d}.jpg", ROOT / "demo" / "poster.jpg")

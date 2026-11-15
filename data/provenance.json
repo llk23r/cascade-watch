@@ -84,6 +84,38 @@
    "subject": "Show the pre-registered backtest plan; fix data-table overflow",
    "touches_config": false,
    "adds_results": false
+  },
+  {
+   "hash": "489e85c2c6457db046f6c96e9cd51fd25de7b760",
+   "short": "489e85c",
+   "time": "2026-11-15T09:50:31-05:00",
+   "subject": "Update commit hashes after message rewrite (dates unchanged)",
+   "touches_config": false,
+   "adds_results": false
+  },
+  {
+   "hash": "fae4baaf16ec704820796edf9494498fc2de9e05",
+   "short": "fae4baa",
+   "time": "2026-11-15T10:24:37-05:00",
+   "subject": "New 30-second film; World Labs Atlas visuals on real terrain",
+   "touches_config": false,
+   "adds_results": false
+  },
+  {
+   "hash": "dae3a1986eaa8a1fe3a796c39192134c6f284589",
+   "short": "dae3a19",
+   "time": "2026-11-15T10:38:21-05:00",
+   "subject": "Run the screen on any study box; add the pre-registered backtest",
+   "touches_config": false,
+   "adds_results": false
+  },
+  {
+   "hash": "b4f6585a0a4650ae12dcf7ea893712a793124f37",
+   "short": "b4f6585",
+   "time": "2026-11-15T10:52:44-05:00",
+   "subject": "Backtest results: Budhi Gandaki, Manang and Langtang",
+   "touches_config": false,
+   "adds_results": false
   }
  ],
  "granules": [
@@ -917,6 +949,10 @@
  ],
  "files": [
   {
+   "path": "data/backtest.json",
+   "bytes": 125454
+  },
+  {
    "path": "data/backtest_plan.json",
    "bytes": 3649
   },
@@ -926,7 +962,7 @@
   },
   {
    "path": "data/context.json",
-   "bytes": 21667
+   "bytes": 21692
   },
   {
    "path": "data/control.json",
@@ -938,99 +974,99 @@
   },
   {
    "path": "data/scorecard.json",
-   "bytes": 17458
+   "bytes": 17456
   },
   {
    "path": "data/sensitivity.json",
-   "bytes": 3403
+   "bytes": 3401
   },
   {
    "path": "data/source_series.json",
-   "bytes": 9486
+   "bytes": 9485
   },
   {
    "path": "data/windows.json",
-   "bytes": 16661
+   "bytes": 16663
   },
   {
    "path": "data/blobs_A098_20260515_20260527.geojson",
-   "bytes": 183922
+   "bytes": 184649
   },
   {
    "path": "data/blobs_A098_20260527_20260608.geojson",
-   "bytes": 146141
+   "bytes": 144219
   },
   {
    "path": "data/blobs_A098_20260608_20260620.geojson",
-   "bytes": 129394
+   "bytes": 139537
   },
   {
    "path": "data/blobs_A098_20260620_20260702.geojson",
-   "bytes": 177856
+   "bytes": 178110
   },
   {
    "path": "data/blobs_A098_20260702_20260714.geojson",
-   "bytes": 135270
+   "bytes": 134212
   },
   {
    "path": "data/blobs_A098_20260714_20260726.geojson",
-   "bytes": 138215
+   "bytes": 142997
   },
   {
    "path": "data/blobs_A098_20260726_20260819.geojson",
-   "bytes": 296470
+   "bytes": 300268
   },
   {
    "path": "data/blobs_A098_20260819_20260831.geojson",
-   "bytes": 296447
+   "bytes": 294899
   },
   {
    "path": "data/blobs_A098_20260831_20260912.geojson",
-   "bytes": 339912
+   "bytes": 344616
   },
   {
    "path": "data/blobs_A098_20260912_20260924.geojson",
-   "bytes": 417792
+   "bytes": 414434
   },
   {
    "path": "data/blobs_A098_20260924_20261006.geojson",
-   "bytes": 203603
+   "bytes": 206029
   },
   {
    "path": "data/blobs_A098_20261006_20261018.geojson",
-   "bytes": 335804
+   "bytes": 337096
   },
   {
    "path": "data/blobs_D048_20260629_20260711.geojson",
-   "bytes": 152746
+   "bytes": 151838
   },
   {
    "path": "data/blobs_D048_20260711_20260723.geojson",
-   "bytes": 141047
+   "bytes": 140336
   },
   {
    "path": "data/blobs_D048_20260723_20260816.geojson",
-   "bytes": 288974
+   "bytes": 285551
   },
   {
    "path": "data/blobs_D048_20260816_20260828.geojson",
-   "bytes": 105593
+   "bytes": 110550
   },
   {
    "path": "data/blobs_D048_20260828_20260909.geojson",
-   "bytes": 150657
+   "bytes": 147402
   },
   {
    "path": "data/blobs_D048_20260909_20260921.geojson",
-   "bytes": 79154
+   "bytes": 77507
   },
   {
    "path": "data/blobs_D048_20260921_20261003.geojson",
-   "bytes": 68323
+   "bytes": 70548
   },
   {
    "path": "data/blobs_D048_20261003_20261015.geojson",
-   "bytes": 140239
+   "bytes": 144266
   },
   {
    "path": "data/glaciers.geojson",

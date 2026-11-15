@@ -128,14 +128,15 @@
  ],
  "story": {
   "morning": "At 08:37:10 Nepal time a combined ice and bedrock mass broke away high on the Langtang massif; UNOSAT mapped the detachment zone at 1.96 km\u00b2. The flood ran down the Bhote Koshi and the Trishuli. Nepal's operational log first recorded it as an M4.4 earthquake.",
-  "morning2": "The three gauges nearest the source were destroyed before any of them crossed its warning level: their last readings were 27%, 69% and 87% of warning. Gauges further down survived and recorded the flood. Radar had watched the slope all summer, but it was one of 189 moving patches in the box, with no rule to pick it out.",
-  "creep": "In the 24 days ending 7 days before the collapse (26 Jul \u2192 19 Aug), the fastest tenth of the detachment zone moved 1.02 m downhill; the zone's median moved 0.05 m. Meena 2026 reports 0.96 m for the same pass, as the median over the crown, a smaller area, so it checks the size of the motion, not the exact number. It moved 0.95 m in 20 Jun \u2192 2 Jul too, so the motion did not single out the last weeks. In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.75 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold."
+  "morning2": "The three gauges nearest the source were destroyed before any of them crossed its warning level: their last readings were 27%, 69% and 87% of warning. Gauges further down survived and recorded the flood. Radar had watched the slope all summer, but it was one of 193 moving patches in the box, with no rule to pick it out.",
+  "creep": "In the 24 days ending 7 days before the collapse (26 Jul \u2192 19 Aug), the fastest tenth of the detachment zone moved 1.02 m downhill; the zone's median moved 0.05 m. Meena 2026 reports 0.96 m for the same pass, as the median over the crown, a smaller area, so it checks the size of the motion, not the exact number. It moved 0.95 m in 20 Jun \u2192 2 Jul too, so the motion did not single out the last weeks. In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.74 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold."
  },
  "limits": [
-  "The pre-registered test fails: the source valley ranked #2 in the last pass but was not ranked one pass earlier. In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.75 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold.",
-  "The screen keeps this valley near the top most of the summer (6 of 7 ascending passes in the top 5) and after the collapse too (#21, #3, #22, #8, #1). It says 'watch this valley', not 'it falls next week'.",
+  "The pre-registered test fails: the source valley ranked #2 in the last pass but was not ranked one pass earlier. In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.74 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold.",
+  "The screen keeps this valley near the top most of the summer (6 of 7 ascending passes in the top 5) and after the collapse too (#10, #3, #22, #7, #1). It says 'watch this valley', not 'it falls next week'.",
   "Only 4 of those 7 pairs were public on ASF before the collapse; 3 (15 May\u219227 May, 27 May\u21928 Jun, 8 Jun\u219220 Jun) were processed afterwards. The last pass went public 37 hours before the collapse.",
-  "The rules were written after the event, by people who had read post-event studies of it. Pre-registration only guards against tuning on our own results; the real test is other events.",
+  "Backtest, with the same rules: on the Budhi Gandaki rock avalanche (Oct 2026) the source ranked #10 then not ranked, so the test fails there too. False alarms (another valley in the top 5 in two passes in a row): Budhi Gandaki 5 in 11 passes, Manang (no failure) 3 in 8 passes, Langtang 4 in 7 passes.",
+  "The rules were written after the event, by people who had read post-event studies of it. Pre-registration only guards against tuning on our own results.",
   "Phase patches carry millimetre uncertainties (the bootstrap error of the patch mean, which shrinks with patch size), so large phase patches dominate a score of motion over noise.",
   "The headline phase is not corrected for tropospheric delay, which at 5,510 m can mimic motion. A sensitivity run that subtracts each product's own wet and hydrostatic screens gives #2 in the last pass and still not ranked one pass earlier.",
   "The hit zone is 2 km around a 2.0 km\u00b2 outline, so several patches qualify in most passes, and the one that counts changes from pass to pass.",
@@ -175,8 +176,40 @@
   "on_asf_before": 4,
   "n_pre": 7
  },
- "why_missing": "In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.75 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold.",
+ "why_missing": "In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.74 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold.",
  "detachment_km2": 1.9568,
+ "rule_evidence": [
+  {
+   "factor": "Motion \u00f7 its own noise",
+   "text": "Standard radar practice: only motion that clears the measurement noise counts (here 3\u00d7 the scene noise for offsets, \u00b150 mm for phase).",
+   "source": "nisar"
+  },
+  {
+   "factor": "Moves one way",
+   "text": "Meena 2026 found the source moved consistently downslope: directional coherence 0.87 at the crown against 0.69 for the surrounding box.",
+   "source": "meena"
+  },
+  {
+   "factor": "Neighbours pull apart",
+   "text": "Kuto\u011flu et al. 2026 report differential rock\u2013ice deformation before the collapse: a +63 mm line-of-sight cluster 1.4 km from the detachment, beside a -71 mm feature.",
+   "source": "kutoglu"
+  },
+  {
+   "factor": "Hanging ice over rock",
+   "text": "The source was a combined ice and bedrock mass (Acharya & Paudel 2026). Steep glacier-covered rock is where ice\u2013rock avalanches start.",
+   "source": "acharya"
+  },
+  {
+   "factor": "People below",
+   "text": "Risk is hazard times exposure: WorldPop residents within reach of the routed flow path.",
+   "source": "worldpop"
+  },
+  {
+   "factor": "Hot season",
+   "text": "Hassan et al. 2026: the July\u2013August heat anomaly reached about the 98th percentile of 1979\u20132025, with a snowfall deficit, before the failure.",
+   "source": "hassan"
+  }
+ ],
  "meena": [
   {
    "id": "A098_20260620_20260702",
@@ -390,48 +423,48 @@
    "A098_20260527_20260608": {
     "headline_rank": 1,
     "tropo_rank": 1,
-    "headline_n": 110,
-    "tropo_n": 120,
+    "headline_n": 108,
+    "tropo_n": 118,
     "tropo_applied": true
    },
    "A098_20260608_20260620": {
     "headline_rank": 4,
     "tropo_rank": 5,
-    "headline_n": 100,
-    "tropo_n": 97,
+    "headline_n": 107,
+    "tropo_n": 104,
     "tropo_applied": true
    },
    "A098_20260620_20260702": {
     "headline_rank": 1,
     "tropo_rank": 1,
-    "headline_n": 125,
-    "tropo_n": 125,
+    "headline_n": 126,
+    "tropo_n": 126,
     "tropo_applied": true
    },
    "A098_20260702_20260714": {
     "headline_rank": 1,
     "tropo_rank": 1,
-    "headline_n": 105,
-    "tropo_n": 103,
+    "headline_n": 103,
+    "tropo_n": 101,
     "tropo_applied": true
    },
    "A098_20260714_20260726": {
     "headline_rank": null,
     "tropo_rank": null,
-    "headline_n": 116,
-    "tropo_n": 116,
+    "headline_n": 119,
+    "tropo_n": 119,
     "tropo_applied": true
    },
    "A098_20260726_20260819": {
     "headline_rank": 2,
     "tropo_rank": 2,
-    "headline_n": 189,
-    "tropo_n": 186,
+    "headline_n": 193,
+    "tropo_n": 190,
     "tropo_applied": true
    },
    "A098_20260819_20260831": {
-    "headline_rank": 21,
-    "tropo_rank": 27,
+    "headline_rank": 10,
+    "tropo_rank": 13,
     "headline_n": 180,
     "tropo_n": 179,
     "tropo_applied": true
@@ -439,86 +472,86 @@
    "A098_20260831_20260912": {
     "headline_rank": 3,
     "tropo_rank": 3,
-    "headline_n": 236,
-    "tropo_n": 237,
+    "headline_n": 239,
+    "tropo_n": 240,
     "tropo_applied": true
    },
    "A098_20260912_20260924": {
     "headline_rank": 22,
     "tropo_rank": 23,
-    "headline_n": 244,
-    "tropo_n": 232,
+    "headline_n": 242,
+    "tropo_n": 230,
     "tropo_applied": true
    },
    "A098_20260924_20261006": {
-    "headline_rank": 8,
-    "tropo_rank": 8,
-    "headline_n": 142,
-    "tropo_n": 143,
+    "headline_rank": 7,
+    "tropo_rank": 7,
+    "headline_n": 143,
+    "tropo_n": 144,
     "tropo_applied": true
    },
    "A098_20261006_20261018": {
     "headline_rank": 1,
     "tropo_rank": 1,
-    "headline_n": 228,
-    "tropo_n": 209,
+    "headline_n": 230,
+    "tropo_n": 211,
     "tropo_applied": true
    },
    "D048_20260629_20260711": {
+    "headline_rank": null,
+    "tropo_rank": null,
+    "headline_n": 90,
+    "tropo_n": 90,
+    "tropo_applied": true
+   },
+   "D048_20260711_20260723": {
+    "headline_rank": null,
+    "tropo_rank": null,
+    "headline_n": 82,
+    "tropo_n": 85,
+    "tropo_applied": true
+   },
+   "D048_20260723_20260816": {
+    "headline_rank": 14,
+    "tropo_rank": 13,
+    "headline_n": 219,
+    "tropo_n": 221,
+    "tropo_applied": true
+   },
+   "D048_20260816_20260828": {
     "headline_rank": null,
     "tropo_rank": null,
     "headline_n": 93,
     "tropo_n": 93,
     "tropo_applied": true
    },
-   "D048_20260711_20260723": {
-    "headline_rank": null,
-    "tropo_rank": null,
-    "headline_n": 83,
-    "tropo_n": 86,
-    "tropo_applied": true
-   },
-   "D048_20260723_20260816": {
-    "headline_rank": 13,
-    "tropo_rank": 13,
-    "headline_n": 220,
-    "tropo_n": 222,
-    "tropo_applied": true
-   },
-   "D048_20260816_20260828": {
-    "headline_rank": null,
-    "tropo_rank": null,
-    "headline_n": 89,
-    "tropo_n": 89,
-    "tropo_applied": false
-   },
    "D048_20260828_20260909": {
     "headline_rank": null,
     "tropo_rank": null,
-    "headline_n": 112,
-    "tropo_n": 112,
-    "tropo_applied": false
+    "headline_n": 108,
+    "tropo_n": 110,
+    "tropo_applied": true
    },
    "D048_20260909_20260921": {
     "headline_rank": null,
     "tropo_rank": null,
-    "headline_n": 63,
-    "tropo_n": 63,
-    "tropo_applied": false
+    "headline_n": 61,
+    "tropo_n": 62,
+    "tropo_applied": true
    },
    "D048_20260921_20261003": {
     "headline_rank": null,
     "tropo_rank": null,
-    "headline_n": 54,
+    "headline_n": 56,
     "tropo_n": 54,
-    "tropo_applied": false
+    "tropo_applied": true
    },
    "D048_20261003_20261015": {
     "headline_rank": null,
     "tropo_rank": null,
-    "headline_n": 98,
-    "tropo_n": 98,
-    "tropo_applied": false
+    "headline_n": 103,
+    "tropo_n": 103,
+    "tropo_applied": true
    }
   },
   "pass_with_tropo": {

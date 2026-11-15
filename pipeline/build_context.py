@@ -184,7 +184,7 @@ def main():
         f"The pre-registered test fails: the source valley ranked #{sc['source_rank']} in the last pass but was not ranked one pass earlier. " + why_missing,
         f"The screen keeps this valley near the top most of the summer ({n_top} of {len(pre)} ascending passes in the top {topn}) and after the collapse too ({post_txt}). It says 'watch this valley', not 'it falls next week'.",
         f"Only {len(on_asf)} of those {len(pre)} pairs were public on ASF before the collapse; {len(later)} ({', '.join(dshort(w['start']) + '→' + dshort(w['end']) for w in later)}) were processed afterwards. The last pass went public {hours_on_asf:.0f} hours before the collapse.",
-        "The rules were written after the event, by people who had read post-event studies of it. Pre-registration only guards against tuning on our own results; the real test is other events.",
+        "The rules were written after the event, by people who had read post-event studies of it. Pre-registration only guards against tuning on our own results.",
         "Phase patches carry millimetre uncertainties (the bootstrap error of the patch mean, which shrinks with patch size), so large phase patches dominate a score of motion over noise.",
         sens_line,
         f"The hit zone is {hit_km:g} km around a {geo['detachment_area_unosat']['value']:.1f} km² outline, so several patches qualify in most passes, and the one that counts changes from pass to pass.",
@@ -195,7 +195,25 @@ def main():
         f"ERA5 is a 0.25° grid cell at {elev_txt}. The temperature anomaly is stable across elevations; the snowfall figure is not ({era['snow_pct']:.0f}% of normal here, {era['snow_pct_alt']:.1f}% at 5,190 m)." if era and era.get("snow_pct_alt") is not None else "",
         "A few implementation constants live in code, not in config.json: the 30% glacier fraction for ice over rock, the 10 mm gate for opposing neighbours, the season mapping 1 + 0.25·z (clipped 0.5–1.5) from 1 May, and the 30% valid-share and 20° stable-ground cuts.",
     ]
+    bt = load("backtest.json")
+    if bt and "budhigandaki" in bt.get("sites", {}):
+        b_, m_ = bt["sites"]["budhigandaki"], bt["sites"].get("manang", {})
+        pr = b_["positive_pass"]
+        fa = lambda x: f"{x['false_alarm']['n_false_alarms']} in {x['false_alarm']['n_passes']} passes"
+        limits.insert(3, (f"Backtest, with the same rules: on the Budhi Gandaki rock avalanche (Oct 2026) the source ranked "
+                          f"{' then '.join('#' + str(r) if r else 'not ranked' for r in pr['ranks'])}, so the test fails there too. "
+                          f"False alarms (another valley in the top {topn} in two passes in a row): Budhi Gandaki {fa(b_)}, Manang (no failure) {fa(m_) if m_ else '—'}, Langtang {fa(bt['sites']['langtang'])}."))
     limits = [x for x in limits if x]
+    # where each factor of the rule comes from, from the sourced records (numbers read, not typed)
+    mk = ef.get("nisar_meena", {}); ku = ef.get("nisar_kutoglu", {}); ha = ef.get("preconditioning_hassan", {})
+    rule_evidence = [
+        dict(factor="Motion ÷ its own noise", text=f"Standard radar practice: only motion that clears the measurement noise counts (here {CFG['offsets']['motion_threshold_sigma']:g}× the scene noise for offsets, ±{CFG['phase']['blob_threshold_mm']:g} mm for phase).", source="nisar"),
+        dict(factor="Moves one way", text=(f"Meena 2026 found the source moved consistently downslope: directional coherence {mk['directional_coherence']['value']['crown']} at the crown against {mk['directional_coherence']['value']['box']} for the surrounding box." if "directional_coherence" in mk else "Coherent block motion separates a sliding mass from noise."), source="meena"),
+        dict(factor="Neighbours pull apart", text=(f"Kutoğlu et al. 2026 report differential rock–ice deformation before the collapse: a +{ku['positive_los_cluster']['value']['median_los_mm']:.0f} mm line-of-sight cluster {ku['positive_los_cluster']['value']['dist_to_detachment_km']:.1f} km from the detachment, beside a {ku['negative_feature']['value']:.0f} mm feature." if "positive_los_cluster" in ku else "Opposite motion of neighbouring blocks marks a crack opening."), source="kutoglu"),
+        dict(factor="Hanging ice over rock", text="The source was a combined ice and bedrock mass (Acharya & Paudel 2026). Steep glacier-covered rock is where ice–rock avalanches start.", source="acharya"),
+        dict(factor="People below", text="Risk is hazard times exposure: WorldPop residents within reach of the routed flow path.", source="worldpop"),
+        dict(factor="Hot season", text=(f"Hassan et al. 2026: the July–August heat anomaly reached about the {ha['pdd_anomaly_jul_aug']['value']['percentile_1979_2025']}th percentile of 1979–2025, with a snowfall deficit, before the failure." if "pdd_anomaly_jul_aug" in ha else "Heat and low snow weaken ice."), source="hassan"),
+    ]
     if (load("control.json") or {}).get("status") != "done":
         limits.append("The Sentinel-1 C-band control is not run yet; it needs the ASF HyP3 service authorised on the Earthdata account.")
 
@@ -261,6 +279,7 @@ def main():
         timing=dict(days_before=days_before, hours_on_asf=round(hours_on_asf, 1), last_pass=lp["id"], on_asf_before=len(on_asf), n_pre=len(pre)),
         why_missing=why_missing,
         detachment_km2=ef['geometry']['detachment_area_unosat']['value'],
+        rule_evidence=rule_evidence,
         meena=meena,
         era5=era,
         sensitivity=sens,

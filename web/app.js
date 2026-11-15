@@ -458,14 +458,14 @@
       if (e.t_min < 0 || e.t_min > TL.tmax || seenT[e.t_min.toFixed(1)]) return; seenT[e.t_min.toFixed(1)] = 1;
       var m = el('i', 'evt' + (e.alert ? ' alert' : '')); m.style.left = (e.t_min / TL.tmax * 100) + '%'; m.title = clockAt(e.t_min) + ' · ' + e.label; ev.appendChild(m);
     });
-    [0, 30, 60].forEach(function (m) { var t = el('span', 'ev' + (m ? ' mt' : ''), clockAt(m)); t.style.left = ((TL.a + (TL.b - TL.a) * m / TL.tmax) * 100) + '%'; ticks.appendChild(t); });
+    [0, 30].forEach(function (m) { var t = el('span', 'ev' + (m ? ' mt' : ''), clockAt(m)); t.style.left = ((TL.a + (TL.b - TL.a) * m / TL.tmax) * 100) + '%'; ticks.appendChild(t); });
     var co = coWindows()[0];
     var old = $('coseg'); if (old) old.remove();
     if (co) {
-      var s = el('div', 'seg-w co'); s.style.top = '6px'; s.style.left = (TL.b * 100) + '%'; s.style.width = ((1 - TL.b) * 100) + '%';
-      s.dataset.win = co.id; s.title = 'After: ' + winLabel(co) + ' spans the collapse'; s.id = 'coseg';
+      var s = el('div', 'seg-w co'); s.style.top = '8px'; s.style.left = (TL.b * 100) + '%'; s.style.width = ((1 - TL.b) * 100) + '%';
+      s.dataset.win = co.id; s.title = 'Radar pass across the collapse (' + winLabel(co) + '). Pick it to see the avalanche path in the before/after radar image.'; s.id = 'coseg';
       $('track').appendChild(s);
-      var t = el('span', '', 'After'); t.style.left = ((TL.b + (1 - TL.b) / 2) * 100) + '%'; ticks.appendChild(t);
+      var t = el('span', 'aft', fmtDate(co.start).split(' ')[0] + '–' + fmtDate(co.end)); t.style.left = ((TL.b + (1 - TL.b) / 2) * 100) + '%'; t.title = 'The radar pass that spans the collapse'; ticks.appendChild(t);
     }
   }
   function posOfState() {
@@ -568,7 +568,10 @@
     loadBlobs(w.id).then(function () {
       if (w !== activeWindow()) return;
       cur = rankWindow(BLOBS[w.id]);
-      if (S.mode === 'window' && S.layer === 'none' && !S.layerByCh[S.ch]) { S.autoLayer = true; setLayer('motion'); }
+      var isCo = S.mode === 'window' && (winById(S.win) || {}).phase === 'co';
+      if (isCo && !S.layerByCh[S.ch] && S.layer !== 'radar' && S.track === 'A') { S.autoLayer = true; setLayer('radar'); }
+      else if (S.mode === 'window' && !isCo && S.autoLayer && S.layer === 'radar') { setLayer('motion'); }
+      else if (S.mode === 'window' && S.layer === 'none' && !S.layerByCh[S.ch]) { S.autoLayer = true; setLayer('motion'); }
       else if (S.mode === 'event' && S.autoLayer) { S.autoLayer = false; setLayer('none'); }
       if (windowChanged && w.id !== lastWinPainted) S.sel = null;
       if (windowChanged && w.id !== lastWinPainted && map && map.getSource('win')) {
@@ -964,8 +967,9 @@
       '<li><b>Count a hit</b> when a patch within ' + C.truth.hit_radius_km + ' km of the mapped detachment, draining to the same channel, is in the top ' + C.pass_condition.top_n + '. The map outline is used only for this check.</li>' +
       '</ol>' +
       '<div class="fx" id="fx"></div>' +
+      '<button type="button" class="btn rule-more" data-open="rule">' + icon('info') + 'Where the rule comes from, what it would have done, and whether it held</button>' +
       '<p class="note">' + (pr && pr.committed_before_results ? 'Rules committed ' + fmtTime(pr.first_commit.time) + ' (' + pr.first_commit.short + '), before the first results commit at ' + fmtTime(pr.first_results_commit.time) + ' (' + pr.first_results_commit.short + '). ' : '') +
-      'They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. The real test is other events.</p>' +
+      'They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. Run unchanged on a second disaster, the rule failed (The Answer has the backtest).</p>' +
       '</div>';
   }
   function paintRule() {
@@ -1088,32 +1092,54 @@
   }
 
   /* ---------------------------------------------------------------- backtest */
+  function btRow(k, x) {
+    var pp = x.positive_pass, fa = x.false_alarm || {};
+    var test = pp ? (pp.result === 'pass' ? 'Passed' : 'Not passed') + ' (' + pp.ranks.map(function (r, i) { return r ? '#' + r + ' of ' + pp.n_ranked[i] : 'not ranked'; }).join(', then ') + ')' : 'No failure to find';
+    var names = (fa.false_alarms || []).map(function (f) { return f.channel_name || 'unnamed'; });
+    return '<tr><td class="wrap"><b>' + esc({ budhigandaki: 'Budhi Gandaki', manang: 'Manang', langtang: 'Langtang' }[k] || k) + '</b><br>' + esc((x.role || '').split(' (')[0]) + '</td><td class="wrap">' + esc(test) + '</td><td class="wrap">' + (fa.n_false_alarms != null ? fa.n_false_alarms + ' in ' + fa.n_passes + ' passes' + (names.length ? '<br><small>' + esc(names.join(', ')) + '</small>' : '') : '—') + '</td></tr>';
+  }
   function paintBacktest() {
     var box = $('backtest'); if (!box) return;
     var plan = D.btPlan, res = D.bt;
-    if (!plan && !res) { box.innerHTML = '<p class="note">No backtest plan found.</p>'; return; }
-    var sites = (plan && plan.sites) || {};
-    var head = plan && plan._committed ? '<p class="note">Sites, boxes, truth and windows were fixed in commit <code>' + esc(plan._committed.short) + '</code> (' + esc(fmtTime(plan._committed.time)) + '), before any NISAR value inside the new boxes was read. The screening rules are the same file as above.</p>' : '';
-    if (!res) {
-      box.innerHTML = head + tbl(['Site', 'Role', 'Event', 'Windows'], Object.keys(sites).map(function (k) { var x = sites[k];
-        return '<tr><td>' + esc(k) + '</td><td class="wrap">' + esc(x.role || '') + '</td><td>' + esc((x.event_utc || '—').slice(0, 10)) + '</td><td class="wrap">' + esc((x.last_two_ascending || []).join(', ') || x.windows || 'as Langtang') + '</td></tr>'; })) +
-        '<p class="note"><b>Status:</b> running. Results appear here when the pipeline finishes; whatever they are, they are reported as they come out.</p>';
-      return;
-    }
-    var rows = Object.keys(res.sites || {}).map(function (k) {
-      var x = res.sites[k], pass = x.positive_pass;
-      return '<tr><td>' + esc(k) + '</td><td class="wrap">' + esc(x.role || '') + '</td><td>' + (pass == null ? '—' : pass.passed ? 'passed' : 'not passed') + (pass && pass.ranks ? ' (' + pass.ranks.map(function (r) { return r == null ? 'not ranked' : '#' + r; }).join(', ') + ')' : '') + '</td><td>' +
-        (x.false_alarms ? x.false_alarms.length : '—') + (x.false_alarm_rate != null ? ' · ' + Number(x.false_alarm_rate).toFixed(2) + ' per pass' : '') + '</td></tr>';
-    });
-    box.innerHTML = head + tbl(['Site', 'Role', 'Test', 'False alarms'], rows) + (res.note ? '<p class="note">' + esc(res.note) + '</p>' : '') + fileLinks(['backtest.json', 'backtest_plan.json']);
+    var head = plan && plan._committed ? '<p class="note">Sites, boxes, truth and windows were fixed in commit <code>' + esc(plan._committed.short) + '</code> (' + esc(fmtTime(plan._committed.time)) + '), before any NISAR value inside the new boxes was read. Same rules file as above, unchanged.</p>' : '';
+    if (!res || !res.sites) { box.innerHTML = head + '<p class="note">Backtest results not found.</p>'; return; }
+    var order = ['budhigandaki', 'manang', 'langtang'].filter(function (k) { return res.sites[k]; });
+    var b = res.sites.budhigandaki;
+    box.innerHTML = '<div class="callout bad">' + icon('warn') + '<div><b>It did not hold.</b> On a second disaster, the same rule missed the source' + (b ? ' (#' + b.positive_pass.ranks[0] + ', then not ranked)' : '') + ', and every valley we tried put a false alarm on the list about every other pass. NISAR sees the motion; this rule is a shortlist for closer watching, not a forecast.</div></div>' +
+      tbl(['Site', 'Pre-registered test', 'False alarms'], order.map(function (k) { return btRow(k, res.sites[k]); })) + head +
+      '<p class="note">False alarm: another valley in the top ' + res.top_n + ' in two passes in a row. Budhi Gandaki has no mapped outline, so its truth is an approximate scar point.</p>' + fileLinks(['backtest.json', 'backtest_plan.json']);
   }
 
-  /* ---------------------------------------------------------------- sheets */
+  /* ---------------------------------------------------------------- the rule, explained */
+  function ruleSheet() {
+    var C = D.config, lp = lastPre(), sc = D.scorecard.windows[lp.id] || {}, A = D.replay.alert_min, T = tripT();
+    var ev = (D.context.rule_evidence || []).map(function (e) { return '<tr><td class="wrap"><b>' + esc(e.factor) + '</b></td><td class="wrap">' + esc(e.text) + cite(e.source) + '</td></tr>'; });
+    var vs = (D.replay.villages || []).filter(function (v) { return v.arrival_min != null; });
+    var lead = vs.map(function (v) { var real = v.arrival_min - A, trip = v.arrival_min - T;
+      return '<tr><td>' + esc(v.name) + '</td><td>' + (v.arrival_kind === 'gauge' ? '' : '≈') + '+' + v.arrival_min.toFixed(0) + ' min</td><td>' + signed(real, 0) + ' min</td><td>' + signed(trip, 0) + ' min</td></tr>'; });
+    var pass = D.scorecard.pass, res = D.bt;
+    return '<h2 id="r-title">How the rule works</h2>' +
+      '<h3>The rule, in one line</h3><p>In every NISAR pass, find every patch of ground that moves, score each one, and put the ' + C.pass_condition.top_n + ' highest on a watch list. A watched valley gets a ground sensor that sounds sirens if the slope fails.</p>' +
+      '<p>Score = motion ÷ its noise × how consistently it moves × ' + C.score.opposing_bonus + ' if neighbours pull apart × ' + C.score.ice_bonus + ' if glacier ice sits on rock steeper than ' + C.blobs.ice_over_rock_min_slope_deg + '° × a small boost for people downstream × a small boost for a hot season.</p>' +
+      '<h3>Where each part comes from</h3>' + tbl(['Factor', 'Evidence'], ev) +
+      '<p class="note">We wrote and committed the rule (' + esc(D.prov.config.first_commit.short) + ') before computing any result, but after reading these post-event studies, so it is not independent of this event. That is why the backtest below matters.</p>' +
+      '<h3>What it would have done at Langtang</h3>' +
+      '<p>The last pass before the collapse (' + winLabel(lp) + ') was public on ASF ' + Math.round(D.context.timing.hours_on_asf) + ' hours before it. In that pass the source valley ranked <b>#' + sc.source_rank + ' of ' + sc.n_ranked + '</b>, so it would have been on the watch list. A sensor there, with the default delays (record, recognise, confirm, broadcast), sounds sirens ' + T.toFixed(1) + ' minutes after the fall:</p>' +
+      tbl(['Place', 'Wave arrives', 'Real alert', 'With the tripwire'], lead) +
+      '<p class="note">The tripwire delays are our assumptions, in line with Acharya &amp; Paudel’s own estimate that source-side detection within 5 minutes would have warned Rasuwagadhi −2 to +8 minutes ahead. ≈ marks interpolated or extrapolated arrivals; Timure’s reported arrival is 08:50–09:00, later than the routed estimate.</p>' +
+      '<h3>Did it hold up?</h3>' +
+      '<p>At Langtang, the test fixed in advance failed: the source valley ' + (pass.ranks || []).map(function (r) { return r ? 'ranked #' + r : 'was not ranked'; }).join(', then ') + ' in the last two passes. Run unchanged on other places:</p>' +
+      (res && res.sites ? tbl(['Site', 'Test', 'False alarms'], ['budhigandaki', 'manang', 'langtang'].filter(function (k) { return res.sites[k]; }).map(function (k) { return btRow(k, res.sites[k]); })) : '<p>Backtest not available.</p>') +
+      '<h3>What we conclude</h3><p>NISAR’s L-band radar does see slopes move through the monsoon, where Sentinel-1 did not. But motion is everywhere in glaciated valleys, and this rule cannot tell which slope will fail next: it missed Budhi Gandaki and raises a false alarm about every other pass. It is useful as a triage list to decide where ground sensors go, and the bigger, proven gain is cutting the alert time once a slope does fail.</p>';
+  }
+
+  /* ---------------------------------------------------------------- sheets */  /* ---------------------------------------------------------------- sheets */
   var KEYS = [['Go to a chapter', ['1', '2', '3', '4', '5']], ['Play or pause', ['Space']], ['Step through passes and minutes', ['←', '→']],
     ['Show or hide the sidebar', ['S']], ['Show or hide the inspector', ['I']], ['Next map layer', ['L']], ['Guided tour, with narration', ['G']], ['Keyboard shortcuts', ['?']], ['Close a sheet', ['Esc']]];
   function openSheet(which) {
     var dlg = $('sheet-' + which), body;
     if (which === 'data') body = dataSheet();
+    else if (which === 'rule') body = ruleSheet();
     else if (which === 'method') body = D.context.method_html;
     else if (which === 'sources') body = D.context.sources_html;
     else if (which === 'keys') body = '<h2 id="k-title">Keyboard shortcuts</h2><div class="keys">' + KEYS.map(function (k) { return '<div class="r"><span>' + k[0] + '</span><span>' + k[1].map(function (x) { return '<kbd>' + x + '</kbd>'; }).join('') + '</span></div>'; }).join('') +
@@ -1190,7 +1216,7 @@
       var b = e.target.closest('button[data-win]'); if (!b) return;
       stop(); S.mode = 'window'; S.win = b.dataset.win; update(true);
     });
-    all('[data-open]').forEach(function (b) { b.addEventListener('click', function () { openSheet(b.dataset.open); }); });
+    document.addEventListener('click', function (e) { var b = e.target.closest('[data-open]'); if (b && !b.closest('dialog')) openSheet(b.dataset.open); });   // delegated: chapter content adds buttons later
     $('tg-sidebar').addEventListener('click', function () { togglePane('sidebar', true); });
     $('tg-sidebar-hide').addEventListener('click', function () { togglePane('sidebar', false); });
     $('tg-legend').addEventListener('click', function () { var o = APP.dataset.legend !== 'open'; APP.dataset.legend = o ? 'open' : ''; this.setAttribute('aria-expanded', String(o)); });

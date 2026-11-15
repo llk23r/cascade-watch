@@ -1,10 +1,10 @@
 {
- "generated_utc": "2026-11-15T15:52:10Z",
+ "generated_utc": "2026-11-15T15:59:24Z",
  "plan": "pipeline/backtest.json",
  "plan_commit": "fc19de8 Pre-register backtest: Budhi Gandaki positive, Manang control",
  "rules": "pipeline/config.json",
  "rules_sha256": "d8a90eedfce0a61a6f0e7bfa94e8c2b0d5156994b64e3a4c85f9317b9614e133",
- "code_commit": "dae3a1986eaa8a1fe3a796c39192134c6f284589",
+ "code_commit": "b4f6585a0a4650ae12dcf7ea893712a793124f37",
  "top_n": 5,
  "method": "* Patches: the top_n ranked patches of every counted window (rank <= top_n in blobs_<window>.geojson).\n  * Valley: single-linkage clusters of those patches across the counted windows. Two patches link when their\n    outlines are within hit_radius_km of each other AND they drain to the same channel, i.e. their D8 flow\n    paths first reach the same named OSM river (rank.py's channel_name; two patches with no named river\n    downstream count as the same channel).\n  * Truth valley (positive sites): every cluster that contains a hit patch (within hit_radius_km of the truth\n    and same_channel, exactly rank.py's hit test). It is never a false alarm.\n  * False alarm: a non-truth valley with top_n patches in two consecutive counted windows (adjacent in the\n    pair list; a window that could not be processed breaks the run). Each valley counts once; its windows\n    are listed.\n  * Rate: false alarms / number of counted passes (windows). Also given per 12 days of the period covered.",
  "season_note": "Backtest sites: ERA5 was not fetched and the season factor is set to 1. It multiplies every patch in a pass by the same number, so it cannot change a rank. Langtang keeps its committed ERA5 factor.",
@@ -2547,14 +2547,14 @@
      "status": "ok",
      "rank": 3,
      "n_ranked": 145,
-     "hit_id": "o216",
+     "hit_id": "o221",
      "top_n": true
     },
     {
      "window": "A098_20260527_20260608",
      "status": "ok",
      "rank": 1,
-     "n_ranked": 110,
+     "n_ranked": 108,
      "hit_id": "p-70",
      "top_n": true
     },
@@ -2562,7 +2562,7 @@
      "window": "A098_20260608_20260620",
      "status": "ok",
      "rank": 4,
-     "n_ranked": 100,
+     "n_ranked": 107,
      "hit_id": "p+8",
      "top_n": true
     },
@@ -2570,15 +2570,15 @@
      "window": "A098_20260620_20260702",
      "status": "ok",
      "rank": 1,
-     "n_ranked": 125,
-     "hit_id": "o223",
+     "n_ranked": 126,
+     "hit_id": "o218",
      "top_n": true
     },
     {
      "window": "A098_20260702_20260714",
      "status": "ok",
      "rank": 1,
-     "n_ranked": 105,
+     "n_ranked": 103,
      "hit_id": "p-24",
      "top_n": true
     },
@@ -2586,7 +2586,7 @@
      "window": "A098_20260714_20260726",
      "status": "ok",
      "rank": null,
-     "n_ranked": 116,
+     "n_ranked": 119,
      "hit_id": null,
      "top_n": false
     },
@@ -2594,7 +2594,7 @@
      "window": "A098_20260726_20260819",
      "status": "ok",
      "rank": 2,
-     "n_ranked": 189,
+     "n_ranked": 193,
      "hit_id": "p+43",
      "top_n": true
     }
@@ -2610,8 +2610,8 @@
      2
     ],
     "n_ranked": [
-     116,
-     189
+     119,
+     193
     ],
     "result": "fail"
    },
@@ -2619,9 +2619,9 @@
     {
      "window": "A098_20260819_20260831",
      "status": "ok",
-     "rank": 21,
+     "rank": 10,
      "n_ranked": 180,
-     "hit_id": "o284",
+     "hit_id": "o270",
      "top_n": false,
      "note": "spans the event"
     },
@@ -2629,7 +2629,7 @@
      "window": "A098_20260831_20260912",
      "status": "ok",
      "rank": 3,
-     "n_ranked": 236,
+     "n_ranked": 239,
      "hit_id": "p+69",
      "top_n": true,
      "note": "after the event"
@@ -2638,7 +2638,7 @@
      "window": "A098_20260912_20260924",
      "status": "ok",
      "rank": 22,
-     "n_ranked": 244,
+     "n_ranked": 242,
      "hit_id": "o327",
      "top_n": false,
      "note": "after the event"
@@ -2646,8 +2646,8 @@
     {
      "window": "A098_20260924_20261006",
      "status": "ok",
-     "rank": 8,
-     "n_ranked": 142,
+     "rank": 7,
+     "n_ranked": 143,
      "hit_id": "o207",
      "top_n": false,
      "note": "after the event"
@@ -2656,7 +2656,7 @@
      "window": "A098_20261006_20261018",
      "status": "ok",
      "rank": 1,
-     "n_ranked": 228,
+     "n_ranked": 230,
      "hit_id": "p+37",
      "top_n": true,
      "note": "after the event"
@@ -2665,7 +2665,7 @@
      "window": "D048_20260629_20260711",
      "status": "ok",
      "rank": null,
-     "n_ranked": 93,
+     "n_ranked": 90,
      "hit_id": null,
      "top_n": false,
      "note": "before the event"
@@ -2674,7 +2674,7 @@
      "window": "D048_20260711_20260723",
      "status": "ok",
      "rank": null,
-     "n_ranked": 83,
+     "n_ranked": 82,
      "hit_id": null,
      "top_n": false,
      "note": "before the event"
@@ -2682,8 +2682,8 @@
     {
      "window": "D048_20260723_20260816",
      "status": "ok",
-     "rank": 13,
-     "n_ranked": 220,
+     "rank": 14,
+     "n_ranked": 219,
      "hit_id": "p+41",
      "top_n": false,
      "note": "before the event"
@@ -2692,7 +2692,7 @@
      "window": "D048_20260816_20260828",
      "status": "ok",
      "rank": null,
-     "n_ranked": 89,
+     "n_ranked": 93,
      "hit_id": null,
      "top_n": false,
      "note": "spans the event"
@@ -2701,7 +2701,7 @@
      "window": "D048_20260828_20260909",
      "status": "ok",
      "rank": null,
-     "n_ranked": 112,
+     "n_ranked": 108,
      "hit_id": null,
      "top_n": false,
      "note": "after the event"
@@ -2710,7 +2710,7 @@
      "window": "D048_20260909_20260921",
      "status": "ok",
      "rank": null,
-     "n_ranked": 63,
+     "n_ranked": 61,
      "hit_id": null,
      "top_n": false,
      "note": "after the event"
@@ -2719,7 +2719,7 @@
      "window": "D048_20260921_20261003",
      "status": "ok",
      "rank": null,
-     "n_ranked": 54,
+     "n_ranked": 56,
      "hit_id": null,
      "top_n": false,
      "note": "after the event"
@@ -2728,7 +2728,7 @@
      "window": "D048_20261003_20261015",
      "status": "ok",
      "rank": null,
-     "n_ranked": 98,
+     "n_ranked": 103,
      "hit_id": null,
      "top_n": false,
      "note": "after the event"
@@ -2796,7 +2796,7 @@
     ],
     "period_days": 96,
     "n_false_alarms": 4,
-    "n_consecutive_pairs": 6,
+    "n_consecutive_pairs": 5,
     "false_alarm_rate_per_pass": 0.571,
     "false_alarm_rate_per_12_days": 0.5,
     "false_alarms": [
@@ -2836,21 +2836,16 @@
      },
      {
       "centroid_lonlat": [
-       85.6765,
-       28.1772
+       85.6731,
+       28.1829
       ],
       "channel_name": "Langtang Khola",
       "windows": [
-       "A098_20260620_20260702",
        "A098_20260702_20260714",
        "A098_20260714_20260726",
        "A098_20260726_20260819"
       ],
       "consecutive_pairs": [
-       [
-        "A098_20260620_20260702",
-        "A098_20260702_20260714"
-       ],
        [
         "A098_20260702_20260714",
         "A098_20260714_20260726"
@@ -2861,15 +2856,11 @@
        ]
       ],
       "best_rank_per_window": {
-       "A098_20260620_20260702": 5,
        "A098_20260702_20260714": 4,
        "A098_20260714_20260726": 4,
        "A098_20260726_20260819": 5
       },
       "patches": {
-       "A098_20260620_20260702": [
-        "o364"
-       ],
        "A098_20260702_20260714": [
         "p+40"
        ],
@@ -2935,7 +2926,7 @@
       ],
       "best_rank_per_window": {
        "A098_20260527_20260608": 3,
-       "A098_20260620_20260702": 2,
+       "A098_20260620_20260702": 3,
        "A098_20260714_20260726": 3,
        "A098_20260726_20260819": 4
       },
@@ -2944,7 +2935,7 @@
         "p-95"
        ],
        "A098_20260620_20260702": [
-        "o272"
+        "o267"
        ],
        "A098_20260714_20260726": [
         "p-57"
@@ -2986,7 +2977,7 @@
       },
       "patches": {
        "A098_20260515_20260527": [
-        "o216"
+        "o221"
        ],
        "A098_20260702_20260714": [
         "p-24",
@@ -3037,7 +3028,7 @@
       },
       "patches": {
        "A098_20260515_20260527": [
-        "o217"
+        "o223"
        ],
        "A098_20260527_20260608": [
         "p-70"
@@ -3046,7 +3037,7 @@
         "p+8"
        ],
        "A098_20260620_20260702": [
-        "o223"
+        "o218"
        ]
       }
      }
@@ -3072,51 +3063,51 @@
        "channel_kind": "phase",
        "lon": 85.7043,
        "lat": 28.3126,
-       "score": 86.739,
+       "score": 86.007,
        "channel_name": "Bhemdan Khola",
        "dist_truth_km": 16.55,
        "hit": false
       },
       {
        "rank": 2,
-       "id": "o322",
+       "id": "o331",
        "channel_kind": "offsets",
-       "lon": 85.5521,
-       "lat": 28.1738,
-       "score": 38.511,
+       "lon": 85.5523,
+       "lat": 28.174,
+       "score": 37.298,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 12.12,
        "hit": false
       },
       {
        "rank": 3,
-       "id": "o216",
+       "id": "o221",
        "channel_kind": "offsets",
-       "lon": 85.5553,
+       "lon": 85.5552,
        "lat": 28.2826,
-       "score": 37.245,
+       "score": 36.026,
        "channel_name": "Chusumdo Tsangpo",
        "dist_truth_km": 1.98,
        "hit": true
       },
       {
        "rank": 4,
-       "id": "o217",
+       "id": "o223",
        "channel_kind": "offsets",
        "lon": 85.5089,
        "lat": 28.2784,
-       "score": 34.141,
+       "score": 34.258,
        "channel_name": "Chhochen Khola",
        "dist_truth_km": 0.1,
        "hit": true
       },
       {
        "rank": 5,
-       "id": "o334",
+       "id": "o344",
        "channel_kind": "offsets",
-       "lon": 85.601,
-       "lat": 28.1666,
-       "score": 33.279,
+       "lon": 85.6009,
+       "lat": 28.1667,
+       "score": 33.023,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 14.35,
        "hit": false
@@ -3126,9 +3117,9 @@
     {
      "window": "A098_20260527_20260608",
      "status": "ok",
-     "n_ranked": 110,
+     "n_ranked": 108,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.2034,
+     "offsets_noise_m": 0.2033,
      "phase_noise_mm": 8.27,
      "asf_processed": "2026-09-18T21:54:30Z",
      "season_factor": 1.0505235879303996,
@@ -3193,9 +3184,9 @@
     {
      "window": "A098_20260608_20260620",
      "status": "ok",
-     "n_ranked": 100,
+     "n_ranked": 107,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.1711,
+     "offsets_noise_m": 0.1687,
      "phase_noise_mm": 9.28,
      "asf_processed": "2026-09-18T23:13:12Z",
      "season_factor": 0.9360685178667931,
@@ -3246,13 +3237,13 @@
       },
       {
        "rank": 5,
-       "id": "o50",
+       "id": "o51",
        "channel_kind": "offsets",
-       "lon": 85.5765,
-       "lat": 28.3325,
-       "score": 23.164,
+       "lon": 85.576,
+       "lat": 28.3315,
+       "score": 24.43,
        "channel_name": "Purepu Tsangpo",
-       "dist_truth_km": 5.65,
+       "dist_truth_km": 5.05,
        "hit": false
       }
      ]
@@ -3260,66 +3251,66 @@
     {
      "window": "A098_20260620_20260702",
      "status": "ok",
-     "n_ranked": 125,
+     "n_ranked": 126,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.09,
+     "offsets_noise_m": 0.0894,
      "phase_noise_mm": 7.32,
      "asf_processed": "2026-08-12T07:50:38Z",
      "season_factor": 0.9485817391608758,
      "top5": [
       {
        "rank": 1,
-       "id": "o223",
+       "id": "o218",
        "channel_kind": "offsets",
        "lon": 85.5333,
        "lat": 28.2776,
-       "score": 65.973,
+       "score": 63.879,
        "channel_name": "Chhochen Khola",
        "dist_truth_km": 0.0,
        "hit": true
       },
       {
        "rank": 2,
-       "id": "o272",
-       "channel_kind": "offsets",
-       "lon": 85.6481,
-       "lat": 28.2572,
-       "score": 55.731,
-       "channel_name": "Langtang Khola",
-       "dist_truth_km": 11.5,
-       "hit": false
-      },
-      {
-       "rank": 3,
-       "id": "o132",
+       "id": "o130",
        "channel_kind": "offsets",
        "lon": 85.6606,
        "lat": 28.3382,
-       "score": 43.417,
+       "score": 51.356,
        "channel_name": "Chusumdo Tsangpo",
        "dist_truth_km": 13.57,
        "hit": false
       },
       {
+       "rank": 3,
+       "id": "o267",
+       "channel_kind": "offsets",
+       "lon": 85.6481,
+       "lat": 28.2572,
+       "score": 51.078,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 11.5,
+       "hit": false
+      },
+      {
        "rank": 4,
-       "id": "o67",
+       "id": "o68",
        "channel_kind": "offsets",
        "lon": 85.4339,
-       "lat": 28.3693,
-       "score": 36.719,
+       "lat": 28.3694,
+       "score": 36.638,
        "channel_name": "Lende Khola",
        "dist_truth_km": 10.75,
        "hit": false
       },
       {
        "rank": 5,
-       "id": "o364",
+       "id": "o172",
        "channel_kind": "offsets",
-       "lon": 85.6867,
-       "lat": 28.1601,
-       "score": 33.112,
-       "channel_name": "Langtang Khola",
-       "dist_truth_km": 20.52,
+       "lon": 85.6892,
+       "lat": 28.3086,
+       "score": 31.612,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 14.98,
        "hit": false
       }
      ]
@@ -3327,9 +3318,9 @@
     {
      "window": "A098_20260702_20260714",
      "status": "ok",
-     "n_ranked": 105,
+     "n_ranked": 103,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.2293,
+     "offsets_noise_m": 0.2279,
      "phase_noise_mm": 7.2,
      "asf_processed": "2026-08-13T02:49:10Z",
      "season_factor": 1.0657010203487285,
@@ -3394,9 +3385,9 @@
     {
      "window": "A098_20260714_20260726",
      "status": "ok",
-     "n_ranked": 116,
+     "n_ranked": 119,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.2484,
+     "offsets_noise_m": 0.2481,
      "phase_noise_mm": 6.56,
      "asf_processed": "2026-08-16T00:51:13Z",
      "season_factor": 1.1221250973897303,
@@ -3418,7 +3409,7 @@
        "channel_kind": "phase",
        "lon": 85.6461,
        "lat": 28.3871,
-       "score": 46.419,
+       "score": 51.498,
        "channel_name": "Purepu Tsangpo",
        "dist_truth_km": 14.51,
        "hit": false
@@ -3461,9 +3452,9 @@
     {
      "window": "A098_20260726_20260819",
      "status": "ok",
-     "n_ranked": 189,
+     "n_ranked": 193,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.0606,
+     "offsets_noise_m": 0.0599,
      "phase_noise_mm": 6.63,
      "asf_processed": "2026-08-24T13:30:20Z",
      "season_factor": 1.268141644752117,
@@ -3474,7 +3465,7 @@
        "channel_kind": "phase",
        "lon": 85.5797,
        "lat": 28.27,
-       "score": 237.543,
+       "score": 222.906,
        "channel_name": "Chusumdo Tsangpo",
        "dist_truth_km": 2.52,
        "hit": false
@@ -3496,7 +3487,7 @@
        "channel_kind": "phase",
        "lon": 85.5695,
        "lat": 28.2919,
-       "score": 124.068,
+       "score": 129.62,
        "channel_name": "Chusumdo Tsangpo",
        "dist_truth_km": 3.19,
        "hit": false
@@ -3530,7 +3521,7 @@
      "status": "ok",
      "n_ranked": 180,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.0461,
+     "offsets_noise_m": 0.046,
      "phase_noise_mm": 7.58,
      "asf_processed": "2026-09-02T23:35:56Z",
      "season_factor": 1.3720976914375438,
@@ -3541,7 +3532,7 @@
        "channel_kind": "phase",
        "lon": 85.5765,
        "lat": 28.268,
-       "score": 295.032,
+       "score": 289.316,
        "channel_name": "Chusumdo Tsangpo",
        "dist_truth_km": 2.18,
        "hit": false
@@ -3559,24 +3550,24 @@
       },
       {
        "rank": 3,
-       "id": "o471",
+       "id": "o202",
        "channel_kind": "offsets",
-       "lon": 85.6722,
-       "lat": 28.1701,
-       "score": 60.499,
-       "channel_name": "Langtang Khola",
-       "dist_truth_km": 18.1,
+       "lon": 85.614,
+       "lat": 28.3171,
+       "score": 60.21,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 8.14,
        "hit": false
       },
       {
        "rank": 4,
-       "id": "o204",
+       "id": "o468",
        "channel_kind": "offsets",
-       "lon": 85.614,
-       "lat": 28.3171,
-       "score": 55.754,
-       "channel_name": "Purepu Tsangpo",
-       "dist_truth_km": 8.14,
+       "lon": 85.6722,
+       "lat": 28.1701,
+       "score": 55.778,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 18.1,
        "hit": false
       },
       {
@@ -3595,9 +3586,9 @@
     {
      "window": "A098_20260831_20260912",
      "status": "ok",
-     "n_ranked": 236,
+     "n_ranked": 239,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.0546,
+     "offsets_noise_m": 0.0544,
      "phase_noise_mm": 7.29,
      "asf_processed": "2026-09-18T12:30:59Z",
      "season_factor": 1.4237167819531278,
@@ -3662,9 +3653,9 @@
     {
      "window": "A098_20260912_20260924",
      "status": "ok",
-     "n_ranked": 244,
+     "n_ranked": 242,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.0769,
+     "offsets_noise_m": 0.0779,
      "phase_noise_mm": 12.67,
      "asf_processed": "2026-09-30T00:42:44Z",
      "season_factor": 1.4042200602358461,
@@ -3693,22 +3684,22 @@
       },
       {
        "rank": 3,
-       "id": "o344",
+       "id": "o345",
        "channel_kind": "offsets",
        "lon": 85.6485,
        "lat": 28.2576,
-       "score": 73.589,
+       "score": 72.641,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 11.5,
        "hit": false
       },
       {
        "rank": 4,
-       "id": "o189",
+       "id": "o190",
        "channel_kind": "offsets",
        "lon": 85.6138,
        "lat": 28.3194,
-       "score": 70.336,
+       "score": 71.326,
        "channel_name": "Purepu Tsangpo",
        "dist_truth_km": 8.11,
        "hit": false
@@ -3729,66 +3720,66 @@
     {
      "window": "A098_20260924_20261006",
      "status": "ok",
-     "n_ranked": 142,
+     "n_ranked": 143,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.1764,
+     "offsets_noise_m": 0.175,
      "phase_noise_mm": 7.38,
      "asf_processed": "2026-10-08T20:58:04Z",
      "season_factor": 1.423095214086046,
      "top5": [
       {
        "rank": 1,
-       "id": "o185",
+       "id": "o187",
        "channel_kind": "offsets",
        "lon": 85.6549,
        "lat": 28.2984,
-       "score": 35.293,
+       "score": 35.608,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 11.78,
        "hit": false
       },
       {
        "rank": 2,
-       "id": "o455",
+       "id": "o459",
        "channel_kind": "offsets",
        "lon": 85.6269,
        "lat": 28.1456,
-       "score": 34.911,
+       "score": 34.354,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 17.87,
        "hit": false
       },
       {
        "rank": 3,
-       "id": "o464",
+       "id": "o418",
        "channel_kind": "offsets",
-       "lon": 85.5318,
-       "lat": 28.142,
-       "score": 32.698,
-       "channel_name": "Melamchi Khola",
-       "dist_truth_km": 15.46,
-       "hit": false
-      },
-      {
-       "rank": 4,
-       "id": "o412",
-       "channel_kind": "offsets",
-       "lon": 85.5376,
-       "lat": 28.1555,
-       "score": 31.945,
+       "lon": 85.5375,
+       "lat": 28.1556,
+       "score": 31.2,
        "channel_name": "Yangri Khola",
        "dist_truth_km": 13.91,
        "hit": false
       },
       {
-       "rank": 5,
-       "id": "o94",
+       "rank": 4,
+       "id": "o96",
        "channel_kind": "offsets",
        "lon": 85.7044,
-       "lat": 28.3607,
-       "score": 30.62,
+       "lat": 28.3608,
+       "score": 30.924,
        "channel_name": "Bhemdan Khola",
        "dist_truth_km": 18.34,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o410",
+       "channel_kind": "offsets",
+       "lon": 85.6736,
+       "lat": 28.1635,
+       "score": 27.46,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 19.16,
        "hit": false
       }
      ]
@@ -3796,7 +3787,7 @@
     {
      "window": "A098_20261006_20261018",
      "status": "ok",
-     "n_ranked": 228,
+     "n_ranked": 230,
      "offsets_layer": "layer3",
      "offsets_noise_m": 0.0882,
      "phase_noise_mm": 18.32,
@@ -3816,11 +3807,11 @@
       },
       {
        "rank": 2,
-       "id": "o194",
+       "id": "o193",
        "channel_kind": "offsets",
        "lon": 85.6137,
        "lat": 28.3211,
-       "score": 59.159,
+       "score": 59.191,
        "channel_name": "Purepu Tsangpo",
        "dist_truth_km": 8.33,
        "hit": false
@@ -3831,7 +3822,7 @@
        "channel_kind": "offsets",
        "lon": 85.6492,
        "lat": 28.2577,
-       "score": 55.333,
+       "score": 53.539,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 11.5,
        "hit": false
@@ -3842,18 +3833,18 @@
        "channel_kind": "offsets",
        "lon": 85.6613,
        "lat": 28.3386,
-       "score": 51.365,
+       "score": 45.571,
        "channel_name": "Chusumdo Tsangpo",
        "dist_truth_km": 13.62,
        "hit": false
       },
       {
        "rank": 5,
-       "id": "o405",
+       "id": "o415",
        "channel_kind": "offsets",
-       "lon": 85.5461,
+       "lon": 85.5462,
        "lat": 28.1798,
-       "score": 43.16,
+       "score": 43.984,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 11.29,
        "hit": false
@@ -3863,9 +3854,9 @@
     {
      "window": "D048_20260629_20260711",
      "status": "ok",
-     "n_ranked": 93,
+     "n_ranked": 90,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.5161,
+     "offsets_noise_m": 0.5102,
      "phase_noise_mm": 9.19,
      "asf_processed": "2026-08-13T18:02:31Z",
      "season_factor": 1.0497095349797345,
@@ -3896,9 +3887,9 @@
        "rank": 3,
        "id": "o39",
        "channel_kind": "offsets",
-       "lon": 85.5187,
+       "lon": 85.5186,
        "lat": 28.4003,
-       "score": 38.927,
+       "score": 39.883,
        "channel_name": "Richong Chu",
        "dist_truth_km": 11.15,
        "hit": false
@@ -3930,9 +3921,9 @@
     {
      "window": "D048_20260711_20260723",
      "status": "ok",
-     "n_ranked": 83,
+     "n_ranked": 82,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.5985,
+     "offsets_noise_m": 0.5931,
      "phase_noise_mm": 12.93,
      "asf_processed": "2026-08-17T05:47:07Z",
      "season_factor": 1.1055953251027497,
@@ -3943,20 +3934,20 @@
        "channel_kind": "phase",
        "lon": 85.5277,
        "lat": 28.4215,
-       "score": 86.876,
+       "score": 88.455,
        "channel_name": "Richong Chu",
        "dist_truth_km": 12.45,
        "hit": false
       },
       {
        "rank": 2,
-       "id": "o18",
+       "id": "o19",
        "channel_kind": "offsets",
-       "lon": 85.5124,
-       "lat": 28.4106,
-       "score": 61.812,
+       "lon": 85.512,
+       "lat": 28.4108,
+       "score": 63.415,
        "channel_name": "Richong Chu",
-       "dist_truth_km": 11.88,
+       "dist_truth_km": 11.95,
        "hit": false
       },
       {
@@ -3972,22 +3963,22 @@
       },
       {
        "rank": 4,
-       "id": "o90",
+       "id": "o93",
        "channel_kind": "offsets",
        "lon": 85.4608,
-       "lat": 28.3292,
-       "score": 32.771,
+       "lat": 28.3293,
+       "score": 33.456,
        "channel_name": "Chusumdo Tsangpo",
        "dist_truth_km": 5.14,
        "hit": false
       },
       {
        "rank": 5,
-       "id": "o60",
+       "id": "o64",
        "channel_kind": "offsets",
        "lon": 85.4003,
-       "lat": 28.3667,
-       "score": 31.746,
+       "lat": 28.3669,
+       "score": 31.572,
        "channel_name": "Kyirong Tsangpo",
        "dist_truth_km": 13.29,
        "hit": false
@@ -3997,9 +3988,9 @@
     {
      "window": "D048_20260723_20260816",
      "status": "ok",
-     "n_ranked": 220,
+     "n_ranked": 219,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.094,
+     "offsets_noise_m": 0.0941,
      "phase_noise_mm": 6.89,
      "asf_processed": "2026-08-21T18:53:42Z",
      "season_factor": 1.2534998241771844,
@@ -4039,17 +4030,6 @@
       },
       {
        "rank": 4,
-       "id": "o353",
-       "channel_kind": "offsets",
-       "lon": 85.3601,
-       "lat": 28.1784,
-       "score": 57.755,
-       "channel_name": "Bhote Koshi",
-       "dist_truth_km": 17.39,
-       "hit": false
-      },
-      {
-       "rank": 5,
        "id": "p-2",
        "channel_kind": "phase",
        "lon": 85.4586,
@@ -4058,26 +4038,37 @@
        "channel_name": "Lende Khola",
        "dist_truth_km": 16.37,
        "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o220",
+       "channel_kind": "offsets",
+       "lon": 85.5988,
+       "lat": 28.2654,
+       "score": 47.719,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 5.99,
+       "hit": false
       }
      ]
     },
     {
      "window": "D048_20260816_20260828",
      "status": "ok",
-     "n_ranked": 89,
+     "n_ranked": 93,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.2247,
+     "offsets_noise_m": 0.2243,
      "phase_noise_mm": 9.76,
      "asf_processed": "2026-08-30T04:10:35Z",
      "season_factor": 1.348842230524853,
      "top5": [
       {
        "rank": 1,
-       "id": "o123",
+       "id": "o124",
        "channel_kind": "offsets",
-       "lon": 85.6188,
+       "lon": 85.6189,
        "lat": 28.2578,
-       "score": 45.462,
+       "score": 45.92,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 8.83,
        "hit": false
@@ -4106,11 +4097,11 @@
       },
       {
        "rank": 4,
-       "id": "o99",
+       "id": "o97",
        "channel_kind": "offsets",
        "lon": 85.6525,
        "lat": 28.3562,
-       "score": 37.721,
+       "score": 38.069,
        "channel_name": "Purepu Tsangpo",
        "dist_truth_km": 13.77,
        "hit": false
@@ -4131,20 +4122,20 @@
     {
      "window": "D048_20260828_20260909",
      "status": "ok",
-     "n_ranked": 112,
+     "n_ranked": 108,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.116,
+     "offsets_noise_m": 0.1171,
      "phase_noise_mm": 9.47,
      "asf_processed": "2026-09-16T12:09:17Z",
      "season_factor": 1.4143567155621928,
      "top5": [
       {
        "rank": 1,
-       "id": "o236",
+       "id": "o231",
        "channel_kind": "offsets",
        "lon": 85.4842,
        "lat": 28.2494,
-       "score": 72.346,
+       "score": 71.947,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 4.65,
        "hit": false
@@ -4162,33 +4153,33 @@
       },
       {
        "rank": 3,
-       "id": "o56",
+       "id": "o223",
        "channel_kind": "offsets",
-       "lon": 85.6759,
-       "lat": 28.3844,
-       "score": 46.01,
-       "channel_name": "Purepu Tsangpo",
-       "dist_truth_km": 17.21,
-       "hit": false
-      },
-      {
-       "rank": 4,
-       "id": "o226",
-       "channel_kind": "offsets",
-       "lon": 85.6196,
+       "lon": 85.6197,
        "lat": 28.255,
-       "score": 45.908,
+       "score": 48.616,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 8.91,
        "hit": false
       },
       {
-       "rank": 5,
-       "id": "o161",
+       "rank": 4,
+       "id": "o55",
        "channel_kind": "offsets",
-       "lon": 85.6749,
-       "lat": 28.317,
-       "score": 44.843,
+       "lon": 85.6759,
+       "lat": 28.3844,
+       "score": 46.186,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 17.21,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o155",
+       "channel_kind": "offsets",
+       "lon": 85.6752,
+       "lat": 28.3171,
+       "score": 45.376,
        "channel_name": "Bhemdan Khola",
        "dist_truth_km": 13.46,
        "hit": false
@@ -4198,9 +4189,9 @@
     {
      "window": "D048_20260909_20260921",
      "status": "ok",
-     "n_ranked": 63,
+     "n_ranked": 61,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.4023,
+     "offsets_noise_m": 0.4056,
      "phase_noise_mm": 9.84,
      "asf_processed": "2026-09-24T01:16:57Z",
      "season_factor": 1.4101798033622317,
@@ -4255,7 +4246,7 @@
        "channel_kind": "phase",
        "lon": 85.6546,
        "lat": 28.401,
-       "score": 34.748,
+       "score": 36.786,
        "channel_name": "Purepu Tsangpo",
        "dist_truth_km": 16.59,
        "hit": false
@@ -4265,9 +4256,9 @@
     {
      "window": "D048_20260921_20261003",
      "status": "ok",
-     "n_ranked": 54,
+     "n_ranked": 56,
      "offsets_layer": "layer3",
-     "offsets_noise_m": 0.3408,
+     "offsets_noise_m": 0.3424,
      "phase_noise_mm": 11.53,
      "asf_processed": "2026-10-05T09:34:29Z",
      "season_factor": 1.39659767720575,
@@ -4296,33 +4287,33 @@
       },
       {
        "rank": 3,
-       "id": "o207",
+       "id": "o206",
        "channel_kind": "offsets",
        "lon": 85.5749,
        "lat": 28.142,
-       "score": 27.687,
+       "score": 28.154,
        "channel_name": "Yangri Khola",
        "dist_truth_km": 16.33,
        "hit": false
       },
       {
        "rank": 4,
-       "id": "o87",
+       "id": "o88",
        "channel_kind": "offsets",
        "lon": 85.6672,
        "lat": 28.3051,
-       "score": 25.29,
+       "score": 25.918,
        "channel_name": "Bhemdan Khola",
        "dist_truth_km": 13.5,
        "hit": false
       },
       {
        "rank": 5,
-       "id": "o18",
+       "id": "o14",
        "channel_kind": "offsets",
-       "lon": 85.4112,
-       "lat": 28.4251,
-       "score": 23.792,
+       "lon": 85.411,
+       "lat": 28.4256,
+       "score": 24.667,
        "channel_name": "Sangchen Chu",
        "dist_truth_km": 17.53,
        "hit": false
@@ -4332,7 +4323,7 @@
     {
      "window": "D048_20261003_20261015",
      "status": "ok",
-     "n_ranked": 98,
+     "n_ranked": 103,
      "offsets_layer": "layer3",
      "offsets_noise_m": 0.1589,
      "phase_noise_mm": 8.58,
@@ -4345,7 +4336,7 @@
        "channel_kind": "phase",
        "lon": 85.6477,
        "lat": 28.2256,
-       "score": 97.165,
+       "score": 102.69,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 12.04,
        "hit": false
@@ -4354,44 +4345,44 @@
        "rank": 2,
        "id": "o262",
        "channel_kind": "offsets",
-       "lon": 85.6666,
+       "lon": 85.6669,
        "lat": 28.1488,
-       "score": 61.8,
+       "score": 62.54,
        "channel_name": "Indrawati river",
        "dist_truth_km": 19.38,
        "hit": false
       },
       {
        "rank": 3,
-       "id": "o172",
+       "id": "o171",
        "channel_kind": "offsets",
-       "lon": 85.6566,
-       "lat": 28.2332,
-       "score": 49.91,
+       "lon": 85.6567,
+       "lat": 28.2331,
+       "score": 50.128,
        "channel_name": "Langtang Khola",
        "dist_truth_km": 12.53,
        "hit": false
       },
       {
        "rank": 4,
-       "id": "o114",
+       "id": "o151",
        "channel_kind": "offsets",
-       "lon": 85.4542,
-       "lat": 28.2806,
-       "score": 44.148,
-       "channel_name": "Nyuwasu Khola",
-       "dist_truth_km": 5.14,
+       "lon": 85.6192,
+       "lat": 28.2501,
+       "score": 44.435,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 9.03,
        "hit": false
       },
       {
        "rank": 5,
-       "id": "o90",
+       "id": "o109",
        "channel_kind": "offsets",
-       "lon": 85.6726,
-       "lat": 28.3168,
-       "score": 42.865,
-       "channel_name": "Bhemdan Khola",
-       "dist_truth_km": 13.51,
+       "lon": 85.4542,
+       "lat": 28.2806,
+       "score": 44.208,
+       "channel_name": "Nyuwasu Khola",
+       "dist_truth_km": 5.14,
        "hit": false
       }
      ]

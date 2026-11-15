@@ -13,12 +13,14 @@ Cascade Watch runs a pre-registered screening rule over every NISAR pass of that
 
 | | Result |
 |---|---|
-| Last NISAR pass before the collapse (26 Jul → 19 Aug, ascending track 98, on ASF from 24 Aug 13:30 UTC) | **source valley ranked #2 of 189** moving slopes |
-| Raw-offset baseline (rank by offset magnitude alone, Meena-style) | #7 of 157 |
+| Last NISAR pass before the collapse (26 Jul → 19 Aug, ascending track 98, on ASF from 24 Aug 13:30 UTC) | **source valley ranked #2 of 193** moving slopes |
+| Raw-offset baseline (rank by offset magnitude alone, Meena-style) | #7 of 161 |
 | Pass before that (14 → 26 Jul) | **not ranked**: no moving patch formed near the source (noisiest offsets of the summer: 3σ cut 0.75 m vs 0.50 m site motion) |
 | Pre-registered pass test (top 5 in *both* of the last two passes) | **not passed** |
-| Descending track 48, last pass (23 Jul → 16 Aug) | #13 of 220 |
-| Same screen with the products' tropospheric screens removed (sensitivity) | #2 of 186 in the last pass; still not ranked the pass before |
+| Descending track 48, last pass (23 Jul → 16 Aug) | #14 of 219 |
+| Same screen with the products' tropospheric screens removed (sensitivity) | #2 of 190 in the last pass; still not ranked the pass before |
+| **Backtest: Budhi Gandaki rock avalanche, 11 Oct 2026 (rules unchanged)** | **not passed**: #10 of 211, then not ranked |
+| False alarms (another valley in the top 5 two passes running) | Langtang 4 in 7 passes · Budhi Gandaki 5 in 11 · Manang, no failure, 3 in 8 |
 | Sentinel-1 C-band control | pending (see *Not done* below) |
 
 What this means:
@@ -42,7 +44,7 @@ Every pass: find moving patches (≥ 5 cells of 80 m; offsets above 3× scene no
 | × (1 + 0.25·log10(1 + people below)) | risk = hazard × exposure; log so towns do not swamp motion |
 | × (1 + 0.5·(heat anomaly − 1)) | warm, low-snow summers weaken ice; the same for every patch in a pass, so it never changes the order |
 
-The rules are in `pipeline/config.json`, committed (ecffd6d, 04:20 local) before the first results commit (83cc938, 05:02). They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. **The real test is other events**; see *Backtest*.
+The rules are in `pipeline/config.json`, committed (ecffd6d, 04:20 local) before the first results commit (83cc938, 05:02). They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. Run unchanged on other places, it did not hold (see *Backtest*).
 
 ## Run it
 
@@ -78,6 +80,24 @@ Keyboard: `1`–`5` chapters, `Space` play/pause, `←` `→` step through passe
 The page follows the system light or dark appearance, reduced motion, reduced transparency and increased contrast. Below 860 px wide it switches to a phone layout: map on top, the chapter in a bottom sheet, chapters in a tab bar. Add `?intro=0` to the URL to skip the welcome sheet, or `?intro=1` to show it again.
 
 `raw/event/{timeline,facts,villages_arrival}.json` are compiled by hand from the fetched sources. Every item carries its source URL and a verbatim quote, and the replay only uses items that have one.
+
+## Backtest: did the rule hold?
+
+No. `pipeline/backtest.json` fixed the sites, boxes, truth and windows in git before any NISAR value inside the new boxes was read; `pipeline/backtest.py` runs the same rules (`CW_SITE` selects the box) and writes `data/backtest.json`.
+
+| Site | Role | Pre-registered test | False alarms |
+|---|---|---|---|
+| Budhi Gandaki (rock avalanche, 11 Oct 2026; same NISAR frame) | test positive | **not passed**: #10 of 211, then not ranked | 5 in 11 passes |
+| Manang (no recorded failure) | control | — | 3 in 8 passes |
+| Langtang (rules written after it) | development | **not passed**: not ranked, then #2 of 193 | 4 in 7 passes |
+
+What that means: NISAR's L-band radar does see slopes move through the monsoon, where Sentinel-1 did not (Sah 2026). But motion is everywhere in glaciated valleys, and this rule cannot tell which slope fails next: it is a shortlist for closer watching, not a forecast. The bigger, proven gain is cutting alert time once a slope fails (Acharya & Paudel 2026). Budhi Gandaki has no mapped outline, so its truth is an approximate scar point; a few hundred metres either way could change its result.
+
+## The guided tour and the deck
+
+- **Guided tour** (Guide, or G): 15 steps, captions always, narrated by a local neural voice (Kokoro-82M, Apache-2.0). `demo/tts/make_tour_audio.py` records each step from the exact text the page builds from `/data`; a clip plays only if its hash matches the caption, so narration cannot drift from the data. The pointer is projected from each feature's real coordinates.
+- **"How the rule works"** (button on the rule card): the rule, the evidence behind each factor (from the sourced records), what it would have done at Langtang, and the backtest.
+- **The 2.5-minute presentation** (Rahul Acharya, Ganga Gautam) tells the story through a morning at Timure, with timed speaker notes on every slide.
 
 ## The 30-second film and the Atlas visuals
 
@@ -129,6 +149,8 @@ All thresholds and weights are in [`pipeline/config.json`](pipeline/config.json)
 ## Not done
 
 - **Sentinel-1 C-band control.** `pipeline/fetch_s1.py` is ready: 8 S1 pairs on descending orbit 121, matched to the NISAR windows. ASF's HyP3 service first needs the account owner to accept the ASF Terms of Service at <https://urs.earthdata.nasa.gov/approve_app?client_id=BO_n7nTIlMljdvU6kRRB3g>. After that, run `python pipeline/fetch_s1.py all` (then `wait`, then `process manifest`) and rerun the ranking on the S1 rasters. Until then the page shows the control as pending, and quotes Sah (2026): routine 12-day Sentinel-1 products showed no motion above ~13 mm/month at this slope.
+
+- **More backtest events.** Only one clean test positive exists so far (Budhi Gandaki). Lete (Kali Gandaki) needs an optical scar map first; Weisshorn East is a partial ice break-off. Winter NISAR pairs back to Nov 2025 were not fetched.
 
 ## Challenge checklist
 

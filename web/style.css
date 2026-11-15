@@ -600,7 +600,7 @@ details.data .in{gap:10px;grid-template-columns:minmax(0,1fr)}
 .tc-ctl{display:flex;gap:8px;justify-content:flex-end}
 .tc-ctl .btn:disabled{opacity:.4}
 .tour-ring,.tour-box{position:fixed;left:0;top:0;z-index:20;pointer-events:none;opacity:0;transition:opacity .25s}
-.tour-ring{width:56px;height:56px;border-radius:50%;border:3px solid #ffd60a;box-shadow:0 0 0 3px rgba(0,0,0,.35),0 0 24px rgba(255,214,10,.7);animation:tring 1.4s ease-out infinite}
+.tour-ring{width:52px;height:52px;border-radius:50%;border:3px solid #ffd60a;box-shadow:0 0 0 3px rgba(0,0,0,.35),0 0 24px rgba(255,214,10,.7);animation:tring 1.4s ease-out infinite}
 @keyframes tring{0%{scale:.75}60%{scale:1.08}100%{scale:.75}}
 .tour-box{border-radius:14px;box-shadow:0 0 0 3px var(--accent),0 0 0 7px color-mix(in srgb,var(--accent) 25%,transparent);transition:opacity .25s,transform .35s var(--snap),width .35s var(--snap),height .35s var(--snap)}
 .touring .hud-legend{z-index:6}
@@ -624,3 +624,14 @@ details.data .in{gap:10px;grid-template-columns:minmax(0,1fr)}
 .ba-tag.l{left:8px} .ba-tag.r{right:8px}
 .ba-opt{display:flex;align-items:center;gap:8px;margin:10px 2px 6px;font-size:12.5px}
 .ba-opt small{color:var(--label2);font-size:11.5px}
+
+.rule-more{width:100%;justify-content:flex-start;height:auto;min-height:34px;padding:8px 12px;white-space:normal;text-align:left;line-height:1.3}
+.rule-more .ic{width:16px;height:16px;color:var(--accent);flex:none}
+.tour-dot{position:fixed;left:0;top:0;z-index:21;width:8px;height:8px;border-radius:50%;background:#ffd60a;box-shadow:0 0 0 2px rgba(0,0,0,.6);pointer-events:none;opacity:0}
+.tour-box.geo{box-shadow:0 0 0 3px #ffd60a,0 0 0 6px rgba(0,0,0,.35),0 0 30px rgba(255,214,10,.5);border-radius:10px}
+.ticks span.aft{color:var(--label2);font-weight:600}
+.track{height:30px} .segs,.evzone{top:8px}
+.seg-w,#coseg{cursor:pointer}
+.dtbl small{color:var(--label2)}
+
+.sheet .sh-body{grid-auto-rows:max-content}   /* scrolling children (tables) must not shrink to zero in a short sheet */

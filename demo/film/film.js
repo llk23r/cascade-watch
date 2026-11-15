@@ -130,7 +130,9 @@
     $('big-n').textContent = '#' + sc.source_rank;
     $('big-of').innerHTML = 'of ' + sc.n_ranked + ' moving slopes<br><span>last pass, public ' + Math.round(D.context.timing.hours_on_asf) + ' hours before the collapse</span>';
     var pass = D.scorecard.pass;
-    $('verdict').innerHTML = '<span class="pill bad">Pre-registered test: ' + (pass.passed ? 'passed' : 'not passed') + '</span><span class="pill calm">A watch list, not a countdown</span>';
+    var bg = D.bt && D.bt.sites && D.bt.sites.budhigandaki;
+    $('verdict').innerHTML = '<span class="pill bad">Pre-registered test: ' + (pass.passed ? 'passed' : 'not passed') + '</span>' +
+      (bg ? '<span class="pill bad">Second disaster (Budhi Gandaki): ' + (bg.positive_pass.result === 'pass' ? 'caught' : 'missed') + '</span>' : '') + '<span class="pill calm">A shortlist, not a forecast</span>';
 
     // sources
     var srcs = [
@@ -144,7 +146,7 @@
     $('sources').innerHTML = srcs.map(function (s) { return '<div class="src-card ' + s[0] + '"><b>' + s[1] + '</b><span>' + s[2] + '</span></div>'; }).join('');
     $('papers').innerHTML = '<b>Research it builds on:</b> Acharya &amp; Paudel 2026 · Meena 2026 · Kutoğlu, Softa &amp; Akgün 2026 · Hassan et al. 2026 · Sah 2026. &nbsp;<b>Visuals:</b> World Labs Atlas on Copernicus DEM terrain.';
 
-    $('end-tag').textContent = 'A watch list for falling slopes, built on real NISAR radar.';
+    $('end-tag').textContent = 'What NISAR saw before the Langtang flood, tested honestly.';
     $('end-meta').textContent = 'NASA Space Apps Challenge 2026 · Dancing with the SARs · Toronto';
     $('toll').innerHTML = '<b>≥ ' + D.dead + '</b>dead in Nepal · USGS';
     $('sms-t').innerHTML = 'Mass SMS alert<small> · ' + clockAt(D.replay.alert_min) + ' · ' + D.replay.alert_min.toFixed(1) + ' min after the collapse</small>';
@@ -361,9 +363,9 @@
 
   /* ---------------------------------------------------------- boot */
   window.FILM = { render: render, ready: false, duration: DUR, T: T, minuteAt: minuteAt };
-  Promise.all([j('replay.json'), j('truth.geojson'), j('img/bounds.json'), j('context.json'), j('scorecard.json'), j('windows.json'), j('provenance.json'), j('config.json'), fetch('atlas/overlays.json').then(function (r) { return r.json(); })])
+  Promise.all([j('replay.json'), j('truth.geojson'), j('img/bounds.json'), j('context.json'), j('scorecard.json'), j('windows.json'), j('provenance.json'), j('config.json'), fetch('atlas/overlays.json').then(function (r) { return r.json(); }), j('backtest.json').catch(function () { return null; })])
     .then(function (r) {
-      D.replay = r[0]; D.truth = r[1]; D.bounds = r[2]; D.context = r[3]; D.scorecard = r[4]; D.windows = r[5]; D.prov = r[6]; D.config = r[7]; D.atlas = r[8];
+      D.replay = r[0]; D.truth = r[1]; D.bounds = r[2]; D.context = r[3]; D.scorecard = r[4]; D.windows = r[5]; D.prov = r[6]; D.config = r[7]; D.atlas = r[8]; D.bt = r[9];
       D.truthRing = D.truth.features.find(function (f) { return f.properties.role !== 'hit_zone'; }).geometry.coordinates[0];
       var tp = D.truth.features[0].properties; D.truthCenter = tp.center || D.context.source_lonlat;
       D.eventDate = D.config.windows.event_utc.slice(0, 10); D.topN = D.config.pass_condition.top_n;
