@@ -1,0 +1,1009 @@
+{
+ "note": "Sensitivity only. The pre-registered rule is top 5 in BOTH of the last two ascending passes before the event; changing N after seeing results is a post-hoc choice.",
+ "hit_radius_km": 2.0,
+ "sizes": [
+  5,
+  10,
+  11,
+  15,
+  20
+ ],
+ "sites": {
+  "langtang": {
+   "5": {
+    "false_alarms": 4,
+    "false_alarm_passes": 7,
+    "false_alarm_rate_per_pass": 0.571,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     null,
+     2
+    ],
+    "passes": 7,
+    "hits": 6,
+    "hits_expected_by_chance": 1.81,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 3,
+      "n_ranked": 145,
+      "hit_patches": 9,
+      "listed": true,
+      "chance_listed": 0.278
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 1,
+      "n_ranked": 108,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.452
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": 4,
+      "n_ranked": 107,
+      "hit_patches": 7,
+      "listed": true,
+      "chance_listed": 0.292
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 1,
+      "n_ranked": 126,
+      "hit_patches": 8,
+      "listed": true,
+      "chance_listed": 0.284
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": 1,
+      "n_ranked": 103,
+      "hit_patches": 5,
+      "listed": true,
+      "chance_listed": 0.224
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 119,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 2,
+      "n_ranked": 193,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.277
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 10,
+      "n_ranked": 180
+     },
+     {
+      "window": "D048_20260816_20260828",
+      "rank": null,
+      "n_ranked": 93
+     }
+    ]
+   },
+   "10": {
+    "false_alarms": 5,
+    "false_alarm_passes": 7,
+    "false_alarm_rate_per_pass": 0.714,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     null,
+     2
+    ],
+    "passes": 7,
+    "hits": 6,
+    "hits_expected_by_chance": 3.08,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 3,
+      "n_ranked": 145,
+      "hit_patches": 9,
+      "listed": true,
+      "chance_listed": 0.484
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 1,
+      "n_ranked": 108,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.709
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": 4,
+      "n_ranked": 107,
+      "hit_patches": 7,
+      "listed": true,
+      "chance_listed": 0.507
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 1,
+      "n_ranked": 126,
+      "hit_patches": 8,
+      "listed": true,
+      "chance_listed": 0.494
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": 1,
+      "n_ranked": 103,
+      "hit_patches": 5,
+      "listed": true,
+      "chance_listed": 0.406
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 119,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 2,
+      "n_ranked": 193,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.482
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 10,
+      "n_ranked": 180
+     },
+     {
+      "window": "D048_20260816_20260828",
+      "rank": null,
+      "n_ranked": 93
+     }
+    ]
+   },
+   "11": {
+    "false_alarms": 7,
+    "false_alarm_passes": 7,
+    "false_alarm_rate_per_pass": 1.0,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     null,
+     2
+    ],
+    "passes": 7,
+    "hits": 6,
+    "hits_expected_by_chance": 3.29,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 3,
+      "n_ranked": 145,
+      "hit_patches": 9,
+      "listed": true,
+      "chance_listed": 0.519
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 1,
+      "n_ranked": 108,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.744
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": 4,
+      "n_ranked": 107,
+      "hit_patches": 7,
+      "listed": true,
+      "chance_listed": 0.543
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 1,
+      "n_ranked": 126,
+      "hit_patches": 8,
+      "listed": true,
+      "chance_listed": 0.529
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": 1,
+      "n_ranked": 103,
+      "hit_patches": 5,
+      "listed": true,
+      "chance_listed": 0.438
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 119,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 2,
+      "n_ranked": 193,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.516
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 10,
+      "n_ranked": 180
+     },
+     {
+      "window": "D048_20260816_20260828",
+      "rank": null,
+      "n_ranked": 93
+     }
+    ]
+   },
+   "15": {
+    "false_alarms": 9,
+    "false_alarm_passes": 7,
+    "false_alarm_rate_per_pass": 1.286,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     null,
+     2
+    ],
+    "passes": 7,
+    "hits": 6,
+    "hits_expected_by_chance": 3.98,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 3,
+      "n_ranked": 145,
+      "hit_patches": 9,
+      "listed": true,
+      "chance_listed": 0.637
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 1,
+      "n_ranked": 108,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.851
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": 4,
+      "n_ranked": 107,
+      "hit_patches": 7,
+      "listed": true,
+      "chance_listed": 0.664
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 1,
+      "n_ranked": 126,
+      "hit_patches": 8,
+      "listed": true,
+      "chance_listed": 0.648
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": 1,
+      "n_ranked": 103,
+      "hit_patches": 5,
+      "listed": true,
+      "chance_listed": 0.552
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 119,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 2,
+      "n_ranked": 193,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.632
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 10,
+      "n_ranked": 180
+     },
+     {
+      "window": "D048_20260816_20260828",
+      "rank": null,
+      "n_ranked": 93
+     }
+    ]
+   },
+   "20": {
+    "false_alarms": 9,
+    "false_alarm_passes": 7,
+    "false_alarm_rate_per_pass": 1.286,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     null,
+     2
+    ],
+    "passes": 7,
+    "hits": 6,
+    "hits_expected_by_chance": 4.62,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 3,
+      "n_ranked": 145,
+      "hit_patches": 9,
+      "listed": true,
+      "chance_listed": 0.748
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 1,
+      "n_ranked": 108,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.926
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": 4,
+      "n_ranked": 107,
+      "hit_patches": 7,
+      "listed": true,
+      "chance_listed": 0.776
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 1,
+      "n_ranked": 126,
+      "hit_patches": 8,
+      "listed": true,
+      "chance_listed": 0.76
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": 1,
+      "n_ranked": 103,
+      "hit_patches": 5,
+      "listed": true,
+      "chance_listed": 0.668
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 119,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 2,
+      "n_ranked": 193,
+      "hit_patches": 12,
+      "listed": true,
+      "chance_listed": 0.742
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 10,
+      "n_ranked": 180
+     },
+     {
+      "window": "D048_20260816_20260828",
+      "rank": null,
+      "n_ranked": 93
+     }
+    ]
+   }
+  },
+  "budhigandaki": {
+   "5": {
+    "false_alarms": 5,
+    "false_alarm_passes": 11,
+    "false_alarm_rate_per_pass": 0.455,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     10,
+     null
+    ],
+    "passes": 11,
+    "hits": 0,
+    "hits_expected_by_chance": 0.51,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 24,
+      "n_ranked": 127,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.077
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 43,
+      "n_ranked": 138,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.036
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": null,
+      "n_ranked": 128,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 59,
+      "n_ranked": 103,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.049
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": null,
+      "n_ranked": 81,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 111,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 102,
+      "n_ranked": 193,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.051
+     },
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 12,
+      "n_ranked": 96,
+      "hit_patches": 3,
+      "listed": false,
+      "chance_listed": 0.15
+     },
+     {
+      "window": "A098_20260831_20260912",
+      "rank": 30,
+      "n_ranked": 184,
+      "hit_patches": 3,
+      "listed": false,
+      "chance_listed": 0.08
+     },
+     {
+      "window": "A098_20260912_20260924",
+      "rank": 10,
+      "n_ranked": 211,
+      "hit_patches": 3,
+      "listed": false,
+      "chance_listed": 0.07
+     },
+     {
+      "window": "A098_20260924_20261006",
+      "rank": null,
+      "n_ranked": 98,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20261006_20261018",
+      "rank": 42,
+      "n_ranked": 241
+     }
+    ]
+   },
+   "10": {
+    "false_alarms": 11,
+    "false_alarm_passes": 11,
+    "false_alarm_rate_per_pass": 1.0,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     10,
+     null
+    ],
+    "passes": 11,
+    "hits": 1,
+    "hits_expected_by_chance": 1.0,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 24,
+      "n_ranked": 127,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.152
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 43,
+      "n_ranked": 138,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.072
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": null,
+      "n_ranked": 128,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 59,
+      "n_ranked": 103,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.097
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": null,
+      "n_ranked": 81,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 111,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 102,
+      "n_ranked": 193,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.101
+     },
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 12,
+      "n_ranked": 96,
+      "hit_patches": 3,
+      "listed": false,
+      "chance_listed": 0.284
+     },
+     {
+      "window": "A098_20260831_20260912",
+      "rank": 30,
+      "n_ranked": 184,
+      "hit_patches": 3,
+      "listed": false,
+      "chance_listed": 0.155
+     },
+     {
+      "window": "A098_20260912_20260924",
+      "rank": 10,
+      "n_ranked": 211,
+      "hit_patches": 3,
+      "listed": true,
+      "chance_listed": 0.136
+     },
+     {
+      "window": "A098_20260924_20261006",
+      "rank": null,
+      "n_ranked": 98,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20261006_20261018",
+      "rank": 42,
+      "n_ranked": 241
+     }
+    ]
+   },
+   "11": {
+    "false_alarms": 11,
+    "false_alarm_passes": 11,
+    "false_alarm_rate_per_pass": 1.0,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     10,
+     null
+    ],
+    "passes": 11,
+    "hits": 1,
+    "hits_expected_by_chance": 1.09,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 24,
+      "n_ranked": 127,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.166
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 43,
+      "n_ranked": 138,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.08
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": null,
+      "n_ranked": 128,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 59,
+      "n_ranked": 103,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.107
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": null,
+      "n_ranked": 81,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 111,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 102,
+      "n_ranked": 193,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.111
+     },
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 12,
+      "n_ranked": 96,
+      "hit_patches": 3,
+      "listed": false,
+      "chance_listed": 0.309
+     },
+     {
+      "window": "A098_20260831_20260912",
+      "rank": 30,
+      "n_ranked": 184,
+      "hit_patches": 3,
+      "listed": false,
+      "chance_listed": 0.17
+     },
+     {
+      "window": "A098_20260912_20260924",
+      "rank": 10,
+      "n_ranked": 211,
+      "hit_patches": 3,
+      "listed": true,
+      "chance_listed": 0.149
+     },
+     {
+      "window": "A098_20260924_20261006",
+      "rank": null,
+      "n_ranked": 98,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20261006_20261018",
+      "rank": 42,
+      "n_ranked": 241
+     }
+    ]
+   },
+   "15": {
+    "false_alarms": 13,
+    "false_alarm_passes": 11,
+    "false_alarm_rate_per_pass": 1.182,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     10,
+     null
+    ],
+    "passes": 11,
+    "hits": 2,
+    "hits_expected_by_chance": 1.46,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 24,
+      "n_ranked": 127,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.223
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 43,
+      "n_ranked": 138,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.109
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": null,
+      "n_ranked": 128,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 59,
+      "n_ranked": 103,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.146
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": null,
+      "n_ranked": 81,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 111,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 102,
+      "n_ranked": 193,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.15
+     },
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 12,
+      "n_ranked": 96,
+      "hit_patches": 3,
+      "listed": true,
+      "chance_listed": 0.403
+     },
+     {
+      "window": "A098_20260831_20260912",
+      "rank": 30,
+      "n_ranked": 184,
+      "hit_patches": 3,
+      "listed": false,
+      "chance_listed": 0.226
+     },
+     {
+      "window": "A098_20260912_20260924",
+      "rank": 10,
+      "n_ranked": 211,
+      "hit_patches": 3,
+      "listed": true,
+      "chance_listed": 0.199
+     },
+     {
+      "window": "A098_20260924_20261006",
+      "rank": null,
+      "n_ranked": 98,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20261006_20261018",
+      "rank": 42,
+      "n_ranked": 241
+     }
+    ]
+   },
+   "20": {
+    "false_alarms": 12,
+    "false_alarm_passes": 11,
+    "false_alarm_rate_per_pass": 1.091,
+    "pass_test": "fail",
+    "last_two_ranks": [
+     10,
+     null
+    ],
+    "passes": 11,
+    "hits": 2,
+    "hits_expected_by_chance": 1.89,
+    "per_pass": [
+     {
+      "window": "A098_20260515_20260527",
+      "rank": 24,
+      "n_ranked": 127,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.291
+     },
+     {
+      "window": "A098_20260527_20260608",
+      "rank": 43,
+      "n_ranked": 138,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.145
+     },
+     {
+      "window": "A098_20260608_20260620",
+      "rank": null,
+      "n_ranked": 128,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260620_20260702",
+      "rank": 59,
+      "n_ranked": 103,
+      "hit_patches": 1,
+      "listed": false,
+      "chance_listed": 0.194
+     },
+     {
+      "window": "A098_20260702_20260714",
+      "rank": null,
+      "n_ranked": 81,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260714_20260726",
+      "rank": null,
+      "n_ranked": 111,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     },
+     {
+      "window": "A098_20260726_20260819",
+      "rank": 102,
+      "n_ranked": 193,
+      "hit_patches": 2,
+      "listed": false,
+      "chance_listed": 0.197
+     },
+     {
+      "window": "A098_20260819_20260831",
+      "rank": 12,
+      "n_ranked": 96,
+      "hit_patches": 3,
+      "listed": true,
+      "chance_listed": 0.508
+     },
+     {
+      "window": "A098_20260831_20260912",
+      "rank": 30,
+      "n_ranked": 184,
+      "hit_patches": 3,
+      "listed": false,
+      "chance_listed": 0.293
+     },
+     {
+      "window": "A098_20260912_20260924",
+      "rank": 10,
+      "n_ranked": 211,
+      "hit_patches": 3,
+      "listed": true,
+      "chance_listed": 0.259
+     },
+     {
+      "window": "A098_20260924_20261006",
+      "rank": null,
+      "n_ranked": 98,
+      "hit_patches": 0,
+      "listed": false,
+      "chance_listed": 0.0
+     }
+    ],
+    "spanning_event": [
+     {
+      "window": "A098_20261006_20261018",
+      "rank": 42,
+      "n_ranked": 241
+     }
+    ]
+   }
+  },
+  "manang": {
+   "5": {
+    "false_alarms": 3,
+    "false_alarm_passes": 8,
+    "false_alarm_rate_per_pass": 0.375
+   },
+   "10": {
+    "false_alarms": 8,
+    "false_alarm_passes": 8,
+    "false_alarm_rate_per_pass": 1.0
+   },
+   "11": {
+    "false_alarms": 9,
+    "false_alarm_passes": 8,
+    "false_alarm_rate_per_pass": 1.125
+   },
+   "15": {
+    "false_alarms": 12,
+    "false_alarm_passes": 8,
+    "false_alarm_rate_per_pass": 1.5
+   },
+   "20": {
+    "false_alarms": 13,
+    "false_alarm_passes": 8,
+    "false_alarm_rate_per_pass": 1.625
+   }
+  }
+ }
+}

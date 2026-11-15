@@ -1,0 +1,278 @@
+{
+ "note": "Would the watch list have covered the place that failed, at the scale a warning needs? (NOT pre-registered.)",
+ "caveat": "Zones and list sizes chosen after seeing results; test the chosen one on new events.",
+ "sites": {
+  "langtang": {
+   "role": "development event (rules written after it); reported, not counted as a test",
+   "tributary_to": "Chhochen Khola",
+   "rows": [
+    {
+     "zone_km": 2,
+     "top_n": 5,
+     "passes": 7,
+     "hits": 6,
+     "expected_by_chance": 1.81,
+     "p_value": 0.0006,
+     "last_two_best_rank": [
+      null,
+      2
+     ],
+     "last_two_covered": 1
+    },
+    {
+     "zone_km": 2,
+     "top_n": 10,
+     "passes": 7,
+     "hits": 6,
+     "expected_by_chance": 3.08,
+     "p_value": 0.0169,
+     "last_two_best_rank": [
+      null,
+      2
+     ],
+     "last_two_covered": 1
+    },
+    {
+     "zone_km": 3,
+     "top_n": 5,
+     "passes": 7,
+     "hits": 6,
+     "expected_by_chance": 2.25,
+     "p_value": 0.0024,
+     "last_two_best_rank": [
+      null,
+      1
+     ],
+     "last_two_covered": 1
+    },
+    {
+     "zone_km": 3,
+     "top_n": 10,
+     "passes": 7,
+     "hits": 6,
+     "expected_by_chance": 3.66,
+     "p_value": 0.0472,
+     "last_two_best_rank": [
+      null,
+      1
+     ],
+     "last_two_covered": 1
+    },
+    {
+     "zone_km": 5,
+     "top_n": 5,
+     "passes": 7,
+     "hits": 6,
+     "expected_by_chance": 3.12,
+     "p_value": 0.0246,
+     "last_two_best_rank": [
+      19,
+      1
+     ],
+     "last_two_covered": 1
+    },
+    {
+     "zone_km": 5,
+     "top_n": 10,
+     "passes": 7,
+     "hits": 6,
+     "expected_by_chance": 4.71,
+     "p_value": 0.2461,
+     "last_two_best_rank": [
+      19,
+      1
+     ],
+     "last_two_covered": 1
+    },
+    {
+     "zone_km": 8,
+     "top_n": 5,
+     "passes": 7,
+     "hits": 7,
+     "expected_by_chance": 4.49,
+     "p_value": 0.0376,
+     "last_two_best_rank": [
+      5,
+      1
+     ],
+     "last_two_covered": 2
+    },
+    {
+     "zone_km": 8,
+     "top_n": 10,
+     "passes": 7,
+     "hits": 7,
+     "expected_by_chance": 6.0,
+     "p_value": 0.3246,
+     "last_two_best_rank": [
+      5,
+      1
+     ],
+     "last_two_covered": 2
+    },
+    {
+     "zone_km": "tributary",
+     "top_n": 5,
+     "passes": 7,
+     "hits": 7,
+     "expected_by_chance": 6.6,
+     "p_value": 0.656,
+     "last_two_best_rank": [
+      2,
+      1
+     ],
+     "last_two_covered": 2
+    },
+    {
+     "zone_km": "tributary",
+     "top_n": 10,
+     "passes": 7,
+     "hits": 7,
+     "expected_by_chance": 6.96,
+     "p_value": 0.9622,
+     "last_two_best_rank": [
+      2,
+      1
+     ],
+     "last_two_covered": 2
+    }
+   ]
+  },
+  "budhigandaki": {
+   "role": "test positive",
+   "tributary_to": "Shyar Khola",
+   "rows": [
+    {
+     "zone_km": 2,
+     "top_n": 5,
+     "passes": 11,
+     "hits": 0,
+     "expected_by_chance": 0.51,
+     "p_value": 1.0,
+     "last_two_best_rank": [
+      10,
+      null
+     ],
+     "last_two_covered": 0
+    },
+    {
+     "zone_km": 2,
+     "top_n": 10,
+     "passes": 11,
+     "hits": 1,
+     "expected_by_chance": 1.0,
+     "p_value": 0.6663,
+     "last_two_best_rank": [
+      10,
+      null
+     ],
+     "last_two_covered": 1
+    },
+    {
+     "zone_km": 3,
+     "top_n": 5,
+     "passes": 11,
+     "hits": 2,
+     "expected_by_chance": 0.69,
+     "p_value": 0.147,
+     "last_two_best_rank": [
+      10,
+      null
+     ],
+     "last_two_covered": 0
+    },
+    {
+     "zone_km": 3,
+     "top_n": 10,
+     "passes": 11,
+     "hits": 3,
+     "expected_by_chance": 1.34,
+     "p_value": 0.1325,
+     "last_two_best_rank": [
+      10,
+      null
+     ],
+     "last_two_covered": 1
+    },
+    {
+     "zone_km": 5,
+     "top_n": 5,
+     "passes": 11,
+     "hits": 4,
+     "expected_by_chance": 1.99,
+     "p_value": 0.1155,
+     "last_two_best_rank": [
+      5,
+      9
+     ],
+     "last_two_covered": 1
+    },
+    {
+     "zone_km": 5,
+     "top_n": 10,
+     "passes": 11,
+     "hits": 7,
+     "expected_by_chance": 3.59,
+     "p_value": 0.0256,
+     "last_two_best_rank": [
+      5,
+      9
+     ],
+     "last_two_covered": 2
+    },
+    {
+     "zone_km": 8,
+     "top_n": 5,
+     "passes": 11,
+     "hits": 6,
+     "expected_by_chance": 4.85,
+     "p_value": 0.3394,
+     "last_two_best_rank": [
+      5,
+      2
+     ],
+     "last_two_covered": 2
+    },
+    {
+     "zone_km": 8,
+     "top_n": 10,
+     "passes": 11,
+     "hits": 9,
+     "expected_by_chance": 7.48,
+     "p_value": 0.249,
+     "last_two_best_rank": [
+      5,
+      2
+     ],
+     "last_two_covered": 2
+    },
+    {
+     "zone_km": "tributary",
+     "top_n": 5,
+     "passes": 11,
+     "hits": 10,
+     "expected_by_chance": 10.11,
+     "p_value": 0.7791,
+     "last_two_best_rank": [
+      5,
+      2
+     ],
+     "last_two_covered": 2
+    },
+    {
+     "zone_km": "tributary",
+     "top_n": 10,
+     "passes": 11,
+     "hits": 11,
+     "expected_by_chance": 10.91,
+     "p_value": 0.9167,
+     "last_two_best_rank": [
+      5,
+      2
+     ],
+     "last_two_covered": 2
+    }
+   ]
+  }
+ }
+}
