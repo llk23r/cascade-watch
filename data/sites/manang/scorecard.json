@@ -1,0 +1,385 @@
+{
+ "windows": {
+  "A098_20260620_20260702": {
+   "source_rank": null,
+   "blobs_above": null,
+   "n_ranked": 171,
+   "baseline_rank": null,
+   "n_offsets": 160,
+   "source_visible": false,
+   "hit_id": null,
+   "top5": [
+    {
+     "id": "o323",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.227,
+     "lat": 28.5058
+    },
+    {
+     "id": "o289",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.1804,
+     "lat": 28.5347
+    },
+    {
+     "id": "o212",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9074,
+     "lat": 28.5768
+    },
+    {
+     "id": "o314",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.2449,
+     "lat": 28.5306
+    },
+    {
+     "id": "o9",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9588,
+     "lat": 28.7668
+    }
+   ]
+  },
+  "A098_20260702_20260714": {
+   "source_rank": null,
+   "blobs_above": null,
+   "n_ranked": 80,
+   "baseline_rank": null,
+   "n_offsets": 68,
+   "source_visible": false,
+   "hit_id": null,
+   "top5": [
+    {
+     "id": "p+33",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 84.1825,
+     "lat": 28.5116
+    },
+    {
+     "id": "p-20",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 84.0206,
+     "lat": 28.5744
+    },
+    {
+     "id": "p+25",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 84.2105,
+     "lat": 28.5891
+    },
+    {
+     "id": "p+22",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 84.1957,
+     "lat": 28.6024
+    },
+    {
+     "id": "p+13",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 84.2316,
+     "lat": 28.7079
+    }
+   ]
+  },
+  "A098_20260714_20260726": {
+   "source_rank": null,
+   "blobs_above": null,
+   "n_ranked": 143,
+   "baseline_rank": null,
+   "n_offsets": 150,
+   "source_visible": false,
+   "hit_id": null,
+   "top5": [
+    {
+     "id": "o132",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.8931,
+     "lat": 28.6239
+    },
+    {
+     "id": "o55",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.1707,
+     "lat": 28.671
+    },
+    {
+     "id": "o211",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9585,
+     "lat": 28.5797
+    },
+    {
+     "id": "o238",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9713,
+     "lat": 28.5668
+    },
+    {
+     "id": "p-28",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 84.0408,
+     "lat": 28.5396
+    }
+   ]
+  },
+  "A098_20260726_20260819": {
+   "source_rank": null,
+   "blobs_above": null,
+   "n_ranked": 199,
+   "baseline_rank": null,
+   "n_offsets": 150,
+   "source_visible": false,
+   "hit_id": null,
+   "top5": [
+    {
+     "id": "p-107",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 83.958,
+     "lat": 28.4911
+    },
+    {
+     "id": "p-71",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 83.9916,
+     "lat": 28.5746
+    },
+    {
+     "id": "o181",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9597,
+     "lat": 28.5828
+    },
+    {
+     "id": "p-69",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 83.9988,
+     "lat": 28.5763
+    },
+    {
+     "id": "o217",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.1377,
+     "lat": 28.5632
+    }
+   ]
+  },
+  "A098_20260819_20260831": {
+   "source_rank": null,
+   "blobs_above": null,
+   "n_ranked": 201,
+   "baseline_rank": null,
+   "n_offsets": 195,
+   "source_visible": false,
+   "hit_id": null,
+   "top5": [
+    {
+     "id": "o284",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9036,
+     "lat": 28.6179
+    },
+    {
+     "id": "p-86",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 84.1736,
+     "lat": 28.4987
+    },
+    {
+     "id": "o444",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.0472,
+     "lat": 28.5267
+    },
+    {
+     "id": "p-85",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 83.9384,
+     "lat": 28.4975
+    },
+    {
+     "id": "o319",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9088,
+     "lat": 28.5836
+    }
+   ]
+  },
+  "A098_20260831_20260912": {
+   "source_rank": null,
+   "blobs_above": null,
+   "n_ranked": 214,
+   "baseline_rank": null,
+   "n_offsets": 176,
+   "source_visible": false,
+   "hit_id": null,
+   "top5": [
+    {
+     "id": "p+98",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 83.9582,
+     "lat": 28.4911
+    },
+    {
+     "id": "p-106",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 84.2398,
+     "lat": 28.5701
+    },
+    {
+     "id": "p+90",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 84.1998,
+     "lat": 28.5124
+    },
+    {
+     "id": "p+71",
+     "channel": "phase",
+     "dist_truth_km": null,
+     "lon": 83.9797,
+     "lat": 28.5479
+    },
+    {
+     "id": "o439",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.0456,
+     "lat": 28.526
+    }
+   ]
+  },
+  "A098_20260912_20260924": {
+   "source_rank": null,
+   "blobs_above": null,
+   "n_ranked": 215,
+   "baseline_rank": null,
+   "n_offsets": 212,
+   "source_visible": false,
+   "hit_id": null,
+   "top5": [
+    {
+     "id": "o482",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.0465,
+     "lat": 28.5259
+    },
+    {
+     "id": "o495",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.1136,
+     "lat": 28.5246
+    },
+    {
+     "id": "o446",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9571,
+     "lat": 28.5458
+    },
+    {
+     "id": "o328",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.0098,
+     "lat": 28.6061
+    },
+    {
+     "id": "o497",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9437,
+     "lat": 28.5143
+    }
+   ]
+  },
+  "A098_20260924_20261006": {
+   "source_rank": null,
+   "blobs_above": null,
+   "n_ranked": 135,
+   "baseline_rank": null,
+   "n_offsets": 203,
+   "source_visible": false,
+   "hit_id": null,
+   "top5": [
+    {
+     "id": "o355",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9662,
+     "lat": 28.5874
+    },
+    {
+     "id": "o477",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.1777,
+     "lat": 28.5294
+    },
+    {
+     "id": "o137",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.0384,
+     "lat": 28.7206
+    },
+    {
+     "id": "o192",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 84.1783,
+     "lat": 28.7
+    },
+    {
+     "id": "o363",
+     "channel": "offsets",
+     "dist_truth_km": null,
+     "lon": 83.9192,
+     "lat": 28.5805
+    }
+   ]
+  }
+ },
+ "pass": null,
+ "config_sha256": "d8a90eedfce0a61a6f0e7bfa94e8c2b0d5156994b64e3a4c85f9317b9614e133",
+ "truth": {
+  "kind": "none: negative control"
+ },
+ "source_path_first_river": null,
+ "tributary_length_km": 0.0,
+ "site": "manang",
+ "role": "negative control (no recorded failure in the period found by search; not proof of none)",
+ "event_utc": null,
+ "main_stem_first_river": null,
+ "backtest_sha256": "1450bdbfb5128a1e7d878bfbcc361f19f1b7130553b7f1cb575137225242aec8",
+ "season_note": "ERA5 not fetched for this backtest site: the season factor is the same for every patch in a pass and cannot change ranks, so it is set to 1"
+}

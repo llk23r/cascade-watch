@@ -1,0 +1,4770 @@
+{
+ "generated_utc": "2026-11-15T15:52:10Z",
+ "plan": "pipeline/backtest.json",
+ "plan_commit": "fc19de8 Pre-register backtest: Budhi Gandaki positive, Manang control",
+ "rules": "pipeline/config.json",
+ "rules_sha256": "d8a90eedfce0a61a6f0e7bfa94e8c2b0d5156994b64e3a4c85f9317b9614e133",
+ "code_commit": "dae3a1986eaa8a1fe3a796c39192134c6f284589",
+ "top_n": 5,
+ "method": "* Patches: the top_n ranked patches of every counted window (rank <= top_n in blobs_<window>.geojson).\n  * Valley: single-linkage clusters of those patches across the counted windows. Two patches link when their\n    outlines are within hit_radius_km of each other AND they drain to the same channel, i.e. their D8 flow\n    paths first reach the same named OSM river (rank.py's channel_name; two patches with no named river\n    downstream count as the same channel).\n  * Truth valley (positive sites): every cluster that contains a hit patch (within hit_radius_km of the truth\n    and same_channel, exactly rank.py's hit test). It is never a false alarm.\n  * False alarm: a non-truth valley with top_n patches in two consecutive counted windows (adjacent in the\n    pair list; a window that could not be processed breaks the run). Each valley counts once; its windows\n    are listed.\n  * Rate: false alarms / number of counted passes (windows). Also given per 12 days of the period covered.",
+ "season_note": "Backtest sites: ERA5 was not fetched and the season factor is set to 1. It multiplies every patch in a pass by the same number, so it cannot change a rank. Langtang keeps its committed ERA5 factor.",
+ "sites": {
+  "budhigandaki": {
+   "role": "test positive",
+   "box_epsg": 32645,
+   "box_x_edges": [
+    279360,
+    316400
+   ],
+   "box_y_edges": [
+    3136640,
+    3169600
+   ],
+   "truth": {
+    "kind": "approximate scar point (no UNOSAT or Copernicus EMS outline exists)",
+    "lonlat": [
+     84.9345,
+     28.5336
+    ]
+   },
+   "event_utc": "2026-10-10T22:37:00Z",
+   "hit_definition": "a ranked patch within 2.0 km of the truth whose D8 path joins the truth's D8 path before the main stem (rank.py same_channel)",
+   "source_path_first_river": "Shyar Khola",
+   "main_stem_first_river": "Shyar Khola",
+   "tributary_length_km": 8.87,
+   "rank_series": [
+    {
+     "window": "A098_20260515_20260527",
+     "status": "ok",
+     "rank": 24,
+     "n_ranked": 127,
+     "hit_id": "o190",
+     "top_n": false
+    },
+    {
+     "window": "A098_20260527_20260608",
+     "status": "ok",
+     "rank": 43,
+     "n_ranked": 138,
+     "hit_id": "o106",
+     "top_n": false
+    },
+    {
+     "window": "A098_20260608_20260620",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 128,
+     "hit_id": null,
+     "top_n": false
+    },
+    {
+     "window": "A098_20260620_20260702",
+     "status": "ok",
+     "rank": 59,
+     "n_ranked": 103,
+     "hit_id": "o189",
+     "top_n": false
+    },
+    {
+     "window": "A098_20260702_20260714",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 81,
+     "hit_id": null,
+     "top_n": false
+    },
+    {
+     "window": "A098_20260714_20260726",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 111,
+     "hit_id": null,
+     "top_n": false
+    },
+    {
+     "window": "A098_20260726_20260819",
+     "status": "ok",
+     "rank": 102,
+     "n_ranked": 193,
+     "hit_id": "o163",
+     "top_n": false
+    },
+    {
+     "window": "A098_20260819_20260831",
+     "status": "ok",
+     "rank": 12,
+     "n_ranked": 96,
+     "hit_id": "o200",
+     "top_n": false
+    },
+    {
+     "window": "A098_20260831_20260912",
+     "status": "ok",
+     "rank": 30,
+     "n_ranked": 184,
+     "hit_id": "o192",
+     "top_n": false
+    },
+    {
+     "window": "A098_20260912_20260924",
+     "status": "ok",
+     "rank": 10,
+     "n_ranked": 211,
+     "hit_id": "o292",
+     "top_n": false
+    },
+    {
+     "window": "A098_20260924_20261006",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 98,
+     "hit_id": null,
+     "top_n": false
+    }
+   ],
+   "positive_pass": {
+    "rule": "same as config.pass_condition: a patch within truth.hit_radius_km of the truth and draining to the same channel ranks in the top config.pass_condition.top_n in BOTH of the last two ascending windows before the event",
+    "windows": [
+     "A098_20260912_20260924",
+     "A098_20260924_20261006"
+    ],
+    "ranks": [
+     10,
+     null
+    ],
+    "n_ranked": [
+     211,
+     98
+    ],
+    "result": "fail"
+   },
+   "other_windows": [
+    {
+     "window": "A098_20261006_20261018",
+     "status": "ok",
+     "rank": 42,
+     "n_ranked": 241,
+     "hit_id": "o238",
+     "top_n": false,
+     "note": "spans the event"
+    },
+    {
+     "window": "D048_20260921_20261003",
+     "status": "ok",
+     "rank": 48,
+     "n_ranked": 105,
+     "hit_id": "p+14",
+     "top_n": false,
+     "note": "before the event"
+    },
+    {
+     "window": "D149_20260928_20261010",
+     "status": "ok",
+     "rank": 39,
+     "n_ranked": 149,
+     "hit_id": "o292",
+     "top_n": false,
+     "note": "before the event"
+    }
+   ],
+   "windows_used": {
+    "rank_series": [
+     "A098_20260515_20260527",
+     "A098_20260527_20260608",
+     "A098_20260608_20260620",
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819",
+     "A098_20260819_20260831",
+     "A098_20260831_20260912",
+     "A098_20260912_20260924",
+     "A098_20260924_20261006"
+    ],
+    "false_alarms": [
+     "A098_20260515_20260527",
+     "A098_20260527_20260608",
+     "A098_20260608_20260620",
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819",
+     "A098_20260819_20260831",
+     "A098_20260831_20260912",
+     "A098_20260912_20260924",
+     "A098_20260924_20261006"
+    ],
+    "other": [
+     "A098_20261006_20261018",
+     "D048_20260921_20261003",
+     "D149_20260928_20261010"
+    ]
+   },
+   "false_alarm": {
+    "windows": [
+     "A098_20260515_20260527",
+     "A098_20260527_20260608",
+     "A098_20260608_20260620",
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819",
+     "A098_20260819_20260831",
+     "A098_20260831_20260912",
+     "A098_20260912_20260924",
+     "A098_20260924_20261006"
+    ],
+    "windows_counted": [
+     "A098_20260515_20260527",
+     "A098_20260527_20260608",
+     "A098_20260608_20260620",
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819",
+     "A098_20260819_20260831",
+     "A098_20260831_20260912",
+     "A098_20260912_20260924",
+     "A098_20260924_20261006"
+    ],
+    "windows_not_counted": {},
+    "n_passes": 11,
+    "period": [
+     "2026-05-15",
+     "2026-10-06"
+    ],
+    "period_days": 144,
+    "n_false_alarms": 5,
+    "n_consecutive_pairs": 7,
+    "false_alarm_rate_per_pass": 0.455,
+    "false_alarm_rate_per_12_days": 0.417,
+    "false_alarms": [
+     {
+      "centroid_lonlat": [
+       84.7783,
+       28.5776
+      ],
+      "channel_name": "Tom Khola",
+      "windows": [
+       "A098_20260515_20260527",
+       "A098_20260527_20260608"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260515_20260527",
+        "A098_20260527_20260608"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260515_20260527": 5,
+       "A098_20260527_20260608": 4
+      },
+      "patches": {
+       "A098_20260515_20260527": [
+        "p+12"
+       ],
+       "A098_20260527_20260608": [
+        "p-33"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       85.055,
+       28.3963
+      ],
+      "channel_name": "Shyar Khola",
+      "windows": [
+       "A098_20260527_20260608",
+       "A098_20260608_20260620",
+       "A098_20260831_20260912",
+       "A098_20260924_20261006"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260527_20260608",
+        "A098_20260608_20260620"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260527_20260608": 5,
+       "A098_20260608_20260620": 1,
+       "A098_20260831_20260912": 1,
+       "A098_20260924_20261006": 4
+      },
+      "patches": {
+       "A098_20260527_20260608": [
+        "p-120"
+       ],
+       "A098_20260608_20260620": [
+        "o236",
+        "o279"
+       ],
+       "A098_20260831_20260912": [
+        "p+103"
+       ],
+       "A098_20260924_20261006": [
+        "o319"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       84.9355,
+       28.5804
+      ],
+      "channel_name": "Seran Khola",
+      "windows": [
+       "A098_20260515_20260527",
+       "A098_20260608_20260620",
+       "A098_20260620_20260702",
+       "A098_20260702_20260714",
+       "A098_20260714_20260726",
+       "A098_20260819_20260831",
+       "A098_20260924_20261006"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260608_20260620",
+        "A098_20260620_20260702"
+       ],
+       [
+        "A098_20260620_20260702",
+        "A098_20260702_20260714"
+       ],
+       [
+        "A098_20260702_20260714",
+        "A098_20260714_20260726"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260515_20260527": 3,
+       "A098_20260608_20260620": 3,
+       "A098_20260620_20260702": 3,
+       "A098_20260702_20260714": 2,
+       "A098_20260714_20260726": 2,
+       "A098_20260819_20260831": 3,
+       "A098_20260924_20261006": 1
+      },
+      "patches": {
+       "A098_20260515_20260527": [
+        "o111"
+       ],
+       "A098_20260608_20260620": [
+        "o59"
+       ],
+       "A098_20260620_20260702": [
+        "o104"
+       ],
+       "A098_20260702_20260714": [
+        "o35"
+       ],
+       "A098_20260714_20260726": [
+        "o34"
+       ],
+       "A098_20260819_20260831": [
+        "o127"
+       ],
+       "A098_20260924_20261006": [
+        "o88"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       84.9955,
+       28.508
+      ],
+      "channel_name": "Shyar Khola",
+      "windows": [
+       "A098_20260515_20260527",
+       "A098_20260726_20260819",
+       "A098_20260831_20260912",
+       "A098_20260912_20260924"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260831_20260912",
+        "A098_20260912_20260924"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260515_20260527": 1,
+       "A098_20260726_20260819": 1,
+       "A098_20260831_20260912": 4,
+       "A098_20260912_20260924": 5
+      },
+      "patches": {
+       "A098_20260515_20260527": [
+        "p+26",
+        "o192"
+       ],
+       "A098_20260726_20260819": [
+        "p-61",
+        "p+74"
+       ],
+       "A098_20260831_20260912": [
+        "p-111",
+        "p-104"
+       ],
+       "A098_20260912_20260924": [
+        "o283"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       84.7491,
+       28.596
+      ],
+      "channel_name": "Budhi Gandaki",
+      "windows": [
+       "A098_20260819_20260831",
+       "A098_20260912_20260924",
+       "A098_20260924_20261006"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260912_20260924",
+        "A098_20260924_20261006"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260819_20260831": 5,
+       "A098_20260912_20260924": 2,
+       "A098_20260924_20261006": 3
+      },
+      "patches": {
+       "A098_20260819_20260831": [
+        "o71"
+       ],
+       "A098_20260912_20260924": [
+        "o93"
+       ],
+       "A098_20260924_20261006": [
+        "o80"
+       ]
+      }
+     }
+    ],
+    "truth_valley_clusters": [],
+    "top_patches_without_channel_name": 0,
+    "top_patches": 55,
+    "link_radius_km": 2.0
+   },
+   "windows": [
+    {
+     "window": "A098_20260515_20260527",
+     "status": "ok",
+     "n_ranked": 127,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1171,
+     "phase_noise_mm": 9.07,
+     "asf_processed": "2026-09-18T23:16:48Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+26",
+       "channel_kind": "phase",
+       "lon": 84.9997,
+       "lat": 28.4938,
+       "score": 50.565,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 6.98,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o56",
+       "channel_kind": "offsets",
+       "lon": 85.0237,
+       "lat": 28.6082,
+       "score": 37.703,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 11.49,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o111",
+       "channel_kind": "offsets",
+       "lon": 84.938,
+       "lat": 28.5812,
+       "score": 37.164,
+       "channel_name": "Seran Khola",
+       "dist_truth_km": 5.07,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o192",
+       "channel_kind": "offsets",
+       "lon": 84.9832,
+       "lat": 28.5282,
+       "score": 35.865,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 4.28,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p+12",
+       "channel_kind": "phase",
+       "lon": 84.7802,
+       "lat": 28.5843,
+       "score": 34.963,
+       "channel_name": "Tom Khola",
+       "dist_truth_km": 15.8,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260527_20260608",
+     "status": "ok",
+     "n_ranked": 138,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1422,
+     "phase_noise_mm": 10.54,
+     "asf_processed": "2026-09-18T21:54:30Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+164",
+       "channel_kind": "phase",
+       "lon": 84.8825,
+       "lat": 28.3611,
+       "score": 60.04,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 19.16,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p+59",
+       "channel_kind": "phase",
+       "lon": 84.7989,
+       "lat": 28.5417,
+       "score": 52.774,
+       "channel_name": "Tom Khola",
+       "dist_truth_km": 12.55,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-69",
+       "channel_kind": "phase",
+       "lon": 85.0576,
+       "lat": 28.5357,
+       "score": 49.379,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 11.78,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p-33",
+       "channel_kind": "phase",
+       "lon": 84.7765,
+       "lat": 28.5709,
+       "score": 47.968,
+       "channel_name": "Tom Khola",
+       "dist_truth_km": 15.21,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-120",
+       "channel_kind": "phase",
+       "lon": 85.0248,
+       "lat": 28.3951,
+       "score": 43.817,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 17.3,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260608_20260620",
+     "status": "ok",
+     "n_ranked": 128,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1312,
+     "phase_noise_mm": 16.82,
+     "asf_processed": "2026-09-18T23:13:12Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o236",
+       "channel_kind": "offsets",
+       "lon": 85.0315,
+       "lat": 28.4143,
+       "score": 35.713,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 15.86,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o211",
+       "channel_kind": "offsets",
+       "lon": 85.0585,
+       "lat": 28.4368,
+       "score": 35.57,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 15.33,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o59",
+       "channel_kind": "offsets",
+       "lon": 84.9372,
+       "lat": 28.5802,
+       "score": 33.965,
+       "channel_name": "Seran Khola",
+       "dist_truth_km": 4.91,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o348",
+       "channel_kind": "offsets",
+       "lon": 85.0523,
+       "lat": 28.3444,
+       "score": 32.002,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 23.75,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o279",
+       "channel_kind": "offsets",
+       "lon": 85.1068,
+       "lat": 28.3897,
+       "score": 28.313,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 22.97,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260620_20260702",
+     "status": "ok",
+     "n_ranked": 103,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1187,
+     "phase_noise_mm": 9.24,
+     "asf_processed": "2026-08-12T07:50:38Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o25",
+       "channel_kind": "offsets",
+       "lon": 84.7877,
+       "lat": 28.6166,
+       "score": 60.406,
+       "channel_name": "Tom Khola",
+       "dist_truth_km": 15.88,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o22",
+       "channel_kind": "offsets",
+       "lon": 84.8228,
+       "lat": 28.6185,
+       "score": 55.561,
+       "channel_name": "Tom Khola",
+       "dist_truth_km": 13.61,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o104",
+       "channel_kind": "offsets",
+       "lon": 84.9376,
+       "lat": 28.5798,
+       "score": 49.834,
+       "channel_name": "Seran Khola",
+       "dist_truth_km": 4.83,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o3",
+       "channel_kind": "offsets",
+       "lon": 84.8045,
+       "lat": 28.6324,
+       "score": 49.669,
+       "channel_name": "Tom Khola",
+       "dist_truth_km": 15.79,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o130",
+       "channel_kind": "offsets",
+       "lon": 84.9819,
+       "lat": 28.5726,
+       "score": 41.199,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 5.87,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260702_20260714",
+     "status": "ok",
+     "n_ranked": 81,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.2279,
+     "phase_noise_mm": 11.64,
+     "asf_processed": "2026-08-13T02:49:10Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o175",
+       "channel_kind": "offsets",
+       "lon": 84.8326,
+       "lat": 28.3542,
+       "score": 37.838,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 21.18,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o35",
+       "channel_kind": "offsets",
+       "lon": 84.9374,
+       "lat": 28.5795,
+       "score": 30.26,
+       "channel_name": "Seran Khola",
+       "dist_truth_km": 4.99,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o142",
+       "channel_kind": "offsets",
+       "lon": 84.994,
+       "lat": 28.4004,
+       "score": 28.882,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 15.7,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o191",
+       "channel_kind": "offsets",
+       "lon": 84.7899,
+       "lat": 28.3415,
+       "score": 28.09,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 24.95,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-21",
+       "channel_kind": "phase",
+       "lon": 85.1113,
+       "lat": 28.4673,
+       "score": 26.965,
+       "channel_name": "Kyirong Tsangpo",
+       "dist_truth_km": 18.55,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260714_20260726",
+     "status": "ok",
+     "n_ranked": 111,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.249,
+     "phase_noise_mm": 4.16,
+     "asf_processed": "2026-08-16T00:51:13Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o164",
+       "channel_kind": "offsets",
+       "lon": 84.879,
+       "lat": 28.417,
+       "score": 35.161,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 13.44,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o34",
+       "channel_kind": "offsets",
+       "lon": 84.9381,
+       "lat": 28.5798,
+       "score": 34.236,
+       "channel_name": "Seran Khola",
+       "dist_truth_km": 4.99,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-9",
+       "channel_kind": "phase",
+       "lon": 84.9953,
+       "lat": 28.5921,
+       "score": 30.98,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 8.63,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o207",
+       "channel_kind": "offsets",
+       "lon": 84.8512,
+       "lat": 28.3846,
+       "score": 27.434,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 17.6,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-36",
+       "channel_kind": "phase",
+       "lon": 84.7546,
+       "lat": 28.4247,
+       "score": 26.502,
+       "channel_name": "Chhilun Khola",
+       "dist_truth_km": 21.16,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260726_20260819",
+     "status": "ok",
+     "n_ranked": 193,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0815,
+     "phase_noise_mm": 7.4,
+     "asf_processed": "2026-08-24T13:30:20Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-61",
+       "channel_kind": "phase",
+       "lon": 84.9911,
+       "lat": 28.5174,
+       "score": 105.695,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 5.2,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p+74",
+       "channel_kind": "phase",
+       "lon": 85.0007,
+       "lat": 28.4907,
+       "score": 94.431,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 7.1,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-64",
+       "channel_kind": "phase",
+       "lon": 84.9154,
+       "lat": 28.5081,
+       "score": 93.322,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 2.66,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p+110",
+       "channel_kind": "phase",
+       "lon": 84.8816,
+       "lat": 28.362,
+       "score": 75.3,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 19.16,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p+31",
+       "channel_kind": "phase",
+       "lon": 85.0995,
+       "lat": 28.5548,
+       "score": 52.62,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 15.4,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260819_20260831",
+     "status": "ok",
+     "n_ranked": 96,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0557,
+     "phase_noise_mm": 6.88,
+     "asf_processed": "2026-09-02T23:35:56Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o379",
+       "channel_kind": "offsets",
+       "lon": 85.056,
+       "lat": 28.3497,
+       "score": 50.648,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 22.85,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-41",
+       "channel_kind": "phase",
+       "lon": 85.0496,
+       "lat": 28.3781,
+       "score": 42.956,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 19.78,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o127",
+       "channel_kind": "offsets",
+       "lon": 84.9236,
+       "lat": 28.5707,
+       "score": 41.842,
+       "channel_name": "Seran Khola",
+       "dist_truth_km": 3.77,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o122",
+       "channel_kind": "offsets",
+       "lon": 85.0481,
+       "lat": 28.576,
+       "score": 35.853,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 11.56,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o71",
+       "channel_kind": "offsets",
+       "lon": 84.7503,
+       "lat": 28.5952,
+       "score": 34.737,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 18.9,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260831_20260912",
+     "status": "ok",
+     "n_ranked": 184,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0571,
+     "phase_noise_mm": 6.5,
+     "asf_processed": "2026-09-18T12:30:59Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+103",
+       "channel_kind": "phase",
+       "lon": 85.0715,
+       "lat": 28.3901,
+       "score": 168.311,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 19.72,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p+47",
+       "channel_kind": "phase",
+       "lon": 84.9136,
+       "lat": 28.5081,
+       "score": 108.92,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 2.66,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-168",
+       "channel_kind": "phase",
+       "lon": 84.8823,
+       "lat": 28.3616,
+       "score": 81.539,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 19.08,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p-111",
+       "channel_kind": "phase",
+       "lon": 85.0042,
+       "lat": 28.4877,
+       "score": 70.129,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 7.48,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-104",
+       "channel_kind": "phase",
+       "lon": 85.0048,
+       "lat": 28.5113,
+       "score": 62.739,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 6.75,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260912_20260924",
+     "status": "ok",
+     "n_ranked": 211,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.082,
+     "phase_noise_mm": 11.49,
+     "asf_processed": "2026-09-30T00:42:44Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-2",
+       "channel_kind": "phase",
+       "lon": 84.8144,
+       "lat": 28.6285,
+       "score": 86.714,
+       "channel_name": "Tom Khola",
+       "dist_truth_km": 14.43,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o93",
+       "channel_kind": "offsets",
+       "lon": 84.7487,
+       "lat": 28.5968,
+       "score": 60.849,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 18.47,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o330",
+       "channel_kind": "offsets",
+       "lon": 84.7533,
+       "lat": 28.4792,
+       "score": 55.773,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 17.81,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p-74",
+       "channel_kind": "phase",
+       "lon": 84.764,
+       "lat": 28.4894,
+       "score": 55.572,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 14.8,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o283",
+       "channel_kind": "offsets",
+       "lon": 84.9851,
+       "lat": 28.5271,
+       "score": 49.497,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 4.41,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260924_20261006",
+     "status": "ok",
+     "n_ranked": 98,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1958,
+     "phase_noise_mm": 7.89,
+     "asf_processed": "2026-10-08T20:58:04Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o88",
+       "channel_kind": "offsets",
+       "lon": 84.9363,
+       "lat": 28.5914,
+       "score": 38.367,
+       "channel_name": "Seran Khola",
+       "dist_truth_km": 5.87,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o133",
+       "channel_kind": "offsets",
+       "lon": 84.9819,
+       "lat": 28.5729,
+       "score": 37.033,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 5.69,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o80",
+       "channel_kind": "offsets",
+       "lon": 84.7484,
+       "lat": 28.596,
+       "score": 33.983,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 18.8,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o319",
+       "channel_kind": "offsets",
+       "lon": 85.0402,
+       "lat": 28.3924,
+       "score": 30.818,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 18.27,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o74",
+       "channel_kind": "offsets",
+       "lon": 85.0051,
+       "lat": 28.6037,
+       "score": 29.996,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 9.56,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20261006_20261018",
+     "status": "ok",
+     "n_ranked": 241,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0867,
+     "phase_noise_mm": 18.4,
+     "asf_processed": "2026-10-20T19:07:11Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o395",
+       "channel_kind": "offsets",
+       "lon": 85.0422,
+       "lat": 28.3916,
+       "score": 49.294,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 18.46,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p+93",
+       "channel_kind": "phase",
+       "lon": 85.0015,
+       "lat": 28.492,
+       "score": 41.293,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 7.05,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o288",
+       "channel_kind": "offsets",
+       "lon": 84.7691,
+       "lat": 28.4712,
+       "score": 37.942,
+       "channel_name": "Chhilun Khola",
+       "dist_truth_km": 16.97,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p+48",
+       "channel_kind": "phase",
+       "lon": 84.807,
+       "lat": 28.5344,
+       "score": 36.536,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 10.62,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o384",
+       "channel_kind": "offsets",
+       "lon": 84.9892,
+       "lat": 28.4006,
+       "score": 35.404,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 15.21,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D048_20260921_20261003",
+     "status": "ok",
+     "n_ranked": 105,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.389,
+     "phase_noise_mm": 27.62,
+     "asf_processed": "2026-10-05T09:34:29Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o162",
+       "channel_kind": "offsets",
+       "lon": 85.049,
+       "lat": 28.346,
+       "score": 39.088,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 23.1,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-13",
+       "channel_kind": "phase",
+       "lon": 85.0203,
+       "lat": 28.5015,
+       "score": 36.223,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 7.67,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o37",
+       "channel_kind": "offsets",
+       "lon": 84.9849,
+       "lat": 28.5754,
+       "score": 29.323,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 5.92,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o157",
+       "channel_kind": "offsets",
+       "lon": 85.0617,
+       "lat": 28.3526,
+       "score": 26.621,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 23.22,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-106",
+       "channel_kind": "phase",
+       "lon": 84.8959,
+       "lat": 28.3636,
+       "score": 25.138,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 18.81,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D149_20260928_20261010",
+     "status": "ok",
+     "n_ranked": 149,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1934,
+     "phase_noise_mm": 16.91,
+     "asf_processed": "2026-10-13T21:03:42Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o36",
+       "channel_kind": "offsets",
+       "lon": 84.7938,
+       "lat": 28.6245,
+       "score": 56.919,
+       "channel_name": "Tom Khola",
+       "dist_truth_km": 16.72,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o416",
+       "channel_kind": "offsets",
+       "lon": 84.7593,
+       "lat": 28.3944,
+       "score": 52.666,
+       "channel_name": "Chhilun Khola",
+       "dist_truth_km": 21.88,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o289",
+       "channel_kind": "offsets",
+       "lon": 84.9818,
+       "lat": 28.5284,
+       "score": 43.072,
+       "channel_name": "Shyar Khola",
+       "dist_truth_km": 3.74,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o352",
+       "channel_kind": "offsets",
+       "lon": 84.75,
+       "lat": 28.472,
+       "score": 42.989,
+       "channel_name": "Chhilun Khola",
+       "dist_truth_km": 18.5,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o334",
+       "channel_kind": "offsets",
+       "lon": 84.7657,
+       "lat": 28.4888,
+       "score": 36.502,
+       "channel_name": "Budhi Gandaki",
+       "dist_truth_km": 16.72,
+       "hit": false
+      }
+     ]
+    }
+   ],
+   "note": "The rank series starts at the first fetched pair, A098 2026-05-15, the same start as Langtang; the A098 stack also holds winter pairs back to Nov 2025 that were not fetched. The truth is an approximate scar point (no mapped outline), so the hit zone is a 2 km circle around a point.",
+   "season": "ERA5 not fetched for this backtest site: the season factor is the same for every patch in a pass and cannot change ranks, so it is set to 1",
+   "provenance": {
+    "granules": {
+     "A098_20260515_20260527": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_020_098_A_016_021_4000_SH_20260515T233923_20260515T233958_20260527T233923_20260527T233957_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:34:49Z",
+       "product_processing_time": "2026-09-18T23:34:49",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_020_098_A_016_021_4000_SH_20260515T233923_20260515T233958_20260527T233923_20260527T233957_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:16:48Z",
+       "product_processing_time": "2026-09-18T23:16:48",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260527_20260608": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_021_098_A_016_022_4000_SH_20260527T233923_20260527T233957_20260608T233922_20260608T233956_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:07:59Z",
+       "product_processing_time": "2026-09-18T23:07:59",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_021_098_A_016_022_4000_SH_20260527T233923_20260527T233957_20260608T233922_20260608T233956_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T21:54:30Z",
+       "product_processing_time": "2026-09-18T21:54:30",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260608_20260620": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_022_098_A_016_023_4000_SH_20260608T233922_20260608T233956_20260620T233921_20260620T233956_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:41:40Z",
+       "product_processing_time": "2026-09-18T23:41:40",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_022_098_A_016_023_4000_SH_20260608T233922_20260608T233956_20260620T233921_20260620T233956_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:13:12Z",
+       "product_processing_time": "2026-09-18T23:13:12",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260620_20260702": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_023_098_A_016_024_4000_SH_20260620T233921_20260620T233956_20260702T233920_20260702T233955_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T02:30:10Z",
+       "product_processing_time": "2026-08-12T02:30:10",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_023_098_A_016_024_4000_SH_20260620T233921_20260620T233956_20260702T233920_20260702T233955_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T07:50:38Z",
+       "product_processing_time": "2026-08-12T07:50:38",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      }
+     },
+     "A098_20260702_20260714": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_024_098_A_016_025_4000_SH_20260702T233920_20260702T233955_20260714T233920_20260714T233954_P05023_F_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T14:29:55Z",
+       "product_processing_time": "2026-08-12T14:29:55",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_024_098_A_016_025_4000_SH_20260702T233920_20260702T233955_20260714T233920_20260714T233954_P05023_F_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-13T02:49:10Z",
+       "product_processing_time": "2026-08-13T02:49:10",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      }
+     },
+     "A098_20260714_20260726": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-13T10:53:05Z",
+       "product_processing_time": "2026-08-13T10:53:05",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-16T00:51:13Z",
+       "product_processing_time": "2026-08-16T00:51:13",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      }
+     },
+     "A098_20260726_20260819": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_026_098_A_016_028_4000_SH_20260726T233919_20260726T233954_20260819T233918_20260819T233953_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-24T22:36:55Z",
+       "product_processing_time": "2026-08-24T22:36:55",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_026_098_A_016_028_4000_SH_20260726T233919_20260726T233954_20260819T233918_20260819T233953_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-24T13:30:20Z",
+       "product_processing_time": "2026-08-24T13:30:20",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      }
+     },
+     "A098_20260819_20260831": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-02T12:30:51Z",
+       "product_processing_time": "2026-09-02T12:30:51",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-02T23:35:56Z",
+       "product_processing_time": "2026-09-02T23:35:56",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      }
+     },
+     "A098_20260831_20260912": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_029_098_A_016_030_4000_SH_20260831T233918_20260831T233952_20260912T233918_20260912T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-15T10:32:39Z",
+       "product_processing_time": "2026-09-15T10:32:39",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_029_098_A_016_030_4000_SH_20260831T233918_20260831T233952_20260912T233918_20260912T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-18T12:30:59Z",
+       "product_processing_time": "2026-09-18T12:30:59",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      }
+     },
+     "A098_20260912_20260924": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_030_098_A_016_031_4000_SH_20260912T233918_20260912T233952_20260924T233918_20260924T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-30T06:41:28Z",
+       "product_processing_time": "2026-09-30T06:41:28",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_030_098_A_016_031_4000_SH_20260912T233918_20260912T233952_20260924T233918_20260924T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-30T00:42:44Z",
+       "product_processing_time": "2026-09-30T00:42:44",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      }
+     },
+     "A098_20260924_20261006": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_031_098_A_016_032_4000_SH_20260924T233918_20260924T233952_20261006T233918_20261006T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-09T01:12:01Z",
+       "product_processing_time": "2026-10-09T01:12:01",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_031_098_A_016_032_4000_SH_20260924T233918_20260924T233952_20261006T233918_20261006T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-08T20:58:04Z",
+       "product_processing_time": "2026-10-08T20:58:04",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "manang"
+       ]
+      }
+     },
+     "A098_20261006_20261018": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_032_098_A_016_033_4000_SH_20261006T233918_20261006T233952_20261018T233918_20261018T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-20T21:17:44Z",
+       "product_processing_time": "2026-10-20T21:17:44",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_032_098_A_016_033_4000_SH_20261006T233918_20261006T233952_20261018T233918_20261018T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-20T19:07:11Z",
+       "product_processing_time": "2026-10-20T19:07:11",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D048_20260921_20261003": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_031_048_D_074_032_2000_SH_20260921T125811_20260921T125846_20261003T125812_20261003T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-05T10:26:53Z",
+       "product_processing_time": "2026-10-05T10:26:53",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_031_048_D_074_032_2000_SH_20260921T125811_20260921T125846_20261003T125812_20261003T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-05T09:34:29Z",
+       "product_processing_time": "2026-10-05T09:34:29",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D149_20260928_20261010": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_031_149_D_074_032_2000_SH_20260928T130631_20260928T130706_20261010T130631_20261010T130706_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-12T19:01:50Z",
+       "product_processing_time": "2026-10-12T19:01:50",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_031_149_D_074_032_2000_SH_20260928T130631_20260928T130706_20261010T130631_20261010T130706_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-13T21:03:42Z",
+       "product_processing_time": "2026-10-13T21:03:42",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     }
+    },
+    "config_sha256": "d8a90eedfce0a61a6f0e7bfa94e8c2b0d5156994b64e3a4c85f9317b9614e133",
+    "backtest_sha256": "1450bdbfb5128a1e7d878bfbcc361f19f1b7130553b7f1cb575137225242aec8"
+   }
+  },
+  "manang": {
+   "role": "negative control (no recorded failure in the period found by search; not proof of none)",
+   "box_epsg": 32645,
+   "box_x_edges": [
+    196000,
+    233040
+   ],
+   "box_y_edges": [
+    3154560,
+    3187520
+   ],
+   "truth": {
+    "kind": "none: negative control"
+   },
+   "event_utc": null,
+   "windows_used": {
+    "false_alarms": [
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819",
+     "A098_20260819_20260831",
+     "A098_20260831_20260912",
+     "A098_20260912_20260924",
+     "A098_20260924_20261006"
+    ],
+    "other": []
+   },
+   "positive_pass": null,
+   "false_alarm": {
+    "windows": [
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819",
+     "A098_20260819_20260831",
+     "A098_20260831_20260912",
+     "A098_20260912_20260924",
+     "A098_20260924_20261006"
+    ],
+    "windows_counted": [
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819",
+     "A098_20260819_20260831",
+     "A098_20260831_20260912",
+     "A098_20260912_20260924",
+     "A098_20260924_20261006"
+    ],
+    "windows_not_counted": {},
+    "n_passes": 8,
+    "period": [
+     "2026-06-20",
+     "2026-10-06"
+    ],
+    "period_days": 108,
+    "n_false_alarms": 3,
+    "n_consecutive_pairs": 5,
+    "false_alarm_rate_per_pass": 0.375,
+    "false_alarm_rate_per_12_days": 0.333,
+    "false_alarms": [
+     {
+      "centroid_lonlat": [
+       84.1851,
+       28.522
+      ],
+      "channel_name": "Marsyangdi",
+      "windows": [
+       "A098_20260620_20260702",
+       "A098_20260702_20260714",
+       "A098_20260831_20260912",
+       "A098_20260924_20261006"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260620_20260702",
+        "A098_20260702_20260714"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260620_20260702": 2,
+       "A098_20260702_20260714": 1,
+       "A098_20260831_20260912": 3,
+       "A098_20260924_20261006": 2
+      },
+      "patches": {
+       "A098_20260620_20260702": [
+        "o289"
+       ],
+       "A098_20260702_20260714": [
+        "p+33"
+       ],
+       "A098_20260831_20260912": [
+        "p+90"
+       ],
+       "A098_20260924_20261006": [
+        "o477"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       83.9626,
+       28.5725
+      ],
+      "channel_name": "Modi Khola",
+      "windows": [
+       "A098_20260714_20260726",
+       "A098_20260726_20260819",
+       "A098_20260912_20260924",
+       "A098_20260924_20261006"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260714_20260726",
+        "A098_20260726_20260819"
+       ],
+       [
+        "A098_20260912_20260924",
+        "A098_20260924_20261006"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260714_20260726": 3,
+       "A098_20260726_20260819": 3,
+       "A098_20260912_20260924": 3,
+       "A098_20260924_20261006": 1
+      },
+      "patches": {
+       "A098_20260714_20260726": [
+        "o211",
+        "o238"
+       ],
+       "A098_20260726_20260819": [
+        "o181"
+       ],
+       "A098_20260912_20260924": [
+        "o446"
+       ],
+       "A098_20260924_20261006": [
+        "o355"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       84.045,
+       28.5296
+      ],
+      "channel_name": "Seti Khola",
+      "windows": [
+       "A098_20260714_20260726",
+       "A098_20260819_20260831",
+       "A098_20260831_20260912",
+       "A098_20260912_20260924"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260819_20260831",
+        "A098_20260831_20260912"
+       ],
+       [
+        "A098_20260831_20260912",
+        "A098_20260912_20260924"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260714_20260726": 5,
+       "A098_20260819_20260831": 3,
+       "A098_20260831_20260912": 5,
+       "A098_20260912_20260924": 1
+      },
+      "patches": {
+       "A098_20260714_20260726": [
+        "p-28"
+       ],
+       "A098_20260819_20260831": [
+        "o444"
+       ],
+       "A098_20260831_20260912": [
+        "o439"
+       ],
+       "A098_20260912_20260924": [
+        "o482"
+       ]
+      }
+     }
+    ],
+    "truth_valley_clusters": [],
+    "top_patches_without_channel_name": 0,
+    "top_patches": 40,
+    "link_radius_km": 2.0
+   },
+   "windows": [
+    {
+     "window": "A098_20260620_20260702",
+     "status": "ok",
+     "n_ranked": 171,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1883,
+     "phase_noise_mm": 7.29,
+     "asf_processed": "2026-08-12T07:50:38Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o323",
+       "channel_kind": "offsets",
+       "lon": 84.227,
+       "lat": 28.5058,
+       "score": 92.825,
+       "channel_name": "Ghatte Khola"
+      },
+      {
+       "rank": 2,
+       "id": "o289",
+       "channel_kind": "offsets",
+       "lon": 84.1804,
+       "lat": 28.5347,
+       "score": 70.719,
+       "channel_name": "Marsyangdi"
+      },
+      {
+       "rank": 3,
+       "id": "o212",
+       "channel_kind": "offsets",
+       "lon": 83.9074,
+       "lat": 28.5768,
+       "score": 55.131,
+       "channel_name": "Modi Khola"
+      },
+      {
+       "rank": 4,
+       "id": "o314",
+       "channel_kind": "offsets",
+       "lon": 84.2449,
+       "lat": 28.5306,
+       "score": 52.99,
+       "channel_name": "Ghatte Khola"
+      },
+      {
+       "rank": 5,
+       "id": "o9",
+       "channel_kind": "offsets",
+       "lon": 83.9588,
+       "lat": 28.7668,
+       "score": 51.716,
+       "channel_name": "Jharsang Khola"
+      }
+     ]
+    },
+    {
+     "window": "A098_20260702_20260714",
+     "status": "ok",
+     "n_ranked": 80,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.3147,
+     "phase_noise_mm": 7.37,
+     "asf_processed": "2026-08-13T02:49:10Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+33",
+       "channel_kind": "phase",
+       "lon": 84.1825,
+       "lat": 28.5116,
+       "score": 77.379,
+       "channel_name": "Marsyangdi"
+      },
+      {
+       "rank": 2,
+       "id": "p-20",
+       "channel_kind": "phase",
+       "lon": 84.0206,
+       "lat": 28.5744,
+       "score": 52.592,
+       "channel_name": "Seti Khola"
+      },
+      {
+       "rank": 3,
+       "id": "p+25",
+       "channel_kind": "phase",
+       "lon": 84.2105,
+       "lat": 28.5891,
+       "score": 40.04,
+       "channel_name": "Marsyangdi"
+      },
+      {
+       "rank": 4,
+       "id": "p+22",
+       "channel_kind": "phase",
+       "lon": 84.1957,
+       "lat": 28.6024,
+       "score": 37.366,
+       "channel_name": "Marsyangdi"
+      },
+      {
+       "rank": 5,
+       "id": "p+13",
+       "channel_kind": "phase",
+       "lon": 84.2316,
+       "lat": 28.7079,
+       "score": 33.008,
+       "channel_name": "Nar Khola"
+      }
+     ]
+    },
+    {
+     "window": "A098_20260714_20260726",
+     "status": "ok",
+     "n_ranked": 143,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1201,
+     "phase_noise_mm": 3.79,
+     "asf_processed": "2026-08-16T00:51:13Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o132",
+       "channel_kind": "offsets",
+       "lon": 83.8931,
+       "lat": 28.6239,
+       "score": 73.722,
+       "channel_name": "Khangsar Khola"
+      },
+      {
+       "rank": 2,
+       "id": "o55",
+       "channel_kind": "offsets",
+       "lon": 84.1707,
+       "lat": 28.671,
+       "score": 64.125,
+       "channel_name": "Ghatte Khola"
+      },
+      {
+       "rank": 3,
+       "id": "o211",
+       "channel_kind": "offsets",
+       "lon": 83.9585,
+       "lat": 28.5797,
+       "score": 53.61,
+       "channel_name": "Modi Khola"
+      },
+      {
+       "rank": 4,
+       "id": "o238",
+       "channel_kind": "offsets",
+       "lon": 83.9713,
+       "lat": 28.5668,
+       "score": 50.443,
+       "channel_name": "Modi Khola"
+      },
+      {
+       "rank": 5,
+       "id": "p-28",
+       "channel_kind": "phase",
+       "lon": 84.0408,
+       "lat": 28.5396,
+       "score": 49.807,
+       "channel_name": "Seti Khola"
+      }
+     ]
+    },
+    {
+     "window": "A098_20260726_20260819",
+     "status": "ok",
+     "n_ranked": 199,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0787,
+     "phase_noise_mm": 5.92,
+     "asf_processed": "2026-08-24T13:30:20Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-107",
+       "channel_kind": "phase",
+       "lon": 83.958,
+       "lat": 28.4911,
+       "score": 159.575,
+       "channel_name": "Seti Khola"
+      },
+      {
+       "rank": 2,
+       "id": "p-71",
+       "channel_kind": "phase",
+       "lon": 83.9916,
+       "lat": 28.5746,
+       "score": 122.709,
+       "channel_name": "Seti Khola"
+      },
+      {
+       "rank": 3,
+       "id": "o181",
+       "channel_kind": "offsets",
+       "lon": 83.9597,
+       "lat": 28.5828,
+       "score": 90.332,
+       "channel_name": "Modi Khola"
+      },
+      {
+       "rank": 4,
+       "id": "p-69",
+       "channel_kind": "phase",
+       "lon": 83.9988,
+       "lat": 28.5763,
+       "score": 79.146,
+       "channel_name": "Seti Khola"
+      },
+      {
+       "rank": 5,
+       "id": "o217",
+       "channel_kind": "offsets",
+       "lon": 84.1377,
+       "lat": 28.5632,
+       "score": 63.335,
+       "channel_name": "Marsyangdi"
+      }
+     ]
+    },
+    {
+     "window": "A098_20260819_20260831",
+     "status": "ok",
+     "n_ranked": 201,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0422,
+     "phase_noise_mm": 6.26,
+     "asf_processed": "2026-09-02T23:35:56Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o284",
+       "channel_kind": "offsets",
+       "lon": 83.9036,
+       "lat": 28.6179,
+       "score": 136.853,
+       "channel_name": "Khangsar Khola"
+      },
+      {
+       "rank": 2,
+       "id": "p-86",
+       "channel_kind": "phase",
+       "lon": 84.1736,
+       "lat": 28.4987,
+       "score": 93.932,
+       "channel_name": "Madi Khola"
+      },
+      {
+       "rank": 3,
+       "id": "o444",
+       "channel_kind": "offsets",
+       "lon": 84.0472,
+       "lat": 28.5267,
+       "score": 69.258,
+       "channel_name": "Seti Khola"
+      },
+      {
+       "rank": 4,
+       "id": "p-85",
+       "channel_kind": "phase",
+       "lon": 83.9384,
+       "lat": 28.4975,
+       "score": 58.687,
+       "channel_name": "Modi Khola"
+      },
+      {
+       "rank": 5,
+       "id": "o319",
+       "channel_kind": "offsets",
+       "lon": 83.9088,
+       "lat": 28.5836,
+       "score": 50.967,
+       "channel_name": "Modi Khola"
+      }
+     ]
+    },
+    {
+     "window": "A098_20260831_20260912",
+     "status": "ok",
+     "n_ranked": 214,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0485,
+     "phase_noise_mm": 6.4,
+     "asf_processed": "2026-09-18T12:30:59Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+98",
+       "channel_kind": "phase",
+       "lon": 83.9582,
+       "lat": 28.4911,
+       "score": 154.715,
+       "channel_name": "Seti Khola"
+      },
+      {
+       "rank": 2,
+       "id": "p-106",
+       "channel_kind": "phase",
+       "lon": 84.2398,
+       "lat": 28.5701,
+       "score": 100.816,
+       "channel_name": "Nar Khola"
+      },
+      {
+       "rank": 3,
+       "id": "p+90",
+       "channel_kind": "phase",
+       "lon": 84.1998,
+       "lat": 28.5124,
+       "score": 76.404,
+       "channel_name": "Marsyangdi"
+      },
+      {
+       "rank": 4,
+       "id": "p+71",
+       "channel_kind": "phase",
+       "lon": 83.9797,
+       "lat": 28.5479,
+       "score": 67.867,
+       "channel_name": "Seti Khola"
+      },
+      {
+       "rank": 5,
+       "id": "o439",
+       "channel_kind": "offsets",
+       "lon": 84.0456,
+       "lat": 28.526,
+       "score": 64.522,
+       "channel_name": "Seti Khola"
+      }
+     ]
+    },
+    {
+     "window": "A098_20260912_20260924",
+     "status": "ok",
+     "n_ranked": 215,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0788,
+     "phase_noise_mm": 12.34,
+     "asf_processed": "2026-09-30T00:42:44Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o482",
+       "channel_kind": "offsets",
+       "lon": 84.0465,
+       "lat": 28.5259,
+       "score": 75.761,
+       "channel_name": "Seti Khola"
+      },
+      {
+       "rank": 2,
+       "id": "o495",
+       "channel_kind": "offsets",
+       "lon": 84.1136,
+       "lat": 28.5246,
+       "score": 74.692,
+       "channel_name": "Madi Khola"
+      },
+      {
+       "rank": 3,
+       "id": "o446",
+       "channel_kind": "offsets",
+       "lon": 83.9571,
+       "lat": 28.5458,
+       "score": 72.683,
+       "channel_name": "Modi Khola"
+      },
+      {
+       "rank": 4,
+       "id": "o328",
+       "channel_kind": "offsets",
+       "lon": 84.0098,
+       "lat": 28.6061,
+       "score": 63.402,
+       "channel_name": "Gangapurna Khola"
+      },
+      {
+       "rank": 5,
+       "id": "o497",
+       "channel_kind": "offsets",
+       "lon": 83.9437,
+       "lat": 28.5143,
+       "score": 58.96,
+       "channel_name": "Modi Khola"
+      }
+     ]
+    },
+    {
+     "window": "A098_20260924_20261006",
+     "status": "ok",
+     "n_ranked": 135,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1894,
+     "phase_noise_mm": 6.51,
+     "asf_processed": "2026-10-08T20:58:04Z",
+     "season_factor": 1.0,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o355",
+       "channel_kind": "offsets",
+       "lon": 83.9662,
+       "lat": 28.5874,
+       "score": 47.949,
+       "channel_name": "Modi Khola"
+      },
+      {
+       "rank": 2,
+       "id": "o477",
+       "channel_kind": "offsets",
+       "lon": 84.1777,
+       "lat": 28.5294,
+       "score": 44.36,
+       "channel_name": "Marsyangdi"
+      },
+      {
+       "rank": 3,
+       "id": "o137",
+       "channel_kind": "offsets",
+       "lon": 84.0384,
+       "lat": 28.7206,
+       "score": 27.562,
+       "channel_name": "Jharsang Khola"
+      },
+      {
+       "rank": 4,
+       "id": "o192",
+       "channel_kind": "offsets",
+       "lon": 84.1783,
+       "lat": 28.7,
+       "score": 27.046,
+       "channel_name": "Ghatte Khola"
+      },
+      {
+       "rank": 5,
+       "id": "o363",
+       "channel_kind": "offsets",
+       "lon": 83.9192,
+       "lat": 28.5805,
+       "score": 26.267,
+       "channel_name": "Modi Khola"
+      }
+     ]
+    }
+   ],
+   "season": "ERA5 not fetched for this backtest site: the season factor is the same for every patch in a pass and cannot change ranks, so it is set to 1",
+   "provenance": {
+    "granules": {
+     "A098_20260620_20260702": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_023_098_A_016_024_4000_SH_20260620T233921_20260620T233956_20260702T233920_20260702T233955_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T02:30:10Z",
+       "product_processing_time": "2026-08-12T02:30:10",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_023_098_A_016_024_4000_SH_20260620T233921_20260620T233956_20260702T233920_20260702T233955_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T07:50:38Z",
+       "product_processing_time": "2026-08-12T07:50:38",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      }
+     },
+     "A098_20260702_20260714": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_024_098_A_016_025_4000_SH_20260702T233920_20260702T233955_20260714T233920_20260714T233954_P05023_F_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T14:29:55Z",
+       "product_processing_time": "2026-08-12T14:29:55",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_024_098_A_016_025_4000_SH_20260702T233920_20260702T233955_20260714T233920_20260714T233954_P05023_F_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-13T02:49:10Z",
+       "product_processing_time": "2026-08-13T02:49:10",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      }
+     },
+     "A098_20260714_20260726": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-13T10:53:05Z",
+       "product_processing_time": "2026-08-13T10:53:05",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-16T00:51:13Z",
+       "product_processing_time": "2026-08-16T00:51:13",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      }
+     },
+     "A098_20260726_20260819": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_026_098_A_016_028_4000_SH_20260726T233919_20260726T233954_20260819T233918_20260819T233953_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-24T22:36:55Z",
+       "product_processing_time": "2026-08-24T22:36:55",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_026_098_A_016_028_4000_SH_20260726T233919_20260726T233954_20260819T233918_20260819T233953_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-24T13:30:20Z",
+       "product_processing_time": "2026-08-24T13:30:20",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      }
+     },
+     "A098_20260819_20260831": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-02T12:30:51Z",
+       "product_processing_time": "2026-09-02T12:30:51",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-02T23:35:56Z",
+       "product_processing_time": "2026-09-02T23:35:56",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      }
+     },
+     "A098_20260831_20260912": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_029_098_A_016_030_4000_SH_20260831T233918_20260831T233952_20260912T233918_20260912T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-15T10:32:39Z",
+       "product_processing_time": "2026-09-15T10:32:39",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_029_098_A_016_030_4000_SH_20260831T233918_20260831T233952_20260912T233918_20260912T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-18T12:30:59Z",
+       "product_processing_time": "2026-09-18T12:30:59",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      }
+     },
+     "A098_20260912_20260924": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_030_098_A_016_031_4000_SH_20260912T233918_20260912T233952_20260924T233918_20260924T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-30T06:41:28Z",
+       "product_processing_time": "2026-09-30T06:41:28",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_030_098_A_016_031_4000_SH_20260912T233918_20260912T233952_20260924T233918_20260924T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-30T00:42:44Z",
+       "product_processing_time": "2026-09-30T00:42:44",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      }
+     },
+     "A098_20260924_20261006": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_031_098_A_016_032_4000_SH_20260924T233918_20260924T233952_20261006T233918_20261006T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-09T01:12:01Z",
+       "product_processing_time": "2026-10-09T01:12:01",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_031_098_A_016_032_4000_SH_20260924T233918_20260924T233952_20261006T233918_20261006T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-08T20:58:04Z",
+       "product_processing_time": "2026-10-08T20:58:04",
+       "box_coverage": 1.0,
+       "read_together_with": [
+        "budhigandaki"
+       ]
+      }
+     }
+    },
+    "config_sha256": "d8a90eedfce0a61a6f0e7bfa94e8c2b0d5156994b64e3a4c85f9317b9614e133",
+    "backtest_sha256": "1450bdbfb5128a1e7d878bfbcc361f19f1b7130553b7f1cb575137225242aec8"
+   }
+  },
+  "langtang": {
+   "role": "development event (rules written after it); reported, not counted as a test",
+   "box_epsg": 32645,
+   "box_x_edges": [
+    336400,
+    373440
+   ],
+   "box_y_edges": [
+    3113680,
+    3146640
+   ],
+   "truth": {
+    "kind": "UNOSAT possible-detachment outline (product 4257)",
+    "path": "raw/event/unosat/detachment.geojson"
+   },
+   "event_utc": "2026-08-26T02:52:10Z",
+   "hit_definition": "a ranked patch within 2.0 km of the truth whose D8 path joins the truth's D8 path before the main stem (rank.py same_channel)",
+   "source_path_first_river": "Chhochen Khola",
+   "main_stem_first_river": null,
+   "tributary_length_km": 23.16,
+   "rank_series": [
+    {
+     "window": "A098_20260515_20260527",
+     "status": "ok",
+     "rank": 3,
+     "n_ranked": 145,
+     "hit_id": "o216",
+     "top_n": true
+    },
+    {
+     "window": "A098_20260527_20260608",
+     "status": "ok",
+     "rank": 1,
+     "n_ranked": 110,
+     "hit_id": "p-70",
+     "top_n": true
+    },
+    {
+     "window": "A098_20260608_20260620",
+     "status": "ok",
+     "rank": 4,
+     "n_ranked": 100,
+     "hit_id": "p+8",
+     "top_n": true
+    },
+    {
+     "window": "A098_20260620_20260702",
+     "status": "ok",
+     "rank": 1,
+     "n_ranked": 125,
+     "hit_id": "o223",
+     "top_n": true
+    },
+    {
+     "window": "A098_20260702_20260714",
+     "status": "ok",
+     "rank": 1,
+     "n_ranked": 105,
+     "hit_id": "p-24",
+     "top_n": true
+    },
+    {
+     "window": "A098_20260714_20260726",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 116,
+     "hit_id": null,
+     "top_n": false
+    },
+    {
+     "window": "A098_20260726_20260819",
+     "status": "ok",
+     "rank": 2,
+     "n_ranked": 189,
+     "hit_id": "p+43",
+     "top_n": true
+    }
+   ],
+   "positive_pass": {
+    "rule": "same as config.pass_condition: a patch within truth.hit_radius_km of the truth and draining to the same channel ranks in the top config.pass_condition.top_n in BOTH of the last two ascending windows before the event",
+    "windows": [
+     "A098_20260714_20260726",
+     "A098_20260726_20260819"
+    ],
+    "ranks": [
+     null,
+     2
+    ],
+    "n_ranked": [
+     116,
+     189
+    ],
+    "result": "fail"
+   },
+   "other_windows": [
+    {
+     "window": "A098_20260819_20260831",
+     "status": "ok",
+     "rank": 21,
+     "n_ranked": 180,
+     "hit_id": "o284",
+     "top_n": false,
+     "note": "spans the event"
+    },
+    {
+     "window": "A098_20260831_20260912",
+     "status": "ok",
+     "rank": 3,
+     "n_ranked": 236,
+     "hit_id": "p+69",
+     "top_n": true,
+     "note": "after the event"
+    },
+    {
+     "window": "A098_20260912_20260924",
+     "status": "ok",
+     "rank": 22,
+     "n_ranked": 244,
+     "hit_id": "o327",
+     "top_n": false,
+     "note": "after the event"
+    },
+    {
+     "window": "A098_20260924_20261006",
+     "status": "ok",
+     "rank": 8,
+     "n_ranked": 142,
+     "hit_id": "o207",
+     "top_n": false,
+     "note": "after the event"
+    },
+    {
+     "window": "A098_20261006_20261018",
+     "status": "ok",
+     "rank": 1,
+     "n_ranked": 228,
+     "hit_id": "p+37",
+     "top_n": true,
+     "note": "after the event"
+    },
+    {
+     "window": "D048_20260629_20260711",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 93,
+     "hit_id": null,
+     "top_n": false,
+     "note": "before the event"
+    },
+    {
+     "window": "D048_20260711_20260723",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 83,
+     "hit_id": null,
+     "top_n": false,
+     "note": "before the event"
+    },
+    {
+     "window": "D048_20260723_20260816",
+     "status": "ok",
+     "rank": 13,
+     "n_ranked": 220,
+     "hit_id": "p+41",
+     "top_n": false,
+     "note": "before the event"
+    },
+    {
+     "window": "D048_20260816_20260828",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 89,
+     "hit_id": null,
+     "top_n": false,
+     "note": "spans the event"
+    },
+    {
+     "window": "D048_20260828_20260909",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 112,
+     "hit_id": null,
+     "top_n": false,
+     "note": "after the event"
+    },
+    {
+     "window": "D048_20260909_20260921",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 63,
+     "hit_id": null,
+     "top_n": false,
+     "note": "after the event"
+    },
+    {
+     "window": "D048_20260921_20261003",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 54,
+     "hit_id": null,
+     "top_n": false,
+     "note": "after the event"
+    },
+    {
+     "window": "D048_20261003_20261015",
+     "status": "ok",
+     "rank": null,
+     "n_ranked": 98,
+     "hit_id": null,
+     "top_n": false,
+     "note": "after the event"
+    }
+   ],
+   "windows_used": {
+    "rank_series": [
+     "A098_20260515_20260527",
+     "A098_20260527_20260608",
+     "A098_20260608_20260620",
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819"
+    ],
+    "false_alarms": [
+     "A098_20260515_20260527",
+     "A098_20260527_20260608",
+     "A098_20260608_20260620",
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819"
+    ],
+    "other": [
+     "A098_20260819_20260831",
+     "A098_20260831_20260912",
+     "A098_20260912_20260924",
+     "A098_20260924_20261006",
+     "A098_20261006_20261018",
+     "D048_20260629_20260711",
+     "D048_20260711_20260723",
+     "D048_20260723_20260816",
+     "D048_20260816_20260828",
+     "D048_20260828_20260909",
+     "D048_20260909_20260921",
+     "D048_20260921_20261003",
+     "D048_20261003_20261015"
+    ]
+   },
+   "false_alarm": {
+    "windows": [
+     "A098_20260515_20260527",
+     "A098_20260527_20260608",
+     "A098_20260608_20260620",
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819"
+    ],
+    "windows_counted": [
+     "A098_20260515_20260527",
+     "A098_20260527_20260608",
+     "A098_20260608_20260620",
+     "A098_20260620_20260702",
+     "A098_20260702_20260714",
+     "A098_20260714_20260726",
+     "A098_20260726_20260819"
+    ],
+    "windows_not_counted": {},
+    "n_passes": 7,
+    "period": [
+     "2026-05-15",
+     "2026-08-19"
+    ],
+    "period_days": 96,
+    "n_false_alarms": 4,
+    "n_consecutive_pairs": 6,
+    "false_alarm_rate_per_pass": 0.571,
+    "false_alarm_rate_per_12_days": 0.5,
+    "false_alarms": [
+     {
+      "centroid_lonlat": [
+       85.646,
+       28.3832
+      ],
+      "channel_name": "Purepu Tsangpo",
+      "windows": [
+       "A098_20260527_20260608",
+       "A098_20260608_20260620",
+       "A098_20260714_20260726"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260527_20260608",
+        "A098_20260608_20260620"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260527_20260608": 4,
+       "A098_20260608_20260620": 2,
+       "A098_20260714_20260726": 2
+      },
+      "patches": {
+       "A098_20260527_20260608": [
+        "p-28"
+       ],
+       "A098_20260608_20260620": [
+        "p-11"
+       ],
+       "A098_20260714_20260726": [
+        "p-11"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       85.6765,
+       28.1772
+      ],
+      "channel_name": "Langtang Khola",
+      "windows": [
+       "A098_20260620_20260702",
+       "A098_20260702_20260714",
+       "A098_20260714_20260726",
+       "A098_20260726_20260819"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260620_20260702",
+        "A098_20260702_20260714"
+       ],
+       [
+        "A098_20260702_20260714",
+        "A098_20260714_20260726"
+       ],
+       [
+        "A098_20260714_20260726",
+        "A098_20260726_20260819"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260620_20260702": 5,
+       "A098_20260702_20260714": 4,
+       "A098_20260714_20260726": 4,
+       "A098_20260726_20260819": 5
+      },
+      "patches": {
+       "A098_20260620_20260702": [
+        "o364"
+       ],
+       "A098_20260702_20260714": [
+        "p+40"
+       ],
+       "A098_20260714_20260726": [
+        "p-59"
+       ],
+       "A098_20260726_20260819": [
+        "p-79"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       85.7066,
+       28.2433
+      ],
+      "channel_name": "Bhemdan Khola",
+      "windows": [
+       "A098_20260608_20260620",
+       "A098_20260702_20260714",
+       "A098_20260714_20260726"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260702_20260714",
+        "A098_20260714_20260726"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260608_20260620": 3,
+       "A098_20260702_20260714": 3,
+       "A098_20260714_20260726": 1
+      },
+      "patches": {
+       "A098_20260608_20260620": [
+        "p-44"
+       ],
+       "A098_20260702_20260714": [
+        "p-68"
+       ],
+       "A098_20260714_20260726": [
+        "p-43"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       85.6397,
+       28.24
+      ],
+      "channel_name": "Langtang Khola",
+      "windows": [
+       "A098_20260527_20260608",
+       "A098_20260620_20260702",
+       "A098_20260714_20260726",
+       "A098_20260726_20260819"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260714_20260726",
+        "A098_20260726_20260819"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260527_20260608": 3,
+       "A098_20260620_20260702": 2,
+       "A098_20260714_20260726": 3,
+       "A098_20260726_20260819": 4
+      },
+      "patches": {
+       "A098_20260527_20260608": [
+        "p-95"
+       ],
+       "A098_20260620_20260702": [
+        "o272"
+       ],
+       "A098_20260714_20260726": [
+        "p-57"
+       ],
+       "A098_20260726_20260819": [
+        "p+78"
+       ]
+      }
+     }
+    ],
+    "truth_valley_clusters": [
+     {
+      "centroid_lonlat": [
+       85.5718,
+       28.2848
+      ],
+      "channel_name": "Chusumdo Tsangpo",
+      "windows": [
+       "A098_20260515_20260527",
+       "A098_20260702_20260714",
+       "A098_20260714_20260726",
+       "A098_20260726_20260819"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260702_20260714",
+        "A098_20260714_20260726"
+       ],
+       [
+        "A098_20260714_20260726",
+        "A098_20260726_20260819"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260515_20260527": 3,
+       "A098_20260702_20260714": 1,
+       "A098_20260714_20260726": 5,
+       "A098_20260726_20260819": 1
+      },
+      "patches": {
+       "A098_20260515_20260527": [
+        "o216"
+       ],
+       "A098_20260702_20260714": [
+        "p-24",
+        "p-27",
+        "p-59"
+       ],
+       "A098_20260714_20260726": [
+        "p-29"
+       ],
+       "A098_20260726_20260819": [
+        "p-49",
+        "p+43",
+        "p+41"
+       ]
+      }
+     },
+     {
+      "centroid_lonlat": [
+       85.5309,
+       28.2858
+      ],
+      "channel_name": "Chhochen Khola",
+      "windows": [
+       "A098_20260515_20260527",
+       "A098_20260527_20260608",
+       "A098_20260608_20260620",
+       "A098_20260620_20260702"
+      ],
+      "consecutive_pairs": [
+       [
+        "A098_20260515_20260527",
+        "A098_20260527_20260608"
+       ],
+       [
+        "A098_20260527_20260608",
+        "A098_20260608_20260620"
+       ],
+       [
+        "A098_20260608_20260620",
+        "A098_20260620_20260702"
+       ]
+      ],
+      "best_rank_per_window": {
+       "A098_20260515_20260527": 4,
+       "A098_20260527_20260608": 1,
+       "A098_20260608_20260620": 4,
+       "A098_20260620_20260702": 1
+      },
+      "patches": {
+       "A098_20260515_20260527": [
+        "o217"
+       ],
+       "A098_20260527_20260608": [
+        "p-70"
+       ],
+       "A098_20260608_20260620": [
+        "p+8"
+       ],
+       "A098_20260620_20260702": [
+        "o223"
+       ]
+      }
+     }
+    ],
+    "top_patches_without_channel_name": 0,
+    "top_patches": 35,
+    "link_radius_km": 2.0
+   },
+   "windows": [
+    {
+     "window": "A098_20260515_20260527",
+     "status": "ok",
+     "n_ranked": 145,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0898,
+     "phase_noise_mm": 7.12,
+     "asf_processed": "2026-09-18T23:16:48Z",
+     "season_factor": 1.091240035124903,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+7",
+       "channel_kind": "phase",
+       "lon": 85.7043,
+       "lat": 28.3126,
+       "score": 86.739,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 16.55,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o322",
+       "channel_kind": "offsets",
+       "lon": 85.5521,
+       "lat": 28.1738,
+       "score": 38.511,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 12.12,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o216",
+       "channel_kind": "offsets",
+       "lon": 85.5553,
+       "lat": 28.2826,
+       "score": 37.245,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 1.98,
+       "hit": true
+      },
+      {
+       "rank": 4,
+       "id": "o217",
+       "channel_kind": "offsets",
+       "lon": 85.5089,
+       "lat": 28.2784,
+       "score": 34.141,
+       "channel_name": "Chhochen Khola",
+       "dist_truth_km": 0.1,
+       "hit": true
+      },
+      {
+       "rank": 5,
+       "id": "o334",
+       "channel_kind": "offsets",
+       "lon": 85.601,
+       "lat": 28.1666,
+       "score": 33.279,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 14.35,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260527_20260608",
+     "status": "ok",
+     "n_ranked": 110,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.2034,
+     "phase_noise_mm": 8.27,
+     "asf_processed": "2026-09-18T21:54:30Z",
+     "season_factor": 1.0505235879303996,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-70",
+       "channel_kind": "phase",
+       "lon": 85.543,
+       "lat": 28.2891,
+       "score": 100.471,
+       "channel_name": "Chhochen Khola",
+       "dist_truth_km": 0.57,
+       "hit": true
+      },
+      {
+       "rank": 2,
+       "id": "p+64",
+       "channel_kind": "phase",
+       "lon": 85.4752,
+       "lat": 28.2767,
+       "score": 78.663,
+       "channel_name": "Nyuwasu Khola",
+       "dist_truth_km": 3.09,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-95",
+       "channel_kind": "phase",
+       "lon": 85.6305,
+       "lat": 28.2401,
+       "score": 56.164,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 10.53,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p-28",
+       "channel_kind": "phase",
+       "lon": 85.6471,
+       "lat": 28.381,
+       "score": 55.854,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 14.02,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-61",
+       "channel_kind": "phase",
+       "lon": 85.4921,
+       "lat": 28.3025,
+       "score": 55.012,
+       "channel_name": "Chhochen Khola",
+       "dist_truth_km": 2.0,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260608_20260620",
+     "status": "ok",
+     "n_ranked": 100,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1711,
+     "phase_noise_mm": 9.28,
+     "asf_processed": "2026-09-18T23:13:12Z",
+     "season_factor": 0.9360685178667931,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+29",
+       "channel_kind": "phase",
+       "lon": 85.5527,
+       "lat": 28.273,
+       "score": 37.239,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 2.15,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-11",
+       "channel_kind": "phase",
+       "lon": 85.6447,
+       "lat": 28.3815,
+       "score": 27.184,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 14.41,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-44",
+       "channel_kind": "phase",
+       "lon": 85.707,
+       "lat": 28.2438,
+       "score": 25.393,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 17.67,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p+8",
+       "channel_kind": "phase",
+       "lon": 85.5382,
+       "lat": 28.2979,
+       "score": 24.748,
+       "channel_name": "Chhochen Khola",
+       "dist_truth_km": 0.46,
+       "hit": true
+      },
+      {
+       "rank": 5,
+       "id": "o50",
+       "channel_kind": "offsets",
+       "lon": 85.5765,
+       "lat": 28.3325,
+       "score": 23.164,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 5.65,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260620_20260702",
+     "status": "ok",
+     "n_ranked": 125,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.09,
+     "phase_noise_mm": 7.32,
+     "asf_processed": "2026-08-12T07:50:38Z",
+     "season_factor": 0.9485817391608758,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o223",
+       "channel_kind": "offsets",
+       "lon": 85.5333,
+       "lat": 28.2776,
+       "score": 65.973,
+       "channel_name": "Chhochen Khola",
+       "dist_truth_km": 0.0,
+       "hit": true
+      },
+      {
+       "rank": 2,
+       "id": "o272",
+       "channel_kind": "offsets",
+       "lon": 85.6481,
+       "lat": 28.2572,
+       "score": 55.731,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 11.5,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o132",
+       "channel_kind": "offsets",
+       "lon": 85.6606,
+       "lat": 28.3382,
+       "score": 43.417,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 13.57,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o67",
+       "channel_kind": "offsets",
+       "lon": 85.4339,
+       "lat": 28.3693,
+       "score": 36.719,
+       "channel_name": "Lende Khola",
+       "dist_truth_km": 10.75,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o364",
+       "channel_kind": "offsets",
+       "lon": 85.6867,
+       "lat": 28.1601,
+       "score": 33.112,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 20.52,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260702_20260714",
+     "status": "ok",
+     "n_ranked": 105,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.2293,
+     "phase_noise_mm": 7.2,
+     "asf_processed": "2026-08-13T02:49:10Z",
+     "season_factor": 1.0657010203487285,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-24",
+       "channel_kind": "phase",
+       "lon": 85.5523,
+       "lat": 28.2981,
+       "score": 98.521,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 1.22,
+       "hit": true
+      },
+      {
+       "rank": 2,
+       "id": "p-27",
+       "channel_kind": "phase",
+       "lon": 85.5595,
+       "lat": 28.2911,
+       "score": 54.299,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 2.16,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-68",
+       "channel_kind": "phase",
+       "lon": 85.7064,
+       "lat": 28.243,
+       "score": 45.145,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 17.62,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p+40",
+       "channel_kind": "phase",
+       "lon": 85.6705,
+       "lat": 28.1903,
+       "score": 44.209,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 17.08,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-59",
+       "channel_kind": "phase",
+       "lon": 85.5938,
+       "lat": 28.2714,
+       "score": 39.429,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 5.79,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260714_20260726",
+     "status": "ok",
+     "n_ranked": 116,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.2484,
+     "phase_noise_mm": 6.56,
+     "asf_processed": "2026-08-16T00:51:13Z",
+     "season_factor": 1.1221250973897303,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-43",
+       "channel_kind": "phase",
+       "lon": 85.7064,
+       "lat": 28.243,
+       "score": 57.603,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 17.59,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-11",
+       "channel_kind": "phase",
+       "lon": 85.6461,
+       "lat": 28.3871,
+       "score": 46.419,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 14.51,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-57",
+       "channel_kind": "phase",
+       "lon": 85.652,
+       "lat": 28.2227,
+       "score": 36.72,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 13.67,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p-59",
+       "channel_kind": "phase",
+       "lon": 85.6615,
+       "lat": 28.1841,
+       "score": 33.622,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 16.85,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-29",
+       "channel_kind": "phase",
+       "lon": 85.6139,
+       "lat": 28.2793,
+       "score": 33.173,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 7.91,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260726_20260819",
+     "status": "ok",
+     "n_ranked": 189,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0606,
+     "phase_noise_mm": 6.63,
+     "asf_processed": "2026-08-24T13:30:20Z",
+     "season_factor": 1.268141644752117,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-49",
+       "channel_kind": "phase",
+       "lon": 85.5797,
+       "lat": 28.27,
+       "score": 237.543,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 2.52,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p+43",
+       "channel_kind": "phase",
+       "lon": 85.5505,
+       "lat": 28.2942,
+       "score": 172.599,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 1.32,
+       "hit": true
+      },
+      {
+       "rank": 3,
+       "id": "p+41",
+       "channel_kind": "phase",
+       "lon": 85.5695,
+       "lat": 28.2919,
+       "score": 124.068,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 3.19,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p+78",
+       "channel_kind": "phase",
+       "lon": 85.6284,
+       "lat": 28.2399,
+       "score": 123.856,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 9.9,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-79",
+       "channel_kind": "phase",
+       "lon": 85.6872,
+       "lat": 28.1743,
+       "score": 105.962,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 18.93,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260819_20260831",
+     "status": "ok",
+     "n_ranked": 180,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0461,
+     "phase_noise_mm": 7.58,
+     "asf_processed": "2026-09-02T23:35:56Z",
+     "season_factor": 1.3720976914375438,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-36",
+       "channel_kind": "phase",
+       "lon": 85.5765,
+       "lat": 28.268,
+       "score": 295.032,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 2.18,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-12",
+       "channel_kind": "phase",
+       "lon": 85.655,
+       "lat": 28.3875,
+       "score": 166.202,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 14.57,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o471",
+       "channel_kind": "offsets",
+       "lon": 85.6722,
+       "lat": 28.1701,
+       "score": 60.499,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 18.1,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o204",
+       "channel_kind": "offsets",
+       "lon": 85.614,
+       "lat": 28.3171,
+       "score": 55.754,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 8.14,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-61",
+       "channel_kind": "phase",
+       "lon": 85.707,
+       "lat": 28.2432,
+       "score": 53.905,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 17.74,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260831_20260912",
+     "status": "ok",
+     "n_ranked": 236,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0546,
+     "phase_noise_mm": 7.29,
+     "asf_processed": "2026-09-18T12:30:59Z",
+     "season_factor": 1.4237167819531278,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+55",
+       "channel_kind": "phase",
+       "lon": 85.56,
+       "lat": 28.2897,
+       "score": 162.724,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 2.24,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p+81",
+       "channel_kind": "phase",
+       "lon": 85.5852,
+       "lat": 28.2658,
+       "score": 134.334,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 4.45,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p+69",
+       "channel_kind": "phase",
+       "lon": 85.502,
+       "lat": 28.2817,
+       "score": 90.859,
+       "channel_name": "Chhochen Khola",
+       "dist_truth_km": 0.43,
+       "hit": true
+      },
+      {
+       "rank": 4,
+       "id": "p-131",
+       "channel_kind": "phase",
+       "lon": 85.5722,
+       "lat": 28.2734,
+       "score": 83.201,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 3.56,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p+86",
+       "channel_kind": "phase",
+       "lon": 85.5661,
+       "lat": 28.2585,
+       "score": 79.347,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 4.13,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260912_20260924",
+     "status": "ok",
+     "n_ranked": 244,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0769,
+     "phase_noise_mm": 12.67,
+     "asf_processed": "2026-09-30T00:42:44Z",
+     "season_factor": 1.4042200602358461,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-105",
+       "channel_kind": "phase",
+       "lon": 85.6095,
+       "lat": 28.2259,
+       "score": 130.443,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 7.45,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-158",
+       "channel_kind": "phase",
+       "lon": 85.5184,
+       "lat": 28.1796,
+       "score": 87.017,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 10.08,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o344",
+       "channel_kind": "offsets",
+       "lon": 85.6485,
+       "lat": 28.2576,
+       "score": 73.589,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 11.5,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o189",
+       "channel_kind": "offsets",
+       "lon": 85.6138,
+       "lat": 28.3194,
+       "score": 70.336,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 8.11,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p+20",
+       "channel_kind": "phase",
+       "lon": 85.6506,
+       "lat": 28.2027,
+       "score": 63.755,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 14.02,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20260924_20261006",
+     "status": "ok",
+     "n_ranked": 142,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1764,
+     "phase_noise_mm": 7.38,
+     "asf_processed": "2026-10-08T20:58:04Z",
+     "season_factor": 1.423095214086046,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o185",
+       "channel_kind": "offsets",
+       "lon": 85.6549,
+       "lat": 28.2984,
+       "score": 35.293,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 11.78,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o455",
+       "channel_kind": "offsets",
+       "lon": 85.6269,
+       "lat": 28.1456,
+       "score": 34.911,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 17.87,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o464",
+       "channel_kind": "offsets",
+       "lon": 85.5318,
+       "lat": 28.142,
+       "score": 32.698,
+       "channel_name": "Melamchi Khola",
+       "dist_truth_km": 15.46,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o412",
+       "channel_kind": "offsets",
+       "lon": 85.5376,
+       "lat": 28.1555,
+       "score": 31.945,
+       "channel_name": "Yangri Khola",
+       "dist_truth_km": 13.91,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o94",
+       "channel_kind": "offsets",
+       "lon": 85.7044,
+       "lat": 28.3607,
+       "score": 30.62,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 18.34,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "A098_20261006_20261018",
+     "status": "ok",
+     "n_ranked": 228,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.0882,
+     "phase_noise_mm": 18.32,
+     "asf_processed": "2026-10-20T19:07:11Z",
+     "season_factor": 1.5,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+37",
+       "channel_kind": "phase",
+       "lon": 85.5525,
+       "lat": 28.2884,
+       "score": 62.566,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 1.37,
+       "hit": true
+      },
+      {
+       "rank": 2,
+       "id": "o194",
+       "channel_kind": "offsets",
+       "lon": 85.6137,
+       "lat": 28.3211,
+       "score": 59.159,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 8.33,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o294",
+       "channel_kind": "offsets",
+       "lon": 85.6492,
+       "lat": 28.2577,
+       "score": 55.333,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 11.5,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o173",
+       "channel_kind": "offsets",
+       "lon": 85.6613,
+       "lat": 28.3386,
+       "score": 51.365,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 13.62,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o405",
+       "channel_kind": "offsets",
+       "lon": 85.5461,
+       "lat": 28.1798,
+       "score": 43.16,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 11.29,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D048_20260629_20260711",
+     "status": "ok",
+     "n_ranked": 93,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.5161,
+     "phase_noise_mm": 9.19,
+     "asf_processed": "2026-08-13T18:02:31Z",
+     "season_factor": 1.0497095349797345,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+7",
+       "channel_kind": "phase",
+       "lon": 85.5274,
+       "lat": 28.4194,
+       "score": 82.487,
+       "channel_name": "Richong Chu",
+       "dist_truth_km": 12.76,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-19",
+       "channel_kind": "phase",
+       "lon": 85.6267,
+       "lat": 28.2976,
+       "score": 51.03,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 8.73,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o39",
+       "channel_kind": "offsets",
+       "lon": 85.5187,
+       "lat": 28.4003,
+       "score": 38.927,
+       "channel_name": "Richong Chu",
+       "dist_truth_km": 11.15,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p-40",
+       "channel_kind": "phase",
+       "lon": 85.4283,
+       "lat": 28.2305,
+       "score": 38.861,
+       "channel_name": "Ghatte Khola",
+       "dist_truth_km": 9.66,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p+3",
+       "channel_kind": "phase",
+       "lon": 85.5335,
+       "lat": 28.4313,
+       "score": 34.171,
+       "channel_name": "Richong Chu",
+       "dist_truth_km": 14.66,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D048_20260711_20260723",
+     "status": "ok",
+     "n_ranked": 83,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.5985,
+     "phase_noise_mm": 12.93,
+     "asf_processed": "2026-08-17T05:47:07Z",
+     "season_factor": 1.1055953251027497,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-3",
+       "channel_kind": "phase",
+       "lon": 85.5277,
+       "lat": 28.4215,
+       "score": 86.876,
+       "channel_name": "Richong Chu",
+       "dist_truth_km": 12.45,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o18",
+       "channel_kind": "offsets",
+       "lon": 85.5124,
+       "lat": 28.4106,
+       "score": 61.812,
+       "channel_name": "Richong Chu",
+       "dist_truth_km": 11.88,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-121",
+       "channel_kind": "phase",
+       "lon": 85.4317,
+       "lat": 28.2307,
+       "score": 43.135,
+       "channel_name": "Ghatte Khola",
+       "dist_truth_km": 9.36,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o90",
+       "channel_kind": "offsets",
+       "lon": 85.4608,
+       "lat": 28.3292,
+       "score": 32.771,
+       "channel_name": "Chusumdo Tsangpo",
+       "dist_truth_km": 5.14,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o60",
+       "channel_kind": "offsets",
+       "lon": 85.4003,
+       "lat": 28.3667,
+       "score": 31.746,
+       "channel_name": "Kyirong Tsangpo",
+       "dist_truth_km": 13.29,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D048_20260723_20260816",
+     "status": "ok",
+     "n_ranked": 220,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.094,
+     "phase_noise_mm": 6.89,
+     "asf_processed": "2026-08-21T18:53:42Z",
+     "season_factor": 1.2534998241771844,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+70",
+       "channel_kind": "phase",
+       "lon": 85.4292,
+       "lat": 28.2316,
+       "score": 111.44,
+       "channel_name": "Ghatte Khola",
+       "dist_truth_km": 9.31,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-77",
+       "channel_kind": "phase",
+       "lon": 85.4496,
+       "lat": 28.1728,
+       "score": 90.017,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 13.48,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p+74",
+       "channel_kind": "phase",
+       "lon": 85.454,
+       "lat": 28.1831,
+       "score": 67.652,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 12.27,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o353",
+       "channel_kind": "offsets",
+       "lon": 85.3601,
+       "lat": 28.1784,
+       "score": 57.755,
+       "channel_name": "Bhote Koshi",
+       "dist_truth_km": 17.39,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-2",
+       "channel_kind": "phase",
+       "lon": 85.4586,
+       "lat": 28.436,
+       "score": 54.718,
+       "channel_name": "Lende Khola",
+       "dist_truth_km": 16.37,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D048_20260816_20260828",
+     "status": "ok",
+     "n_ranked": 89,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.2247,
+     "phase_noise_mm": 9.76,
+     "asf_processed": "2026-08-30T04:10:35Z",
+     "season_factor": 1.348842230524853,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o123",
+       "channel_kind": "offsets",
+       "lon": 85.6188,
+       "lat": 28.2578,
+       "score": 45.462,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 8.83,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-33",
+       "channel_kind": "phase",
+       "lon": 85.3704,
+       "lat": 28.3293,
+       "score": 41.395,
+       "channel_name": "Kyirong Tsangpo",
+       "dist_truth_km": 14.24,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p+9",
+       "channel_kind": "phase",
+       "lon": 85.4685,
+       "lat": 28.4127,
+       "score": 40.383,
+       "channel_name": "Lende Khola",
+       "dist_truth_km": 13.33,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o99",
+       "channel_kind": "offsets",
+       "lon": 85.6525,
+       "lat": 28.3562,
+       "score": 37.721,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 13.77,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p-51",
+       "channel_kind": "phase",
+       "lon": 85.3866,
+       "lat": 28.2773,
+       "score": 34.242,
+       "channel_name": "Lende Khola",
+       "dist_truth_km": 11.69,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D048_20260828_20260909",
+     "status": "ok",
+     "n_ranked": 112,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.116,
+     "phase_noise_mm": 9.47,
+     "asf_processed": "2026-09-16T12:09:17Z",
+     "season_factor": 1.4143567155621928,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "o236",
+       "channel_kind": "offsets",
+       "lon": 85.4842,
+       "lat": 28.2494,
+       "score": 72.346,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 4.65,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-35",
+       "channel_kind": "phase",
+       "lon": 85.4682,
+       "lat": 28.3054,
+       "score": 61.094,
+       "channel_name": "Najalta Khola",
+       "dist_truth_km": 3.98,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o56",
+       "channel_kind": "offsets",
+       "lon": 85.6759,
+       "lat": 28.3844,
+       "score": 46.01,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 17.21,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o226",
+       "channel_kind": "offsets",
+       "lon": 85.6196,
+       "lat": 28.255,
+       "score": 45.908,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 8.91,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o161",
+       "channel_kind": "offsets",
+       "lon": 85.6749,
+       "lat": 28.317,
+       "score": 44.843,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 13.46,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D048_20260909_20260921",
+     "status": "ok",
+     "n_ranked": 63,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.4023,
+     "phase_noise_mm": 9.84,
+     "asf_processed": "2026-09-24T01:16:57Z",
+     "season_factor": 1.4101798033622317,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p+14",
+       "channel_kind": "phase",
+       "lon": 85.6567,
+       "lat": 28.3906,
+       "score": 89.752,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 15.85,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-139",
+       "channel_kind": "phase",
+       "lon": 85.4295,
+       "lat": 28.2309,
+       "score": 84.599,
+       "channel_name": "Ghatte Khola",
+       "dist_truth_km": 9.36,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "p-78",
+       "channel_kind": "phase",
+       "lon": 85.4655,
+       "lat": 28.2967,
+       "score": 41.572,
+       "channel_name": "Nyuwasu Khola",
+       "dist_truth_km": 4.0,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "p+29",
+       "channel_kind": "phase",
+       "lon": 85.4003,
+       "lat": 28.2963,
+       "score": 37.041,
+       "channel_name": "Lende Khola",
+       "dist_truth_km": 10.48,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "p+13",
+       "channel_kind": "phase",
+       "lon": 85.6546,
+       "lat": 28.401,
+       "score": 34.748,
+       "channel_name": "Purepu Tsangpo",
+       "dist_truth_km": 16.59,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D048_20260921_20261003",
+     "status": "ok",
+     "n_ranked": 54,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.3408,
+     "phase_noise_mm": 11.53,
+     "asf_processed": "2026-10-05T09:34:29Z",
+     "season_factor": 1.39659767720575,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-3",
+       "channel_kind": "phase",
+       "lon": 85.508,
+       "lat": 28.37,
+       "score": 58.725,
+       "channel_name": "Richong Chu",
+       "dist_truth_km": 7.88,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "p-5",
+       "channel_kind": "phase",
+       "lon": 85.3618,
+       "lat": 28.3469,
+       "score": 40.201,
+       "channel_name": "Kyirong Tsangpo",
+       "dist_truth_km": 15.47,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o207",
+       "channel_kind": "offsets",
+       "lon": 85.5749,
+       "lat": 28.142,
+       "score": 27.687,
+       "channel_name": "Yangri Khola",
+       "dist_truth_km": 16.33,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o87",
+       "channel_kind": "offsets",
+       "lon": 85.6672,
+       "lat": 28.3051,
+       "score": 25.29,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 13.5,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o18",
+       "channel_kind": "offsets",
+       "lon": 85.4112,
+       "lat": 28.4251,
+       "score": 23.792,
+       "channel_name": "Sangchen Chu",
+       "dist_truth_km": 17.53,
+       "hit": false
+      }
+     ]
+    },
+    {
+     "window": "D048_20261003_20261015",
+     "status": "ok",
+     "n_ranked": 98,
+     "offsets_layer": "layer3",
+     "offsets_noise_m": 0.1589,
+     "phase_noise_mm": 8.58,
+     "asf_processed": "2026-10-17T10:04:56Z",
+     "season_factor": 1.5,
+     "top5": [
+      {
+       "rank": 1,
+       "id": "p-48",
+       "channel_kind": "phase",
+       "lon": 85.6477,
+       "lat": 28.2256,
+       "score": 97.165,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 12.04,
+       "hit": false
+      },
+      {
+       "rank": 2,
+       "id": "o262",
+       "channel_kind": "offsets",
+       "lon": 85.6666,
+       "lat": 28.1488,
+       "score": 61.8,
+       "channel_name": "Indrawati river",
+       "dist_truth_km": 19.38,
+       "hit": false
+      },
+      {
+       "rank": 3,
+       "id": "o172",
+       "channel_kind": "offsets",
+       "lon": 85.6566,
+       "lat": 28.2332,
+       "score": 49.91,
+       "channel_name": "Langtang Khola",
+       "dist_truth_km": 12.53,
+       "hit": false
+      },
+      {
+       "rank": 4,
+       "id": "o114",
+       "channel_kind": "offsets",
+       "lon": 85.4542,
+       "lat": 28.2806,
+       "score": 44.148,
+       "channel_name": "Nyuwasu Khola",
+       "dist_truth_km": 5.14,
+       "hit": false
+      },
+      {
+       "rank": 5,
+       "id": "o90",
+       "channel_kind": "offsets",
+       "lon": 85.6726,
+       "lat": 28.3168,
+       "score": 42.865,
+       "channel_name": "Bhemdan Khola",
+       "dist_truth_km": 13.51,
+       "hit": false
+      }
+     ]
+    }
+   ],
+   "note": "Uses the committed data/ outputs unchanged. They reproduce byte-for-byte from the current code only when clean.py runs on an earlier Copernicus DEM mosaic that sat half a pixel (about 15 m) off the tile grid and rank.py on the current, corrected DEM: data/ was not regenerated after the DEM fix. Re-running clean.py and rank.py on the current DEM keeps the pre-event pass ranks (not ranked, #2) and the 4 false alarms, but changes n_ranked in most windows and the hit rank in A098 0819-0831 (21 to 10), A098 0924-1006 (8 to 7) and D048 0723-0816 (13 to 14).",
+   "season": "ERA5 season factor applied (identical for every patch in a pass)",
+   "provenance": {
+    "granules": {
+     "A098_20260515_20260527": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_020_098_A_016_021_4000_SH_20260515T233923_20260515T233958_20260527T233923_20260527T233957_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:34:49Z",
+       "product_processing_time": "2026-09-18T23:34:49",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_020_098_A_016_021_4000_SH_20260515T233923_20260515T233958_20260527T233923_20260527T233957_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:16:48Z",
+       "product_processing_time": "2026-09-18T23:16:48",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260527_20260608": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_021_098_A_016_022_4000_SH_20260527T233923_20260527T233957_20260608T233922_20260608T233956_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:07:59Z",
+       "product_processing_time": "2026-09-18T23:07:59",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_021_098_A_016_022_4000_SH_20260527T233923_20260527T233957_20260608T233922_20260608T233956_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T21:54:30Z",
+       "product_processing_time": "2026-09-18T21:54:30",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260608_20260620": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_022_098_A_016_023_4000_SH_20260608T233922_20260608T233956_20260620T233921_20260620T233956_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:41:40Z",
+       "product_processing_time": "2026-09-18T23:41:40",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_022_098_A_016_023_4000_SH_20260608T233922_20260608T233956_20260620T233921_20260620T233956_X05026_N_F_J_001",
+       "crid": "X05026",
+       "asf_processing_date": "2026-09-18T23:13:12Z",
+       "product_processing_time": "2026-09-18T23:13:12",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260620_20260702": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_023_098_A_016_024_4000_SH_20260620T233921_20260620T233956_20260702T233920_20260702T233955_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T02:30:10Z",
+       "product_processing_time": "2026-08-12T02:30:10",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_023_098_A_016_024_4000_SH_20260620T233921_20260620T233956_20260702T233920_20260702T233955_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T07:50:38Z",
+       "product_processing_time": "2026-08-12T07:50:38",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260702_20260714": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_024_098_A_016_025_4000_SH_20260702T233920_20260702T233955_20260714T233920_20260714T233954_P05023_F_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T14:29:55Z",
+       "product_processing_time": "2026-08-12T14:29:55",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_024_098_A_016_025_4000_SH_20260702T233920_20260702T233955_20260714T233920_20260714T233954_P05023_F_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-13T02:49:10Z",
+       "product_processing_time": "2026-08-13T02:49:10",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260714_20260726": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-13T10:53:05Z",
+       "product_processing_time": "2026-08-13T10:53:05",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_025_098_A_016_026_4000_SH_20260714T233920_20260714T233954_20260726T233919_20260726T233954_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-16T00:51:13Z",
+       "product_processing_time": "2026-08-16T00:51:13",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260726_20260819": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_026_098_A_016_028_4000_SH_20260726T233919_20260726T233954_20260819T233918_20260819T233953_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-24T22:36:55Z",
+       "product_processing_time": "2026-08-24T22:36:55",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_026_098_A_016_028_4000_SH_20260726T233919_20260726T233954_20260819T233918_20260819T233953_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-24T13:30:20Z",
+       "product_processing_time": "2026-08-24T13:30:20",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260819_20260831": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-02T12:30:51Z",
+       "product_processing_time": "2026-09-02T12:30:51",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_028_098_A_016_029_4000_SH_20260819T233918_20260819T233953_20260831T233918_20260831T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-02T23:35:56Z",
+       "product_processing_time": "2026-09-02T23:35:56",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260831_20260912": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_029_098_A_016_030_4000_SH_20260831T233918_20260831T233952_20260912T233918_20260912T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-15T10:32:39Z",
+       "product_processing_time": "2026-09-15T10:32:39",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_029_098_A_016_030_4000_SH_20260831T233918_20260831T233952_20260912T233918_20260912T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-18T12:30:59Z",
+       "product_processing_time": "2026-09-18T12:30:59",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260912_20260924": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_030_098_A_016_031_4000_SH_20260912T233918_20260912T233952_20260924T233918_20260924T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-30T06:41:28Z",
+       "product_processing_time": "2026-09-30T06:41:28",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_030_098_A_016_031_4000_SH_20260912T233918_20260912T233952_20260924T233918_20260924T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-30T00:42:44Z",
+       "product_processing_time": "2026-09-30T00:42:44",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20260924_20261006": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_031_098_A_016_032_4000_SH_20260924T233918_20260924T233952_20261006T233918_20261006T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-09T01:12:01Z",
+       "product_processing_time": "2026-10-09T01:12:01",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_031_098_A_016_032_4000_SH_20260924T233918_20260924T233952_20261006T233918_20261006T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-08T20:58:04Z",
+       "product_processing_time": "2026-10-08T20:58:04",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "A098_20261006_20261018": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_032_098_A_016_033_4000_SH_20261006T233918_20261006T233952_20261018T233918_20261018T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-20T21:17:44Z",
+       "product_processing_time": "2026-10-20T21:17:44",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_032_098_A_016_033_4000_SH_20261006T233918_20261006T233952_20261018T233918_20261018T233952_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-20T19:07:11Z",
+       "product_processing_time": "2026-10-20T19:07:11",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D048_20260629_20260711": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_024_048_D_074_025_2000_SH_20260629T125814_20260629T125849_20260711T125814_20260711T125848_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-12T21:18:54Z",
+       "product_processing_time": "2026-08-12T21:18:54",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_024_048_D_074_025_2000_SH_20260629T125814_20260629T125849_20260711T125814_20260711T125848_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-13T18:02:31Z",
+       "product_processing_time": "2026-08-13T18:02:31",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D048_20260711_20260723": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_025_048_D_074_026_2000_SH_20260711T125814_20260711T125848_20260723T125813_20260723T125848_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-13T18:47:44Z",
+       "product_processing_time": "2026-08-13T18:47:44",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_025_048_D_074_026_2000_SH_20260711T125814_20260711T125848_20260723T125813_20260723T125848_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-17T05:47:07Z",
+       "product_processing_time": "2026-08-17T05:47:07",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D048_20260723_20260816": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_026_048_D_074_028_4000_SH_20260723T125813_20260723T125848_20260816T125812_20260816T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-21T20:00:30Z",
+       "product_processing_time": "2026-08-21T20:00:30",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_026_048_D_074_028_4000_SH_20260723T125813_20260723T125848_20260816T125812_20260816T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-21T18:53:42Z",
+       "product_processing_time": "2026-08-21T18:53:42",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D048_20260816_20260828": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_028_048_D_074_029_2000_SH_20260816T125812_20260816T125846_20260828T125812_20260828T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-30T04:18:57Z",
+       "product_processing_time": "2026-08-30T04:18:57",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_028_048_D_074_029_2000_SH_20260816T125812_20260816T125846_20260828T125812_20260828T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-08-30T04:10:35Z",
+       "product_processing_time": "2026-08-30T04:10:35",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D048_20260828_20260909": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_029_048_D_074_030_2000_SH_20260828T125812_20260828T125846_20260909T125811_20260909T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-11T13:49:21Z",
+       "product_processing_time": "2026-09-11T13:49:21",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_029_048_D_074_030_2000_SH_20260828T125812_20260828T125846_20260909T125811_20260909T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-16T12:09:17Z",
+       "product_processing_time": "2026-09-16T12:09:17",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D048_20260909_20260921": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_030_048_D_074_031_2000_SH_20260909T125811_20260909T125846_20260921T125811_20260921T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-23T12:29:13Z",
+       "product_processing_time": "2026-09-23T12:29:13",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_030_048_D_074_031_2000_SH_20260909T125811_20260909T125846_20260921T125811_20260921T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-09-24T01:16:57Z",
+       "product_processing_time": "2026-09-24T01:16:57",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D048_20260921_20261003": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_031_048_D_074_032_2000_SH_20260921T125811_20260921T125846_20261003T125812_20261003T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-05T10:26:53Z",
+       "product_processing_time": "2026-10-05T10:26:53",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_031_048_D_074_032_2000_SH_20260921T125811_20260921T125846_20261003T125812_20261003T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-05T09:34:29Z",
+       "product_processing_time": "2026-10-05T09:34:29",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     },
+     "D048_20261003_20261015": {
+      "GUNW": {
+       "scene": "NISAR_L2_PR_GUNW_032_048_D_074_033_2000_SH_20261003T125812_20261003T125846_20261015T125812_20261015T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-17T11:19:38Z",
+       "product_processing_time": "2026-10-17T11:19:38",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      },
+      "GOFF": {
+       "scene": "NISAR_L2_PR_GOFF_032_048_D_074_033_2000_SH_20261003T125812_20261003T125846_20261015T125812_20261015T125846_P05023_N_F_J_001",
+       "crid": "P05023",
+       "asf_processing_date": "2026-10-17T10:04:56Z",
+       "product_processing_time": "2026-10-17T10:04:56",
+       "box_coverage": 1.0,
+       "read_together_with": null
+      }
+     }
+    },
+    "config_sha256": "d8a90eedfce0a61a6f0e7bfa94e8c2b0d5156994b64e3a4c85f9317b9614e133",
+    "backtest_sha256": null
+   }
+  }
+ }
+}
