@@ -228,8 +228,10 @@ details.more[open] summary{margin-bottom:10px}
 .seg-w.co{border-color:var(--alarm)}
 .seg-w .fill{position:absolute;inset:0;border-radius:3px;background:var(--fa);opacity:.0}
 .evzone{position:absolute;right:0;top:8px;height:18px;width:calc(20% - 8px);border-radius:4px;background:linear-gradient(90deg,rgba(255,97,82,.22),rgba(255,97,82,.06));border:1px solid rgba(255,97,82,.45);overflow:hidden}
-.evzone span{position:absolute;left:8px;top:2px;font:500 10px/14px var(--mono);color:var(--alarm);white-space:nowrap}
+.evzone span{position:absolute;right:6px;top:2px;z-index:1;font:500 10px/12px var(--mono);color:var(--alarm);white-space:nowrap;background:rgba(14,24,40,.9);padding:0 4px;border-radius:3px}
 .evzone .prog{position:absolute;inset:0 auto 0 0;background:rgba(255,97,82,.35)}
+.evzone .evt{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:rgba(233,240,247,.55)}
+.evzone .evt.alert{background:var(--ice);width:3px}
 .knob{position:absolute;top:1px;width:4px;height:32px;margin-left:-2px;background:var(--ice);border-radius:2px;box-shadow:0 0 0 3px rgba(233,240,247,.18);transition:left .25s var(--ease)}
 .knob.drag{transition:none}
 .knob span{position:absolute;bottom:calc(100% + 2px);left:50%;transform:translateX(-50%);font:500 11px/1 var(--mono);color:var(--ice);white-space:nowrap;background:var(--night);padding:3px 5px;border-radius:4px;border:1px solid var(--rule-2)}

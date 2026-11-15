@@ -75,6 +75,14 @@ def main():
                              label=f"and {v['nepal_missing']:,} missing in Nepal; {v['nepal_houses_destroyed']:,} houses destroyed (as of {v['as_of'][8:]} Oct)", tone="late")
         order.insert(0, "dead")
         SOURCES["usgs_impact"] = ("USGS", cas["source_url"].split(" ")[0])
+    era = None
+    ep = RAW / "ancillary" / "era5" / "era5_source_point.json"
+    if ep.exists():
+        r = json.loads(ep.read_text())["runs"]["era5_elev5190"]
+        a, rk = r["anomaly_2026_minus_clim"], r["percentile_rank_2026_among_1991_2026"]
+        era = dict(t2026=r["y2026"]["mean_temp_c"], clim=r["climatology_1991_2020"]["mean_temp_c"], anom=a["mean_temp_c"], z=a["mean_temp_c_z"],
+                   rank=rk["mean_temp_c"]["rank_highest_first"], n=rk["mean_temp_c"]["n_years"], snow_pct=a["snowfall_cm_pct_of_normal"],
+                   years=[[y.get("year"), y.get("mean_temp_c")] for y in r["per_year"]], span="1 Jul–25 Aug")
     meena = []
     mz = RAW / "event" / "zenodo" / "contents_summary.json"
     if mz.exists():
@@ -97,10 +105,18 @@ def main():
                   f"One pass earlier, monsoon decorrelation cost {round(100 * prev['ice_lost_share'])}% of the glacier area and the source valley dropped out of the ranking."),
     }
 
+    sens = load("sensitivity.json")
+    sens_line = "The headline phase is corrected for the ionosphere, a plane and a 3–5 km ring, but not for tropospheric delay, which at 5,000 m can mimic motion."
+    if sens:
+        sw = sens["windows"].get(lp["id"], {})
+        sp = sens["windows"].get(prev["id"], {})
+        sens_line = (f"The headline phase is not corrected for tropospheric delay, which at 5,000 m can mimic motion. A sensitivity run that subtracts each product's own wet and hydrostatic screens "
+                     f"gives #{sw.get('tropo_rank')} in the last pass and {'#' + str(sp.get('tropo_rank')) if sp.get('tropo_rank') else 'still not ranked'} one pass earlier.")
     limits = [
         f"The pre-registered test fails: the source valley ranked #{sc['source_rank']} in the last pass but was not ranked at all one pass earlier ({prev['start']} → {prev['end']}), when monsoon decorrelation hid it.",
         f"The screen keeps this valley near the top most of the summer ({n_top5} of {len(pre_ranks)} ascending passes in the top five) and also after the collapse. It says 'watch this valley', not 'it falls next week'.",
-        "Phase blobs carry millimetre uncertainties, so they dominate a score of motion over sigma. Their phase is corrected for the ionosphere, a plane and a 3–5 km ring, but not for tropospheric delay, which at 5,000 m can mimic motion.",
+        "Phase blobs carry millimetre uncertainties, so they dominate a score of motion over sigma.",
+        sens_line,
         "The hit zone is 2 km around a 2 km² outline, so several blobs qualify in most passes. The best-ranked one changes from pass to pass.",
         "The USGS source point sits 1.3 km outside the UNOSAT outline; the outline is used as truth, as pre-registered.",
         "NISAR L2 products are provisional, one track per direction, and there is no earlier-year NISAR archive to separate seasonal snow change from precursor motion.",
@@ -114,7 +130,7 @@ def main():
         "NISAR GCOV 10 m backscatter before and after the collapse; the change map shows the avalanche path through monsoon cloud.",
         "Detachment zone: UNOSAT product 4257 (Landsat 9, 26 Aug). Flood extent, affected buildings and roads: UNOSAT 4257.",
         "Gauge brackets and the alert chronology: DHM river watch via the Acharya 2026 archive; USGS and GEOFON catalogues.",
-        "Terrain: Copernicus DEM GLO-30. Glaciers: GLIMS/RGI. People: WorldPop. Rivers and places: OpenStreetMap. Heat: ERA5.",
+        "Terrain: Copernicus DEM GLO-30. Glaciers: RGI 7.0 (NSIDC). People: WorldPop 2026, Nepal and China. Rivers and places: OpenStreetMap. Heat: ERA5.",
     ]
 
     def li(items):
@@ -164,8 +180,14 @@ def main():
         gcov_change="gcovchange_A098_20260819_20260831",
         sah={"text": "Sah (2026) tested routine 12-day Sentinel-1 products at this slope and found no motion above about 13 mm a month.", "source": "sah"},
         meena=meena,
+        era5=era,
+        sensitivity=sens,
     )
     (DATA / "context.json").write_text(json.dumps(ctx, indent=1))
+    ctl = DATA / "control.json"
+    if not ctl.exists() or json.loads(ctl.read_text()).get("status") != "done":
+        ctl.write_text(json.dumps({"status": "pending", "sentinel1_rank_per_window": {},
+                                   "note": "Sentinel-1 C-band control not run yet: ASF HyP3 needs the account owner to accept the ASF Terms of Service (pipeline/fetch_s1.py is ready)."}, indent=1))
     print("context.json written;", len(facts), "facts")
 
 

@@ -18,12 +18,14 @@ Cascade Watch runs a pre-registered screening rule over every NISAR pass of that
 | Pass before that (14 → 26 Jul) | **not ranked**: monsoon decorrelation hid it |
 | Pre-registered pass test (top 5 in *both* of the last two passes) | **not passed** |
 | Descending track 48, last pass (23 Jul → 16 Aug) | #13 of 220 |
+| Same screen with the products' tropospheric screens removed (sensitivity) | #2 of 186 in the last pass; still not ranked the pass before |
 | Sentinel-1 C-band control | pending (see *Not done* below) |
 
 What this means:
-- **Yes, the valley would have been on a short watch list a week early.** Four of the top eight blobs in the last pass drain into the source catchment.
-- **It was also near the top most of the summer, and after the collapse.** The screen says *watch this valley*, not *it falls next week*, which is exactly what a watch list is for.
+- **Yes, the valley would have been on a short watch list a week early.** In the last pass, five of the top eight blobs drain into the source catchment, and the top three all lie within 3.2 km of the detachment zone.
+- **It was also near the top most of the summer (6 of 7 ascending passes in the top five), and after the collapse.** The screen says *watch this valley*, not *it falls next week*, which is exactly what a watch list is for.
 - **The radar measurement agrees with an independent analysis.** Inside the UNOSAT detachment zone, our fastest-tenth GOFF motion was 0.95, 0.40, 0.50, 1.02 and 0.43 m over the five pre/co-event passes. Meena (2026) reports 0.99, 0.54, 0.30, 0.96 and 0.33 m for the same passes.
+- **The season was primed.** ERA5 at the source: 1 Jul–25 Aug 2026 was the 2nd warmest of 36 years (+1.3 °C, z = +3.7), with 1.5% of normal snowfall. This matches Hassan et al.
 - **A ground tripwire would have bought time.** If a ground sensor on the #2 valley had raised a siren within ~4.5 minutes, Syabrubesi would have had about 13 minutes of warning instead of being hit 21 minutes before the SMS.
 
 ## Run it
@@ -79,7 +81,8 @@ All thresholds and weights are in [`pipeline/config.json`](pipeline/config.json)
 ## Honest limits
 
 - The pre-registered test **fails**: the source valley disappears in the 14–26 Jul pass.
-- Phase blobs carry millimetre σ, so they dominate a motion/σ score. Their phase is **not** corrected for tropospheric delay, which at 5,000 m can mimic motion.
+- Phase blobs carry millimetre σ, so they dominate a motion/σ score.
+- The headline phase is not corrected for tropospheric delay. A sensitivity run (`pipeline/sensitivity_tropo.py`) subtracts each GUNW's own wet + hydrostatic screens and gives the same answer: #2 in the last pass, still unranked one pass earlier (`data/sensitivity.json`).
 - The 2 km hit zone around a 2 km² outline is generous: several blobs qualify in most passes.
 - NISAR L2 is provisional; there is no earlier-year NISAR archive to separate seasonal snow change from precursor motion.
 - Arrival times between gauges are interpolated along the flow path; beyond Betrawati they are extrapolated.

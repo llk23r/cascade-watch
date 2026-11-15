@@ -373,6 +373,12 @@
     });
     var ev = $('evzone'); ev.style.left = (TL.a * 100) + '%'; ev.style.width = 'calc(' + ((TL.b - TL.a) * 100) + '% - 6px)'; ev.style.right = 'auto';
     if (!ev.querySelector('.prog')) ev.insertBefore(el('div', 'prog'), ev.firstChild);
+    Array.prototype.forEach.call(ev.querySelectorAll('.evt'), function (x) { x.remove(); });
+    var seenT = {};
+    (D.replay.events || []).concat([{ t_min: D.replay.alert_min, label: 'SMS alert', alert: true }]).forEach(function (e) {
+      if (e.t_min < 0 || e.t_min > TL.tmax || seenT[e.t_min.toFixed(1)]) return; seenT[e.t_min.toFixed(1)] = 1;
+      var m = el('i', 'evt' + (e.alert ? ' alert' : '')); m.style.left = (e.t_min / TL.tmax * 100) + '%'; m.title = clockAt(e.t_min) + ' · ' + e.label; ev.appendChild(m);
+    });
     [0, 30, 60].forEach(function (m) { var t = el('span', m ? 'mt' : '', clockAt(m)); t.style.left = ((TL.a + (TL.b - TL.a) * m / TL.tmax) * 100) + '%'; ticks.appendChild(t); });
     var co = coWindows()[0];
     if (co) {
@@ -575,6 +581,7 @@
         '<div><span class="pf ' + (pass.passed ? 'pass' : 'fail') + '">Pre-registered test: ' + (pass.passed ? 'passed' : 'not passed') + '</span></div>' +
         '<p>' + esc(pass.rule || '') + '. Result: ' + esc(ranks) + '.</p>' +
         '<div class="kv" id="answer-kv"></div>' +
+        '<div class="prov"><h3>The season was primed</h3><div class="creep" id="season"></div><p class="note" id="season-note"></p></div>' +
         '<div class="prov"><h3>Limits, said plainly</h3><ul id="limits"></ul></div>' +
         '<div class="prov"><h3>What is real here</h3><ul id="realist"></ul></div>' +
         '<p class="note">Config SHA-256 <code style="font-family:var(--mono)">' + esc((sc.config_sha256 || '').slice(0, 12)) + '</code> · commit history shows the rules were fixed before the first run.</p></div>';
@@ -756,10 +763,24 @@
       ['Source rank, last pass (rules on)', r ? '#' + r + ' / ' + w.n_ranked : '—'],
       ['Raw-offset baseline (Meena-style)', w.baseline_rank ? '#' + w.baseline_rank + ' / ' + w.n_offsets : '—'],
       ['Sentinel-1 C-band control', D.control && D.control.status === 'done' ? (D.control.sentinel1_rank_per_window[lp.id] == null ? 'not ranked' : '#' + D.control.sentinel1_rank_per_window[lp.id]) : 'pending'],
+      ['Same, with troposphere screens removed', (function () { var x = D.context.sensitivity && D.context.sensitivity.windows[lp.id]; return x && x.tropo_rank ? '#' + x.tropo_rank + ' / ' + x.tropo_n : '—'; })()],
       ['Real alert after the collapse', D.replay.alert_min.toFixed(1) + ' min'],
       ['Data on ASF before the collapse', lp.asf_processed ? fmtDate(lp.asf_processed.slice(0, 10), true) : '—']
     ];
     $('answer-kv').innerHTML = kv.map(function (k) { return '<div><span>' + esc(k[0]) + '</span><b>' + esc(k[1]) + '</b></div>'; }).join('');
+    var e5 = D.context.era5, sb = $('season');
+    if (e5 && sb) {
+      var ys = e5.years.filter(function (y) { return y[1] != null; }), W = 380, H = 70;
+      var lo = Math.min.apply(null, ys.map(function (y) { return y[1]; })) - 0.3, hi = Math.max.apply(null, ys.map(function (y) { return y[1]; })) + 0.1, bw = W / ys.length;
+      var svg = '<svg viewBox="0 0 ' + W + ' ' + (H + 14) + '" role="img" aria-label="Mean temperature 1 July to 25 August at the source, 1991 to 2026">';
+      ys.forEach(function (y, i) {
+        var h = (y[1] - lo) / (hi - lo) * H, is26 = y[0] === 2026;
+        svg += '<rect x="' + (i * bw + 1) + '" y="' + (H - h) + '" width="' + (bw - 2) + '" height="' + h + '" rx="1.5" fill="' + (is26 ? COL.alarm : 'rgba(163,179,200,.35)') + '"><title>' + y[0] + ': ' + y[1].toFixed(2) + ' °C</title></rect>';
+      });
+      svg += '<text x="0" y="' + (H + 12) + '">1991</text><text x="' + W + '" y="' + (H + 12) + '" text-anchor="end" fill="' + COL.alarm + '">2026</text></svg>';
+      sb.innerHTML = svg;
+      $('season-note').innerHTML = esc(e5.span + ' at the source: ' + e5.t2026.toFixed(1) + ' °C, ' + signed(e5.anom, 1) + ' °C above 1991–2020 (z ' + signed(e5.z, 1) + '), the ' + (e5.rank === 2 ? '2nd' : e5.rank + 'th') + ' warmest of ' + e5.n + ' years, with ' + e5.snow_pct + '% of normal snowfall.') + cite('era5') + ' Same heat and snow drought as ' + cite('hassan').trim() + '.';
+    }
     $('limits').innerHTML = (D.context.limits || []).map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('');
     $('realist').innerHTML = (D.context.real || []).map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('');
   }

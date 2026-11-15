@@ -1,5 +1,7 @@
 # Context: last 24 h (pulled from Kapsicum, 2026-11-15 04:05 Toronto)
 
+> Historical notes from before the build. README.md is the current source of truth. Two claims here did not survive source checking: the ICIMOD "25–30 min" alert figure (not in ICIMOD's release) and "193 km/h" (Acharya measures 25–49 m/s).
+
 ## Files in this repo
 - `PROMPT.md`: the Claude Code build prompt for Cascade Watch (Phase A mock page, Phase B Python pipeline, data schemas, rules). Copied from claude.ai chat "Cascade Watch NISAR landslide screening".
 - `SPEC.md`: exported from the Claude Docs doc "Cascade Watch: build spec" (https://claude.ai/artifact/NisU717bJep6TTrgxVyt1K). Its four embedded diagrams didn't export.
