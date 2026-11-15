@@ -3,16 +3,16 @@
   "path": "pipeline/config.json",
   "sha256": "d8a90eedfce0a61a6f0e7bfa94e8c2b0d5156994b64e3a4c85f9317b9614e133",
   "first_commit": {
-   "hash": "0f0f98a0e1f959e31025a85e17d00bfb6bdfc455",
-   "short": "0f0f98a",
+   "hash": "ecffd6d7f7318f26bb43b8f9dc9495648c0a664a",
+   "short": "ecffd6d",
    "time": "2026-11-15T04:20:26-05:00",
    "subject": "Pre-register screening rules before first real NISAR run",
    "touches_config": true,
    "adds_results": false
   },
   "first_results_commit": {
-   "hash": "6c80d0e65517db2e80ef90217525a62c51ca0b83",
-   "short": "6c80d0e",
+   "hash": "83cc938f21a00299f6bfbcec3aa69709f54449f2",
+   "short": "83cc938",
    "time": "2026-11-15T05:02:55-05:00",
    "subject": "Cascade Watch: real-NISAR replay of the 26 Aug 2026 Langtang flood",
    "touches_config": false,
@@ -22,58 +22,66 @@
  },
  "commits": [
   {
-   "hash": "0f0f98a0e1f959e31025a85e17d00bfb6bdfc455",
-   "short": "0f0f98a",
+   "hash": "ecffd6d7f7318f26bb43b8f9dc9495648c0a664a",
+   "short": "ecffd6d",
    "time": "2026-11-15T04:20:26-05:00",
    "subject": "Pre-register screening rules before first real NISAR run",
    "touches_config": true,
    "adds_results": false
   },
   {
-   "hash": "ca4d99dca37c43be3b89c6e4565caa12583c320f",
-   "short": "ca4d99d",
+   "hash": "83089d9562b0c0f042483630be21d8e73017beb9",
+   "short": "83089d9",
    "time": "2026-11-15T04:23:41-05:00",
    "subject": "Add GOFF culling and layer-choice rules before first offsets run",
    "touches_config": true,
    "adds_results": false
   },
   {
-   "hash": "6c80d0e65517db2e80ef90217525a62c51ca0b83",
-   "short": "6c80d0e",
+   "hash": "83cc938f21a00299f6bfbcec3aa69709f54449f2",
+   "short": "83cc938",
    "time": "2026-11-15T05:02:55-05:00",
    "subject": "Cascade Watch: real-NISAR replay of the 26 Aug 2026 Langtang flood",
    "touches_config": false,
    "adds_results": true
   },
   {
-   "hash": "f5003555980ba883d548c15adcc7042db7efba60",
-   "short": "f500355",
+   "hash": "f8f0ae4e133dcab78b044434c1085bcca4e4b547",
+   "short": "f8f0ae4",
    "time": "2026-11-15T05:03:06-05:00",
    "subject": "Ignore profiler output",
    "touches_config": false,
    "adds_results": false
   },
   {
-   "hash": "8c457fc99ac13603676158b64ea0ae335ce7434d",
-   "short": "8c457fc",
+   "hash": "4d937acabfc694a62fe707988b74fabe9c6ebcbb",
+   "short": "4d937ac",
    "time": "2026-11-15T05:19:29-05:00",
    "subject": "Troposphere sensitivity, ERA5 season chart, final data and demo",
    "touches_config": false,
    "adds_results": false
   },
   {
-   "hash": "07c8d0a1e23345abb0d88615ad84ea113d51e7a7",
-   "short": "07c8d0a",
+   "hash": "55438bae2c744c23fd779de38de881478a2a7400",
+   "short": "55438ba",
    "time": "2026-11-15T09:45:24-05:00",
    "subject": "Guided tour, data provenance, accuracy audit fixes, macOS-style UI",
    "touches_config": false,
    "adds_results": true
   },
   {
-   "hash": "3e1b72c8def65c52b7c5adee6d4b956e8565282e",
-   "short": "3e1b72c",
+   "hash": "fc19de86d96b347ef246cb6668595e9769a636f1",
+   "short": "fc19de8",
    "time": "2026-11-15T09:46:04-05:00",
    "subject": "Pre-register backtest: Budhi Gandaki positive, Manang control",
+   "touches_config": false,
+   "adds_results": false
+  },
+  {
+   "hash": "eba20d8feed56e89c7794fd2b053620ea1ef8957",
+   "short": "eba20d8",
+   "time": "2026-11-15T09:48:32-05:00",
+   "subject": "Show the pre-registered backtest plan; fix data-table overflow",
    "touches_config": false,
    "adds_results": false
   }
@@ -908,6 +916,10 @@
   }
  ],
  "files": [
+  {
+   "path": "data/backtest_plan.json",
+   "bytes": 3649
+  },
   {
    "path": "data/config.json",
    "bytes": 2691

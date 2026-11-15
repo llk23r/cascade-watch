@@ -42,7 +42,7 @@ Every pass: find moving patches (≥ 5 cells of 80 m; offsets above 3× scene no
 | × (1 + 0.25·log10(1 + people below)) | risk = hazard × exposure; log so towns do not swamp motion |
 | × (1 + 0.5·(heat anomaly − 1)) | warm, low-snow summers weaken ice; the same for every patch in a pass, so it never changes the order |
 
-The rules are in `pipeline/config.json`, committed (0f0f98a, 04:20 local) before the first results commit (6c80d0e, 05:02). They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. **The real test is other events**; see *Backtest*.
+The rules are in `pipeline/config.json`, committed (ecffd6d, 04:20 local) before the first results commit (83cc938, 05:02). They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. **The real test is other events**; see *Backtest*.
 
 ## Run it
 

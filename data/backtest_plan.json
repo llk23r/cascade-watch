@@ -86,8 +86,8 @@
   "others": "no pre-event GOFF, stale coverage, or too small for 80 m cells (see the search notes)"
  },
  "_committed": {
-  "hash": "3e1b72c8def65c52b7c5adee6d4b956e8565282e",
-  "short": "3e1b72c",
+  "hash": "fc19de86d96b347ef246cb6668595e9769a636f1",
+  "short": "fc19de8",
   "time": "2026-11-15T09:46:04-05:00",
   "subject": "Pre-register backtest: Budhi Gandaki positive, Manang control"
  }
