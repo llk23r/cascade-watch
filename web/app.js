@@ -720,6 +720,7 @@
         '<div class="group" id="answer-kv"></div>' +
         '<div class="sec-h">The season was primed</div>' +
         '<div class="card chart"><div id="season"></div><p class="note" id="season-note" style="margin-top:8px"></p></div>' +
+        '<div class="sec-h">Backtest on other events <small>the real test</small></div><div class="card" id="backtest"></div>' +
         '<div class="sec-h">Limits, said plainly</div><div class="group"><ul class="plist" id="limits"></ul></div>' +
         '<div class="sec-h">What is real here</div><div class="group"><ul class="plist ok" id="realist"></ul></div>' +
         '<p class="note">Config SHA-256 <code>' + esc((sc.config_sha256 || '').slice(0, 12)) + '</code> · the commit history shows the rules were fixed before the first run.</p>' + dataSlot() + '</div>';
@@ -934,6 +935,7 @@
       sb.innerHTML = svg;
       $('season-note').innerHTML = esc(e5.span + ' at the source: ' + e5.t2026.toFixed(1) + ' °C, ' + signed(e5.anom, 1) + ' °C above the 1991–2020 mean (z ' + signed(e5.z, 1) + '), the ' + e5.ordinal + ' warmest of ' + e5.n + ' years, at ' + Math.round(e5.elev_m).toLocaleString() + ' m. Snowfall was ' + Math.round(e5.snow_pct) + '% of normal, a figure that depends on the elevation used.') + cite('era5') + ' The same heat and snow drought as ' + cite('hassan').trim() + '.';
     }
+    paintBacktest();
     $('limits').innerHTML = (D.context.limits || []).map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('');
     $('realist').innerHTML = (D.context.real || []).map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('');
   }
@@ -1064,6 +1066,27 @@
       '<p class="note">Granule links need a free NASA Earthdata login. The pipeline reads only the study box out of each file (HTTP range requests); see the README to rebuild everything from scratch.</p>';
   }
 
+  /* ---------------------------------------------------------------- backtest */
+  function paintBacktest() {
+    var box = $('backtest'); if (!box) return;
+    var plan = D.btPlan, res = D.bt;
+    if (!plan && !res) { box.innerHTML = '<p class="note">No backtest plan found.</p>'; return; }
+    var sites = (plan && plan.sites) || {};
+    var head = plan && plan._committed ? '<p class="note">Sites, boxes, truth and windows were fixed in commit <code>' + esc(plan._committed.short) + '</code> (' + esc(fmtTime(plan._committed.time)) + '), before any NISAR value inside the new boxes was read. The screening rules are the same file as above.</p>' : '';
+    if (!res) {
+      box.innerHTML = head + tbl(['Site', 'Role', 'Event', 'Windows'], Object.keys(sites).map(function (k) { var x = sites[k];
+        return '<tr><td>' + esc(k) + '</td><td class="wrap">' + esc(x.role || '') + '</td><td>' + esc((x.event_utc || '—').slice(0, 10)) + '</td><td class="wrap">' + esc((x.last_two_ascending || []).join(', ') || x.windows || 'as Langtang') + '</td></tr>'; })) +
+        '<p class="note"><b>Status:</b> running. Results appear here when the pipeline finishes; whatever they are, they are reported as they come out.</p>';
+      return;
+    }
+    var rows = Object.keys(res.sites || {}).map(function (k) {
+      var x = res.sites[k], pass = x.positive_pass;
+      return '<tr><td>' + esc(k) + '</td><td class="wrap">' + esc(x.role || '') + '</td><td>' + (pass == null ? '—' : pass.passed ? 'passed' : 'not passed') + (pass && pass.ranks ? ' (' + pass.ranks.map(function (r) { return r == null ? 'not ranked' : '#' + r; }).join(', ') + ')' : '') + '</td><td>' +
+        (x.false_alarms ? x.false_alarms.length : '—') + (x.false_alarm_rate != null ? ' · ' + Number(x.false_alarm_rate).toFixed(2) + ' per pass' : '') + '</td></tr>';
+    });
+    box.innerHTML = head + tbl(['Site', 'Role', 'Test', 'False alarms'], rows) + (res.note ? '<p class="note">' + esc(res.note) + '</p>' : '') + fileLinks(['backtest.json', 'backtest_plan.json']);
+  }
+
   /* ---------------------------------------------------------------- sheets */
   var KEYS = [['Go to a chapter', ['1', '2', '3', '4', '5']], ['Play or pause', ['Space']], ['Step through passes and minutes', ['←', '→']],
     ['Show or hide the sidebar', ['S']], ['Show or hide the inspector', ['I']], ['Next map layer', ['L']], ['Guided tour, with narration', ['G']], ['Keyboard shortcuts', ['?']], ['Close a sheet', ['Esc']]];
@@ -1192,9 +1215,9 @@
     fetchJSON('windows.json'), fetchJSON('scorecard.json'), fetchJSON('truth.geojson'), fetchJSON('replay.json'),
     fetchJSON('control.json', true), fetchJSON('source_series.json', true), fetchJSON('context.json'), fetchJSON('img/bounds.json'),
     fetchJSON('rivers.geojson', true), fetchJSON('glaciers.geojson', true), fetchJSON('observed.geojson', true),
-    fetchJSON('config.json'), fetchJSON('provenance.json', true)
+    fetchJSON('config.json'), fetchJSON('provenance.json', true), fetchJSON('backtest_plan.json', true), fetchJSON('backtest.json', true)
   ]).then(function (r) {
-    D.observed = r[10]; D.config = r[11]; D.prov = r[12];
+    D.observed = r[10]; D.config = r[11]; D.prov = r[12]; D.btPlan = r[13]; D.bt = r[14];
     var C = D.config;   // the committed, pre-registered rules: the page never carries its own copy
     S.w = { coherenceFloor: C.score.coherence_floor_for_visibility, motionSigma: 0, opposingBonus: C.score.opposing_bonus, iceBonus: C.score.ice_bonus,
       wPop: C.score.w_pop, wSeason: C.score.w_season, nSensors: C.pass_condition.top_n };

@@ -1,0 +1,94 @@
+{
+ "_comment": "Pre-registered backtest. Written and committed before any NISAR value inside these boxes is read. The screening rules are pipeline/config.json, unchanged; only the box, the truth and the windows differ per site. Sites, boxes and windows come from a metadata-only ASF search (no granule opened).",
+ "rules_file": "pipeline/config.json",
+ "metrics": {
+  "positive_pass": "same as config.pass_condition: a patch within truth.hit_radius_km of the truth and draining to the same channel ranks in the top config.pass_condition.top_n in BOTH of the last two ascending windows before the event",
+  "rank_series": "for every ascending window from the first available pair to the event, the rank of the best hit patch (or not ranked)",
+  "false_alarm": "a valley other than the truth valley that ranks in the top top_n in two consecutive ascending windows. A valley is a cluster of ranked patches within truth.hit_radius_km of each other that drain to the same channel. Counted per box over the same windows, including Langtang.",
+  "false_alarm_rate": "false alarms per box per 12-day pass, over the summer windows (pre-event windows for positive sites; 20 Jun to 6 Oct ascending windows for the control)"
+ },
+ "sites": {
+  "langtang": {
+   "role": "development event (rules written after it); reported, not counted as a test",
+   "event_utc": "2026-08-26T02:52:10Z",
+   "grid_from": "pipeline/config.json"
+  },
+  "budhigandaki": {
+   "role": "test positive",
+   "event": "Budhi Gandaki rock-slope failure, Chamar south face (Ungilung Khola), became a rock avalanche and debris flow",
+   "event_utc": "2026-10-10T22:37:00Z",
+   "event_source": "https://eos.org/thelandslideblog/budhi-gandaki-2 (time from a seismic record, location from Sentinel-2 of 21 Oct)",
+   "truth": {
+    "kind": "approximate scar point (no UNOSAT or Copernicus EMS outline exists)",
+    "lonlat": [
+     84.9345,
+     28.5336
+    ],
+    "hit_radius_km": 2.0,
+    "same_catchment_required": true,
+    "note": "The point is approximate. A 2 km hit radius around a point is stricter than around a 2 km2 outline."
+   },
+   "box_lonlat": [
+    84.7429,
+    28.3374,
+    85.1269,
+    28.6405
+   ],
+   "grid": {
+    "epsg": 32645,
+    "x_edges": [
+     279360,
+     316400
+    ],
+    "y_edges": [
+     3136640,
+     3169600
+    ],
+    "cell_m": 80
+   },
+   "last_two_ascending": [
+    "A098_20260912_20260924",
+    "A098_20260924_20261006"
+   ],
+   "other_windows_to_report": [
+    "A098_20261006_20261018 (spans the event)",
+    "D048_20260921_20261003",
+    "D149_20260928_20261010 (ends 9.5 h before the event)"
+   ]
+  },
+  "manang": {
+   "role": "negative control (no recorded failure in the period found by search; not proof of none)",
+   "box_lonlat": [
+    83.8863,
+    28.4823,
+    84.273,
+    28.7876
+   ],
+   "grid": {
+    "epsg": 32645,
+    "x_edges": [
+     196000,
+     233040
+    ],
+    "y_edges": [
+     3154560,
+     3187520
+    ],
+    "cell_m": 80
+   },
+   "windows": "all A098 ascending pairs from 2026-06-20 to 2026-10-06",
+   "note": "Same A098 granules as Langtang and Budhi Gandaki. Contains 11 of Meena's moving zones, 2 not on glaciers."
+  }
+ },
+ "not_run": {
+  "lete_kali_gandaki": "location speculative, rain-triggered; needs an optical scar map first",
+  "weisshorn_randa": "small, partial ice break-offs; sensitivity test only",
+  "others": "no pre-event GOFF, stale coverage, or too small for 80 m cells (see the search notes)"
+ },
+ "_committed": {
+  "hash": "3e1b72c8def65c52b7c5adee6d4b956e8565282e",
+  "short": "3e1b72c",
+  "time": "2026-11-15T09:46:04-05:00",
+  "subject": "Pre-register backtest: Budhi Gandaki positive, Manang control"
+ }
+}

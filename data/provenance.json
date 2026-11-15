@@ -60,6 +60,22 @@
    "subject": "Troposphere sensitivity, ERA5 season chart, final data and demo",
    "touches_config": false,
    "adds_results": false
+  },
+  {
+   "hash": "07c8d0a1e23345abb0d88615ad84ea113d51e7a7",
+   "short": "07c8d0a",
+   "time": "2026-11-15T09:45:24-05:00",
+   "subject": "Guided tour, data provenance, accuracy audit fixes, macOS-style UI",
+   "touches_config": false,
+   "adds_results": true
+  },
+  {
+   "hash": "3e1b72c8def65c52b7c5adee6d4b956e8565282e",
+   "short": "3e1b72c",
+   "time": "2026-11-15T09:46:04-05:00",
+   "subject": "Pre-register backtest: Budhi Gandaki positive, Manang control",
+   "touches_config": false,
+   "adds_results": false
   }
  ],
  "granules": [
@@ -898,7 +914,7 @@
   },
   {
    "path": "data/context.json",
-   "bytes": 18499
+   "bytes": 21667
   },
   {
    "path": "data/control.json",
