@@ -44,7 +44,7 @@ GRID30 = dict(res=30.0, cols=math.ceil((BOX_X1 - BOX_X0) / 30.0),
               rows=math.ceil((BOX_Y1 - BOX_Y0) / 30.0))  # 1235 x 1099, same origin
 CORRIDOR = (85.10, 27.85, 85.75, 28.45)              # W, S, E, N (lon/lat)
 SOURCE_PT = (28.271, 85.515)                          # lat, lon
-SOURCE_ELEV = 5190
+SOURCE_ELEV = 5190   # unsourced earlier guess, kept only as a sensitivity run; primary uses the API DEM elevation
 EVENT_YEAR = 2026
 
 DEM_URL = ("https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_10_{t}_DEM/"
@@ -972,7 +972,7 @@ def step_era5(m: Manifest, force: bool):
         "point": {"lat": SOURCE_PT[0], "lon": SOURCE_PT[1], "elevation_m_source": SOURCE_ELEV},
         "window": {"start": WIN[0], "end": WIN[1], "days": 56},
         "timezone": "Asia/Kathmandu (daily aggregation in local days)",
-        "primary_run": "era5_elev5190",
+        "primary_run": "era5_default_elev",
         "notes": [
             "Open-Meteo 'elevation' applies its own lapse-rate downscaling to temperature and recomputes "
             "snowfall from the downscaled temperature; precipitation is unchanged between elevation runs.",

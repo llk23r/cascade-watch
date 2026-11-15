@@ -50,7 +50,7 @@ def truth():
 # ---------------------------------------------------------------- season
 def season_anomaly(end: date) -> dict:
     """z-score of mean 2 m temperature, 1 May -> window end, 2026 vs 1991–2020 (ERA5 via Open-Meteo)."""
-    p = find("openmeteo_raw_era5_elev5190.json")
+    p = find("openmeteo_raw_era5_default_elev.json")
     if p is None:
         return {"value": 1.0, "z": None, "note": "ERA5 unavailable"}
     d = json.loads(Path(p).read_text())

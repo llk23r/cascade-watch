@@ -4,102 +4,201 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Cascade Watch</title>
-<meta name="description" content="A replay of the 26 August 2026 Langtang flood on real NISAR radar: with rules fixed in advance, would the valley have been on a watch list a week before it fell?">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<meta name="description" content="A replay of the 26 August 2026 Langtang flood on real NISAR radar: with rules fixed in advance, would the valley have been on a watch list before it fell?">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#eef1f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14171c" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%234aa3ff'/%3E%3Cstop offset='1' stop-color='%23123f8f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14.5' fill='url(%23g)'/%3E%3Cpath d='M6 50 23 23l8 11 6-8 21 24z' fill='%23fff'/%3E%3Cpath d='M41 12a12 12 0 0 1 12 12' stroke='%23a5ecff' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='41' cy='24' r='3' fill='%23a5ecff'/%3E%3Cpath d='M6 56c6-3 10 3 17 0s10 3 17 0 11 3 18 0' stroke='%23ff6b5e' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
 <link rel="stylesheet" href="web/style.css">
 </head>
 <body>
-<div class="app" id="app">
-  <header class="top">
-    <a class="brand" href="#" aria-label="Cascade Watch, back to the start"><span class="mark" aria-hidden="true"></span>Cascade Watch</a>
-    <span class="sub">The Langtang flood, 26 Aug 2026, replayed on real NISAR radar</span>
-    <span class="badges">
-      <span class="badge real" title="Every number on this page comes from the files in /data, produced by the pipeline from NISAR L2 products and the sources listed under Sources.">Real NISAR data</span>
-      <span class="badge prov" title="NISAR L2 GUNW/GOFF/GCOV products are provisional (composite release P05023/X05026).">Provisional L2</span>
-    </span>
-    <nav class="toplinks">
-      <button type="button" class="linkish" data-open="method">Method</button>
-      <button type="button" class="linkish" data-open="sources">Sources</button>
-      <a class="linkish" href="https://github.com/" id="repo-link" hidden>Code</a>
+<!-- SF-style symbols, drawn on a 24-unit grid -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="app-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4aa3ff"/><stop offset="1" stop-color="#123f8f"/></linearGradient>
+  </defs>
+  <symbol id="i-app" viewBox="0 0 64 64"><rect width="64" height="64" rx="14.5" fill="url(#app-g)"/><rect x=".5" y=".5" width="63" height="63" rx="14" fill="none" stroke="rgba(255,255,255,.35)"/><path d="M6 50 23 23l8 11 6-8 21 24z" fill="#fff"/><path d="M23 23l-4.5 7 4.5-2.4 3.4 3.1z" fill="#cfe2ff"/><path d="M41 12a12 12 0 0 1 12 12M41 5.5a18.5 18.5 0 0 1 18.5 18.5" stroke="#a5ecff" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="41" cy="24" r="3" fill="#a5ecff"/><path d="M6 56c6-3 10 3 17 0s10 3 17 0 11 3 18 0" stroke="#ff6b5e" stroke-width="3.5" fill="none" stroke-linecap="round"/></symbol>
+  <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <symbol id="i-sunrise" viewBox="0 0 24 24"><path d="M2.5 18h19M7 18a5 5 0 0 1 10 0M12 3.5v3.2M4.6 9.6l2 1.5M19.4 9.6l-2 1.5M7.5 21h9"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 20.5h18"/><rect x="5" y="12" width="3.2" height="8.5" rx="1"/><rect x="10.4" y="6" width="3.2" height="14.5" rx="1"/><rect x="15.8" y="9.5" width="3.2" height="11" rx="1"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.4 15.4 20.5 20.5"/></symbol>
+    <symbol id="i-waves" viewBox="0 0 24 24"><path d="M2.5 7.5c2.4-1.8 4.6-1.8 7 0s4.6 1.8 7 0 3.8-1.6 5 0M2.5 12.5c2.4-1.8 4.6-1.8 7 0s4.6 1.8 7 0 3.8-1.6 5 0M2.5 17.5c2.4-1.8 4.6-1.8 7 0s4.6 1.8 7 0 3.8-1.6 5 0"/></symbol>
+    <symbol id="i-seal" viewBox="0 0 24 24"><path d="M12 2.6l2.3 1.6 2.8-.1.9 2.6 2.3 1.6-.8 2.7.8 2.7-2.3 1.6-.9 2.6-2.8-.1L12 21.4l-2.3-1.6-2.8.1-.9-2.6-2.3-1.6.8-2.7-.8-2.7 2.3-1.6.9-2.6 2.8.1z"/><path d="M8.6 12.1l2.3 2.3 4.6-4.7"/></symbol>
+    <symbol id="i-motion" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15.2 10.4v4.8h-4.8"/></symbol>
+    <symbol id="i-phase" viewBox="0 0 24 24"><path d="M3 18a9 9 0 0 1 18 0M6.5 18a5.5 5.5 0 0 1 11 0M10 18a2 2 0 0 1 4 0"/></symbol>
+    <symbol id="i-coh" viewBox="0 0 24 24"><path d="M4.5 20v-3M9.5 20v-7M14.5 20V9M19.5 20V4.5"/></symbol>
+    <symbol id="i-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.6" fill="currentColor"/><path d="M8.6 8.6a4.8 4.8 0 0 0 0 6.8M15.4 8.6a4.8 4.8 0 0 1 0 6.8M5.6 5.6a9 9 0 0 0 0 12.8M18.4 5.6a9 9 0 0 1 0 12.8"/></symbol>
+    <symbol id="i-terrain" viewBox="0 0 24 24"><path d="M2 19.5h20M3 19.5 9 9l4.2 7M11.5 19.5 16 12l5 7.5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M3.5 5.5c0-.8.7-1.5 1.5-1.5h4.5c1.4 0 2.5 1.1 2.5 2.5V20c0-1.1-.9-2-2-2H5c-.8 0-1.5-.7-1.5-1.5zM20.5 5.5c0-.8-.7-1.5-1.5-1.5h-4.5C13.1 4 12 5.1 12 6.5V20c0-1.1.9-2 2-2h5c.8 0 1.5-.7 1.5-1.5z"/></symbol>
+    <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M6.5 10h.01M10 10h.01M14 10h.01M17.5 10h.01M8 14h8"/></symbol>
+    <symbol id="i-sidebar-l" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="3.5"/><path d="M9.5 4.5v15M5.6 8.5h1.6M5.6 11h1.6"/></symbol>
+    <symbol id="i-sidebar-r" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="3.5"/><path d="M14.5 4.5v15M16.8 8.5h1.6M16.8 11h1.6"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.6v12.8a.8.8 0 0 0 1.2.7l10-6.4a.8.8 0 0 0 0-1.4l-10-6.4A.8.8 0 0 0 8 5.6z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><rect x="6.5" y="5" width="3.8" height="14" rx="1.2" fill="currentColor" stroke="none"/><rect x="13.7" y="5" width="3.8" height="14" rx="1.2" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="M9.5 5.5 16 12l-6.5 6.5"/></symbol>
+    <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="M14.5 5.5 8 12l6.5 6.5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-north" viewBox="0 0 24 24"><path d="M12 3.5 17 19l-5-3.4L7 19z" fill="currentColor" fill-opacity=".18"/></symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12 4 7.5"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8" fill="currentColor"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M3.5 7h9M17.5 7h3M3.5 17h3M11.5 17h9"/><circle cx="15" cy="7" r="2.5"/><circle cx="9" cy="17" r="2.5"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4zM10 21h4"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><path d="M10.3 4.3 2.6 18a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0zM12 9.5v4.5"/><circle cx="12" cy="17.2" r=".6" fill="currentColor"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.2V12l3.2 2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s6.5-6.2 6.5-11.5a6.5 6.5 0 0 0-13 0C5.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></symbol>
+    <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M14 14.5V5a2 2 0 0 0-4 0v9.5a4 4 0 1 0 4 0z"/><path d="M12 9v7.5"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle cx="4.8" cy="6.5" r=".9" fill="currentColor"/><circle cx="4.8" cy="12" r=".9" fill="currentColor"/><circle cx="4.8" cy="17.5" r=".9" fill="currentColor"/></symbol>
+    <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7.5" ry="2.8"/><path d="M4.5 6v12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8V6M4.5 12c0 1.5 3.4 2.8 7.5 2.8s7.5-1.3 7.5-2.8"/></symbol>
+    <symbol id="i-guide" viewBox="0 0 24 24"><path d="M4 13.5v-1.5a8 8 0 0 1 16 0v1.5"/><rect x="3" y="13" width="4.5" height="7" rx="2"/><rect x="16.5" y="13" width="4.5" height="7" rx="2"/></symbol>
+    <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+    <symbol id="i-ellipsis" viewBox="0 0 24 24"><circle cx="6" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="18" cy="12" r="1.3" fill="currentColor"/></symbol>
+  </g>
+</svg>
+
+<div class="window" id="app" data-sidebar="open" data-inspector="open">
+  <div class="sweep" id="sweep" aria-hidden="true"></div>
+  <div class="edge-top" aria-hidden="true"></div>
+
+  <!-- Sidebar: the story, and the scorecard that always answers the question -->
+  <aside class="sidebar glass" id="sidebar" aria-label="Sidebar">
+    <header class="sb-head">
+      <svg class="appicon" aria-hidden="true"><use href="#i-app"/></svg>
+      <div class="sb-name"><h1>Cascade Watch</h1><p>Langtang flood · 26 Aug 2026</p></div>
+      <button type="button" class="tb-btn sb-hide" id="tg-sidebar-hide" aria-label="Hide sidebar (S)" title="Hide sidebar (S)" aria-controls="sidebar"><svg class="ic" aria-hidden="true"><use href="#i-sidebar-l"/></svg></button>
+    </header>
+    <nav class="sb-sec" aria-label="Story">
+      <h2 class="sb-label">Story</h2>
+      <ul class="sb-list" id="nav" role="list">
+        <li><button type="button" data-ch="1"><svg class="ic" aria-hidden="true"><use href="#i-sunrise"/></svg><span class="t">The Morning<small>What happened at 08:37</small></span><kbd>1</kbd></button></li>
+        <li><button type="button" data-ch="2"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg><span class="t">The Creep<small>What the radar saw</small></span><kbd>2</kbd></button></li>
+        <li><button type="button" data-ch="3"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><span class="t">The Haystack<small>Rank every moving slope</small></span><kbd>3</kbd></button></li>
+        <li><button type="button" data-ch="4"><svg class="ic" aria-hidden="true"><use href="#i-waves"/></svg><span class="t">The Race<small>Wave against warning</small></span><kbd>4</kbd></button></li>
+        <li><button type="button" data-ch="5"><svg class="ic" aria-hidden="true"><use href="#i-seal"/></svg><span class="t">The Answer<small>What the data says</small></span><kbd>5</kbd></button></li>
+      </ul>
     </nav>
-  </header>
-
-  <main class="work">
-    <section class="stage" aria-label="Map">
-      <div id="map" role="region" aria-label="3D map of the Langtang study box and flood corridor"></div>
-      <div class="sweep" id="sweep" aria-hidden="true"></div>
-
-      <div class="scorecard" id="scorecard" aria-live="polite">
-        <div class="sc-head"><span class="sc-label">Scorecard</span><span class="sc-win" id="sc-win"></span></div>
-        <div class="sc-rank"><span class="sc-n" id="sc-n">—</span><span class="sc-of" id="sc-of"></span></div>
-        <dl class="sc-grid">
-          <div><dt>Blobs above it</dt><dd id="sc-above">—</dd></div>
-          <div><dt>Visible at floor</dt><dd id="sc-vis">—</dd></div>
-          <div><dt>Raw-offset baseline</dt><dd id="sc-base">—</dd></div>
-          <div><dt>Sentinel-1 control</dt><dd id="sc-s1">—</dd></div>
-          <div><dt>Tripwire alert</dt><dd id="sc-trip">—</dd></div>
-          <div><dt>Minutes gained</dt><dd id="sc-gain">—</dd></div>
+    <div class="sb-scroll">
+    <section class="sb-sec" aria-label="Radar passes">
+      <h2 class="sb-label" id="passes-h" title="Rank of the source valley in each NISAR pass, under the current rules">Passes</h2>
+      <ul class="sb-list passes" id="passes" role="list"></ul>
+    </section>
+    </div>
+    <section class="sb-sec sb-score" aria-label="Scorecard">
+      <h2 class="sb-label">Scorecard</h2>
+      <div class="widget" id="scorecard">
+        <div class="w-head"><span>Slope that fell</span><span class="w-win" id="sc-win"></span></div>
+        <div class="w-rank"><span class="w-n" id="sc-n">—</span><span class="w-of" id="sc-of"></span></div>
+        <div class="w-meter" aria-hidden="true"><i class="w-cut" id="sc-cut"></i><i class="w-dot" id="sc-dot"></i></div>
+        <dl class="w-grid">
+          <div title="Moving slopes the screen ranked as more suspicious in this pass"><dt>Slopes ranked above it</dt><dd id="sc-above">—</dd></div>
+          <div title="Rank if slopes are ordered by offset size alone, as in Meena 2026"><dt>Offset-only rank</dt><dd id="sc-base">—</dd></div>
+          <div id="sc-test-row"><dt>Pre-registered test</dt><dd id="sc-test">—</dd></div>
+          <div id="sc-s1-row"><dt>C-band check</dt><dd id="sc-s1">—</dd></div>
+          <div id="sc-trip-row"><dt>Tripwire siren, what-if</dt><dd id="sc-trip">—</dd></div>
+          <div id="sc-gain-row"><dt>Earlier warning, what-if</dt><dd id="sc-gain">—</dd></div>
         </dl>
       </div>
-
-      <div class="layerbar" role="group" aria-label="Map layer">
-        <button type="button" data-layer="motion" aria-pressed="true">Motion</button>
-        <button type="button" data-layer="phase" aria-pressed="false">Phase</button>
-        <button type="button" data-layer="coh" aria-pressed="false">Coherence</button>
-        <button type="button" data-layer="radar" aria-pressed="false">Radar image</button>
-        <button type="button" data-layer="none" aria-pressed="false">Terrain</button>
-      </div>
-      <div class="legend" id="legend"></div>
-      <div class="radar-compare" id="radar-compare" hidden>
-        <span class="rc-l" id="rc-a"></span>
-        <input type="range" id="rc-slider" min="0" max="1" step="0.01" value="1" aria-label="Blend from before to after the collapse">
-        <span class="rc-r" id="rc-b"></span>
-      </div>
-      <div class="tip" id="tip" hidden></div>
     </section>
+    <footer class="sb-foot" title="Every number comes from the files in /data, produced by the pipeline from NISAR L2 products (provisional composite release P05023/X05026) and the sources listed under Sources.">
+      <span class="live-dot" aria-hidden="true"></span>Archived NISAR data · provisional L2
+    </footer>
+  </aside>
 
-    <aside class="panel" id="panel">
-      <nav class="chapters" id="nav" aria-label="Chapters">
-        <button type="button" data-ch="1"><b>1</b><span>Morning</span></button>
-        <button type="button" data-ch="2"><b>2</b><span>Creep</span></button>
-        <button type="button" data-ch="3"><b>3</b><span>Haystack</span></button>
-        <button type="button" data-ch="4"><b>4</b><span>Race</span></button>
-        <button type="button" data-ch="5"><b>5</b><span>Answer</span></button>
-      </nav>
-      <div class="chapbody" id="chapbody"></div>
-      <div class="panelfoot">
-        <button class="btn ghost" type="button" id="prev">Back</button>
-        <button class="btn" type="button" id="next">Next</button>
+  <!-- Unified toolbar -->
+  <header class="toolbar" id="toolbar">
+    <div class="tb-cluster tb-lead">
+      <button type="button" class="tb-btn glass-btn" id="tg-sidebar" aria-label="Show sidebar (S)" title="Show sidebar (S)" aria-controls="sidebar"><svg class="ic" aria-hidden="true"><use href="#i-sidebar-l"/></svg></button>
+      <div class="tb-title"><p class="tb-h" id="tb-title">The Morning</p><p id="tb-sub"></p></div>
+    </div>
+    <div class="seg glass layerbar" id="layerbar" role="radiogroup" aria-label="Map layer">
+      <button type="button" data-layer="motion" role="radio" aria-checked="true" tabindex="0" title="Downhill motion from NISAR pixel offsets"><svg class="ic" aria-hidden="true"><use href="#i-motion"/></svg><span>Motion</span></button>
+      <button type="button" data-layer="phase" role="radio" aria-checked="false" tabindex="-1" title="Line-of-sight motion from NISAR phase"><svg class="ic" aria-hidden="true"><use href="#i-phase"/></svg><span>Phase</span></button>
+      <button type="button" data-layer="coh" role="radio" aria-checked="false" tabindex="-1" title="Interferometric coherence: where the radar kept its lock"><svg class="ic" aria-hidden="true"><use href="#i-coh"/></svg><span>Coherence</span></button>
+      <button type="button" data-layer="radar" role="radio" aria-checked="false" tabindex="-1" title="NISAR radar backscatter, before and after the collapse"><svg class="ic" aria-hidden="true"><use href="#i-radar"/></svg><span>Radar</span></button>
+      <button type="button" data-layer="none" role="radio" aria-checked="false" tabindex="-1" title="Terrain only"><svg class="ic" aria-hidden="true"><use href="#i-terrain"/></svg><span>Terrain</span></button>
+    </div>
+    <div class="tb-cluster tb-trail">
+      <div class="seg glass trackpick" role="radiogroup" aria-label="NISAR orbit track">
+        <button type="button" data-track="A" role="radio" aria-checked="true" tabindex="0" title="Ascending track 98, frame 16"><span class="long">Ascending</span><span class="short">Asc 98</span></button>
+        <button type="button" data-track="D" role="radio" aria-checked="false" tabindex="-1" title="Descending track 48, frame 74"><span class="long">Descending</span><span class="short">Desc 48</span></button>
       </div>
-    </aside>
-  </main>
+      <div class="tb-group glass">
+        <button type="button" class="tb-btn tb-guide" id="tour-btn" aria-label="Guided tour with narration (G)" title="Guided tour with narration (G)"><svg class="ic" aria-hidden="true"><use href="#i-guide"/></svg><span>Guide</span></button>
+        <button type="button" class="tb-btn" data-open="data" aria-label="Data: every file this page reads" title="Data: every file this page reads"><svg class="ic" aria-hidden="true"><use href="#i-db"/></svg></button>
+        <button type="button" class="tb-btn" data-open="method" aria-label="Method" title="Method"><svg class="ic" aria-hidden="true"><use href="#i-info"/></svg></button>
+        <button type="button" class="tb-btn" data-open="sources" aria-label="Sources" title="Sources"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg></button>
+        <button type="button" class="tb-btn phone-only" id="tg-legend" aria-label="Map legend" title="Map legend" aria-expanded="false" aria-controls="legend"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg></button>
+        <button type="button" class="tb-btn" data-open="keys" aria-label="Keyboard shortcuts (?)" title="Keyboard shortcuts (?)"><svg class="ic" aria-hidden="true"><use href="#i-keyboard"/></svg></button>
+      </div>
+      <button type="button" class="tb-btn glass-btn" id="tg-inspector" aria-label="Hide inspector (I)" title="Hide inspector (I)" aria-expanded="true" aria-controls="panel"><svg class="ic" aria-hidden="true"><use href="#i-sidebar-r"/></svg></button>
+    </div>
+  </header>
 
-  <footer class="timeline" id="timeline">
-    <button class="play" type="button" id="play" aria-label="Play the replay"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="play-icon" d="M8 5v14l11-7z"/></svg></button>
+  <!-- Compact scorecard for narrow windows -->
+  <button type="button" class="sc-mini glass" id="sc-mini" title="Open The Answer"><b id="scm-n">—</b><span id="scm-of"></span></button>
+
+  <!-- Inspector: the chapter -->
+  <aside class="inspector glass" id="panel" aria-label="Chapter">
+    <button type="button" class="grabber" id="grabber" aria-label="Expand panel"><i></i></button>
+    <div class="ins-body" id="chapbody"></div>
+    <footer class="ins-foot">
+      <button class="btn" type="button" id="prev"><svg class="ic" aria-hidden="true"><use href="#i-chev-l"/></svg>Back</button>
+      <span class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      <button class="btn primary" type="button" id="next">Continue<svg class="ic" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+    </footer>
+  </aside>
+
+  <!-- Map HUDs -->
+  <div class="hud hud-legend glass" id="legend"></div>
+  <div class="hud hud-ctrl glass" role="group" aria-label="Map controls">
+    <button type="button" id="z-in" aria-label="Zoom in" title="Zoom in"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+    <button type="button" id="z-out" aria-label="Zoom out" title="Zoom out"><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+    <button type="button" id="z-north" aria-label="Face north" title="Face north"><svg class="ic" id="north-ic" aria-hidden="true"><use href="#i-north"/></svg></button>
+    <button type="button" id="z-3d" aria-label="Toggle 3D" title="Toggle 3D" aria-pressed="true"><span class="t3d">3D</span></button>
+  </div>
+
+  <!-- Timeline -->
+  <footer class="timeline glass" id="timeline">
+    <button class="play" type="button" id="play" aria-label="Play (Space)" title="Play (Space)"><svg class="ic" aria-hidden="true"><use id="play-icon" href="#i-play"/></svg></button>
     <div class="track-wrap">
       <div class="track" id="track" role="slider" tabindex="0" aria-label="Replay time" aria-valuemin="0" aria-valuemax="1000" aria-valuenow="0">
         <div class="segs" id="segs"></div>
-        <div class="evzone" id="evzone"><span>26 Aug</span></div>
+        <div class="evzone" id="evzone" title="26 August, 08:37 to 09:42 NPT"></div>
         <div class="knob" id="knob"><span id="knob-lab"></span></div>
       </div>
       <div class="ticks" id="ticks"></div>
     </div>
-    <div class="trackpick" role="group" aria-label="Orbit track">
-      <button type="button" data-track="A" aria-pressed="true" title="NISAR ascending track 98, frame 16">Asc 98</button>
-      <button type="button" data-track="D" aria-pressed="false" title="NISAR descending track 48, frame 74">Desc 48</button>
-    </div>
   </footer>
+
+  <div class="tip glass" id="tip" hidden></div>
+
+  <!-- Tab bar for phones -->
+  <nav class="tabbar glass" id="tabbar" aria-label="Story">
+    <button type="button" data-ch="1"><svg class="ic" aria-hidden="true"><use href="#i-sunrise"/></svg><span>Morning</span></button>
+    <button type="button" data-ch="2"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg><span>Creep</span></button>
+    <button type="button" data-ch="3"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><span>Haystack</span></button>
+    <button type="button" data-ch="4"><svg class="ic" aria-hidden="true"><use href="#i-waves"/></svg><span>Race</span></button>
+    <button type="button" data-ch="5"><svg class="ic" aria-hidden="true"><use href="#i-seal"/></svg><span>Answer</span></button>
+  </nav>
+  <div id="map" role="region" aria-label="3D map of the Langtang study box and flood corridor"></div>
+  <div class="sr-only" id="announce" aria-live="polite"></div>
 </div>
 
 <dialog class="sheet" id="sheet-method" aria-labelledby="m-title"></dialog>
 <dialog class="sheet" id="sheet-sources" aria-labelledby="s-title"></dialog>
+<dialog class="sheet" id="sheet-data" aria-labelledby="d-title"></dialog>
+<dialog class="sheet narrow" id="sheet-keys" aria-labelledby="k-title"></dialog>
+<dialog class="sheet welcome" id="sheet-welcome" aria-labelledby="w-title"></dialog>
 
 <noscript><p class="noscript">Cascade Watch needs JavaScript and WebGL to draw the 3D map.</p></noscript>
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="web/score.js"></script>
 <script src="web/app.js"></script>
+<script src="web/tour.js"></script>
 </body>
 </html>

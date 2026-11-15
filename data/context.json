@@ -35,15 +35,15 @@
   },
   "sah": {
    "short": "Sah 2026",
-   "url": "https://doi.org/10.5281/zenodo.22541071"
+   "url": "https://doi.org/10.5281/zenodo.22676918"
   },
   "ndrrma": {
    "short": "NDRRMA SitRep",
    "url": "https://ndrrma.gov.np/"
   },
   "kpost": {
-   "short": "Kathmandu Post",
-   "url": "https://kathmandupost.com/national/2026/08/27/how-the-bhotekoshi-flood-warning-unfolded"
+   "short": "Kathmandu Post (not archived)",
+   "url": "https://kathmandupost.com/national/2026/08/27/how-the-bhotekoshi-flood-unfolded-over-10-hours"
   },
   "unosat": {
    "short": "UNOSAT 4257",
@@ -86,37 +86,37 @@
   "alert": {
    "display": "38.8",
    "unit": "min",
-   "label": "from the collapse to the mass SMS alert (679,295 messages)",
+   "tone": "late",
    "source": "acharya",
-   "tone": "late"
+   "label": "from the collapse to the mass SMS alert (679,295 messages)"
   },
   "rasuwa": {
    "display": "3\u201313",
    "unit": "min",
-   "label": "for the wave to reach the Rasuwagadhi gauge, which it destroyed at 27% of its warning level",
+   "tone": "late",
    "source": "acharya",
-   "tone": "late"
+   "label": "for the wave to reach the Rasuwagadhi gauge; its last reading was 27% of its warning level, then it went silent"
   },
   "syabru": {
    "display": "13\u201323",
    "unit": "min",
-   "label": "to reach Syabrubesi, the first town: it was hit 16 to 26 minutes before the alert",
+   "tone": "late",
    "source": "acharya",
-   "tone": "late"
+   "label": "to reach Syabrubesi: 16 to 26 minutes before the alert"
   },
   "passes": {
    "display": "7",
    "unit": "pairs",
-   "label": "NISAR ascending interferometric pairs over the slope before the collapse, every one on ASF",
+   "tone": "ok",
    "source": "nisar",
-   "tone": "ok"
+   "label": "NISAR ascending pairs over the source before the collapse; 4 were public on ASF before it, 3 were processed later"
   },
   "dead": {
    "display": "1,455",
    "unit": "dead",
    "source": "usgs_impact",
-   "label": "and 5,285 missing in Nepal; 8,317 houses destroyed (as of 04 Oct)",
-   "tone": "late"
+   "label": "at least, with 5,285 missing in Nepal and 8,317 houses destroyed (USGS, 4 Oct)",
+   "tone": ""
   }
  },
  "facts_order": [
@@ -127,30 +127,34 @@
   "passes"
  ],
  "story": {
-  "morning": "At 08:37 a mass of ice and rock broke off the north flank of Langtang Lirung and fell into the Lhende Khola. The flood ran down the Bhote Koshi and the Trishuli. Nepal's own log first recorded it as an earthquake.",
-  "morning2": "Every gauge on the river saw the wave only by dying. Their warning levels were set for slow monsoon floods, and the radar that had been watching the slope all summer had no rule for telling it apart from dozens of other moving slopes.",
-  "creep": "The fastest tenth of the detachment zone moved about a metre downhill in the 24 days ending a week before the collapse, the same as Meena's independent reading of these passes (white diamonds). But it moved almost as much in late June, and it never accelerated. One pass earlier, monsoon decorrelation cost 59% of the glacier area and the source valley dropped out of the ranking."
+  "morning": "At 08:37:10 Nepal time a combined ice and bedrock mass broke away high on the Langtang massif; UNOSAT mapped the detachment zone at 1.96 km\u00b2. The flood ran down the Bhote Koshi and the Trishuli. Nepal's operational log first recorded it as an M4.4 earthquake.",
+  "morning2": "The three gauges nearest the source were destroyed before any of them crossed its warning level: their last readings were 27%, 69% and 87% of warning. Gauges further down survived and recorded the flood. Radar had watched the slope all summer, but it was one of 189 moving patches in the box, with no rule to pick it out.",
+  "creep": "In the 24 days ending 7 days before the collapse (26 Jul \u2192 19 Aug), the fastest tenth of the detachment zone moved 1.02 m downhill; the zone's median moved 0.05 m. Meena 2026 reports 0.96 m for the same pass, as the median over the crown, a smaller area, so it checks the size of the motion, not the exact number. It moved 0.95 m in 20 Jun \u2192 2 Jul too, so the motion did not single out the last weeks. In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.75 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold."
  },
  "limits": [
-  "The pre-registered test fails: the source valley ranked #2 in the last pass but was not ranked at all one pass earlier (2026-07-14 \u2192 2026-07-26), when monsoon decorrelation hid it.",
-  "The screen keeps this valley near the top most of the summer (6 of 7 ascending passes in the top five) and also after the collapse. It says 'watch this valley', not 'it falls next week'.",
-  "Phase blobs carry millimetre uncertainties, so they dominate a score of motion over sigma.",
-  "The headline phase is not corrected for tropospheric delay, which at 5,000 m can mimic motion. A sensitivity run that subtracts each product's own wet and hydrostatic screens gives #2 in the last pass and still not ranked one pass earlier.",
-  "The hit zone is 2 km around a 2 km\u00b2 outline, so several blobs qualify in most passes. The best-ranked one changes from pass to pass.",
-  "The USGS source point sits 1.3 km outside the UNOSAT outline; the outline is used as truth, as pre-registered.",
+  "The pre-registered test fails: the source valley ranked #2 in the last pass but was not ranked one pass earlier. In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.75 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold.",
+  "The screen keeps this valley near the top most of the summer (6 of 7 ascending passes in the top 5) and after the collapse too (#21, #3, #22, #8, #1). It says 'watch this valley', not 'it falls next week'.",
+  "Only 4 of those 7 pairs were public on ASF before the collapse; 3 (15 May\u219227 May, 27 May\u21928 Jun, 8 Jun\u219220 Jun) were processed afterwards. The last pass went public 37 hours before the collapse.",
+  "The rules were written after the event, by people who had read post-event studies of it. Pre-registration only guards against tuning on our own results; the real test is other events.",
+  "Phase patches carry millimetre uncertainties (the bootstrap error of the patch mean, which shrinks with patch size), so large phase patches dominate a score of motion over noise.",
+  "The headline phase is not corrected for tropospheric delay, which at 5,510 m can mimic motion. A sensitivity run that subtracts each product's own wet and hydrostatic screens gives #2 in the last pass and still not ranked one pass earlier.",
+  "The hit zone is 2 km around a 2.0 km\u00b2 outline, so several patches qualify in most passes, and the one that counts changes from pass to pass.",
+  "The USGS source point sits 1.3 km outside the UNOSAT outline; the outline is used as truth, as pre-registered. The flow path and the same-channel test start at the USGS point.",
   "NISAR L2 products are provisional, one track per direction, and there is no earlier-year NISAR archive to separate seasonal snow change from precursor motion.",
-  "Arrival times between gauges are interpolated along the routed flow path; beyond Betrawati they are extrapolated.",
+  "Arrival times between gauges are interpolated along the routed flow path and differ from some reported times (Timure); beyond Betrawati they are extrapolated.",
+  "ERA5 is a 0.25\u00b0 grid cell at 5,510 m. The temperature anomaly is stable across elevations; the snowfall figure is not (7% of normal here, 1.5% at 5,190 m).",
+  "A few implementation constants live in code, not in config.json: the 30% glacier fraction for ice over rock, the 10 mm gate for opposing neighbours, the season mapping 1 + 0.25\u00b7z (clipped 0.5\u20131.5) from 1 May, and the 30% valid-share and 20\u00b0 stable-ground cuts.",
   "The Sentinel-1 C-band control is not run yet; it needs the ASF HyP3 service authorised on the Earthdata account."
  ],
  "real": [
-  "20 NISAR L2 GUNW + GOFF pairs (ascending track 98, descending track 48), read straight from ASF, box subset only.",
-  "NISAR GCOV 10 m backscatter before and after the collapse; the change map shows the avalanche path through monsoon cloud.",
-  "Detachment zone: UNOSAT product 4257 (Landsat 9, 26 Aug). Flood extent, affected buildings and roads: UNOSAT 4257.",
-  "Gauge brackets and the alert chronology: DHM river watch via the Acharya 2026 archive; USGS and GEOFON catalogues.",
-  "Terrain: Copernicus DEM GLO-30. Glaciers: RGI 7.0 (NSIDC). People: WorldPop 2026, Nepal and China. Rivers and places: OpenStreetMap. Heat: ERA5."
+  "20 NISAR L2 GUNW + GOFF pairs (ascending track 98, descending track 48), read from ASF, box subset only.",
+  "NISAR GCOV backscatter for 4 ascending dates; the change map between 19 Aug and 31 Aug shows the avalanche path through monsoon cloud.",
+  "Detachment zone, flood extent, affected buildings and roads: UNOSAT product 4257.",
+  "Gauge series and the alert chronology: DHM river watch via the Acharya & Paudel archive (Zenodo 22679444); USGS and GEOFON catalogues.",
+  "Terrain: Copernicus DEM GLO-30. Glaciers: RGI 7.0. People: WorldPop 2026. Rivers and places: OpenStreetMap. Heat: ERA5 via Open-Meteo."
  ],
- "method_html": "<h2 id=\"m-title\">Method</h2>\n<p>One question, answered with a number: with rules fixed in advance, would NISAR have put the Langtang valley on a watch list a week before it fell? The unit is a valley, not a pixel.</p>\n<h3>1 \u00b7 Fetch</h3><p>NISAR L2 GUNW (unwrapped phase, coherence, offsets, LOS geometry) and GOFF (dense pixel offsets, three window sizes, with variances) for every pair from May to October 2026, and GCOV backscatter for key dates. Only the 463\u00d7412 cell box (80 m, UTM 45N) is read from each 1\u20132 GB granule. Where two releases exist we use P05023, the one that was on ASF at the time.</p>\n<h3>2 \u00b7 Clean</h3><ul><li>Offsets: cull by variance (\u03c3 \u2264 1 m), SNR \u2265 5 and a 5\u00d75 median test; remove the bulk shift; project slant-range and along-track offsets onto the local fall line from the DEM, weighted by their variances. The GOFF layer with the lowest noise over stable ground is used per pass. Glaciers come out moving downhill, which checks the sign conventions.</li><li>Phase: subtract the ionosphere screen, convert with the product&#x27;s own wavelength (\u03bb = 0.2420 m), keep coherence \u2265 0.30 (ascending) or 0.40 (descending) and valid connected components, remove a robust plane and the median of a 3\u20135 km ring.</li></ul>\n<h3>3 \u00b7 Rank</h3><p>Blobs are connected patches (\u2265 5 cells) of downhill offset motion above 3\u00d7 the scene noise with direction coherence above the scene median, or of relative LOS motion beyond \u00b150 mm. Each blob gets a bootstrap \u03c3, direction coherence, an opposing-neighbour flag, an ice-over-rock flag (glacier \u2265 30% and slope \u2265 30\u00b0), WorldPop residents within 1 km of its first 30 km downstream (D8 routing on the DEM) and the ERA5 heat anomaly. Score = (motion/\u03c3) \u00d7 direction coherence \u00d7 1.5 if opposing \u00d7 1.3 if ice over rock \u00d7 (1 + 0.25\u00b7log10(1 + people)) \u00d7 (1 + 0.5\u00b7(season \u2212 1)).</p>\n<h3>4 \u00b7 Score against truth</h3><p>A hit is the best-ranked blob within 2 km of the UNOSAT detachment outline whose flow path joins the source's before the Bhote Koshi. Truth is never used to rank. Pass condition, fixed before the first run: a hit in the top five in both of the last two ascending passes before 26 August. Baseline: rank by raw offset magnitude alone.</p>\n<h3>5 \u00b7 Replay</h3><p>The flood front runs down the D8 flow path through the DHM gauge brackets. The tripwire fires only if the source valley was in the top N of the last pass; its delay is the sum of the four sliders.</p>\n<p class=\"note\">Every threshold is in <code>pipeline/config.json</code>, committed before the first real run (see the git history). The browser scorer is tested to reproduce the pipeline ranking exactly.</p>",
- "sources_html": "<h2 id=\"s-title\">Sources</h2>\n<p>Data</p><ul><li>NISAR L2 GUNW, GOFF and GCOV, provisional (NASA/JPL/ISRO), via ASF DAAC and NASA Earthdata (doi:10.5067/NIL2GUNW-P1).</li><li>UNOSAT product 4257: detachment zone (Landsat 9, 26 Aug 2026), flood extent, affected buildings and roads, barrier lakes.</li><li>Copernicus EMS rapid mapping EMSR927.</li><li>Nepal Department of Hydrology and Meteorology river-watch ten-minute stage series, as archived by Acharya &amp; Paudel (Zenodo 22679444).</li><li>USGS earthquake catalogue (us7000tbwb, us7000tc90); GEOFON (gfz2026qrfy).</li><li>Copernicus DEM GLO-30 (ESA, AWS open data); GLIMS/RGI glacier outlines; WorldPop population; OpenStreetMap (ODbL); ERA5 reanalysis via Open-Meteo.</li></ul>\n<p>Papers</p><ul><li>Kuto\u011flu, Softa &amp; Akg\u00fcn (2026). Differential rock\u2013ice deformation before the 2026 Langtang hazard cascade: NISAR observations. Remote Sensing 18(21), 3727.</li><li>Meena (2026). NISAR offsets measure pre-failure motion but do not single out the Bhote Koshi avalanche source. Research Square.</li><li>Acharya (2026). The Bhote Koshi\u2013Trishuli flash flood of 26 August 2026: warning latency exceeded flood travel time. EarthArXiv 14687, v5.</li><li>Hassan et al. (2026). Extreme heat and snow drought preconditioned the August 2026 Nepal rock\u2013ice avalanche flood. Research Square.</li><li>Sah (2026). Sentinel-1 detection limits at the Langtang source. Zenodo 22541071.</li></ul>\n<p>Links</p><ul><li><a href=\"https://search.asf.alaska.edu/#/?dataset=NISAR\" target=\"_blank\" rel=\"noopener\">NISAR L2 (ASF)</a></li><li><a href=\"https://earthquake.usgs.gov/earthquakes/eventpage/us7000tbwb\" target=\"_blank\" rel=\"noopener\">USGS us7000tbwb</a></li><li><a href=\"https://geofon.gfz.de/eqinfo/event.php?id=gfz2026qrfy\" target=\"_blank\" rel=\"noopener\">GEOFON</a></li><li><a href=\"https://eartharxiv.org/repository/view/14687/\" target=\"_blank\" rel=\"noopener\">Acharya 2026</a></li><li><a href=\"https://www.mdpi.com/2072-4292/18/21/3727\" target=\"_blank\" rel=\"noopener\">Kuto\u011flu 2026</a></li><li><a href=\"https://www.researchsquare.com/article/rs-11022365/v1\" target=\"_blank\" rel=\"noopener\">Meena 2026</a></li><li><a href=\"https://www.researchsquare.com/article/rs-11167819/v1\" target=\"_blank\" rel=\"noopener\">Hassan 2026</a></li><li><a href=\"https://doi.org/10.5281/zenodo.22541071\" target=\"_blank\" rel=\"noopener\">Sah 2026</a></li><li><a href=\"https://ndrrma.gov.np/\" target=\"_blank\" rel=\"noopener\">NDRRMA SitRep</a></li><li><a href=\"https://kathmandupost.com/national/2026/08/27/how-the-bhotekoshi-flood-warning-unfolded\" target=\"_blank\" rel=\"noopener\">Kathmandu Post</a></li><li><a href=\"https://unosat.org/products/4257\" target=\"_blank\" rel=\"noopener\">UNOSAT 4257</a></li><li><a href=\"https://rapidmapping.emergency.copernicus.eu/EMSR927\" target=\"_blank\" rel=\"noopener\">Copernicus EMSR927</a></li><li><a href=\"https://www.dhm.gov.np/hydrology/river-watch\" target=\"_blank\" rel=\"noopener\">DHM river watch</a></li><li><a href=\"https://open-meteo.com/en/docs/historical-weather-api\" target=\"_blank\" rel=\"noopener\">ERA5 via Open-Meteo</a></li><li><a href=\"https://www.worldpop.org/\" target=\"_blank\" rel=\"noopener\">WorldPop</a></li><li><a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener\">OpenStreetMap</a></li><li><a href=\"https://www.glims.org/\" target=\"_blank\" rel=\"noopener\">GLIMS/RGI</a></li><li><a href=\"https://registry.opendata.aws/copernicus-dem/\" target=\"_blank\" rel=\"noopener\">Copernicus DEM</a></li><li><a href=\"https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us7000tbwb&amp;format=geojson\" target=\"_blank\" rel=\"noopener\">USGS</a></li></ul>\n<p class=\"note\">Code: MIT licence. Map libraries: MapLibre GL JS (BSD-3). Fonts: Bricolage Grotesque, IBM Plex (OFL).</p>",
+ "method_html": "<h2 id=\"m-title\">Method</h2>\n<p>One question, answered with a number: with rules fixed in advance, would NISAR have put the Langtang valley on a watch list a week before it fell? The unit is a valley, not a pixel.</p>\n<h3>1 \u00b7 Fetch</h3><p>NISAR L2 GUNW (unwrapped phase, coherence, offsets, LOS geometry) and GOFF (dense pixel offsets, three window sizes, with variances) for every pair from 15 May to 18 Oct 2026, and GCOV backscatter for key dates. Only the 463\u00d7412 cell box (80 m, UTM 45N) is read from each granule. Where two releases exist we use P05023, the composite that was on ASF before the collapse; 3 of the 7 ascending pre-collapse pairs exist only as X05026, processed after it.</p>\n<h3>2 \u00b7 Clean</h3><ul><li>Offsets: cull by variance (\u03c3 \u2264 1 m), SNR \u2265 5 and a 5\u00d75 median test; remove the bulk shift; project slant-range and along-track offsets onto the local fall line from the DEM, weighted by their variances. The GOFF layer with the lowest noise over stable ground is used per pass. Glaciers come out moving downhill, which checks the sign conventions.</li><li>Phase: subtract the ionosphere screen, convert with the product&#x27;s own wavelength (\u03bb = 0.2420, 0.2439 m), keep coherence \u2265 0.3 (ascending) or 0.4 (descending) and valid connected components, remove a robust plane and the median of a 3\u20135 km ring.</li></ul>\n<h3>3 \u00b7 Rank</h3><p>Patches are connected groups (\u2265 5 cells) of downhill offset motion above 3\u00d7 the scene noise with direction coherence above the scene median, or of relative LOS motion beyond \u00b150 mm. Each patch gets a bootstrap \u03c3, direction coherence, an opposing-neighbour flag (within 1.5 km), an ice-over-rock flag (glacier \u2265 30% and slope \u2265 30\u00b0), WorldPop residents within 1 km of its first 30 km downstream (D8 routing on the DEM) and the ERA5 heat anomaly. Score = (motion/sigma) * dir_coherence * (opposing_bonus if opposing_sign) * (ice_bonus if ice_over_rock) * (1 + w_pop*log10(1+people_below)) * (1 + w_season*(season_anomaly-1)), with opposing bonus 1.5, ice bonus 1.3, w_pop 0.25, w_season 0.5.</p>\n<h3>4 \u00b7 Score against truth</h3><p>A hit is the best-ranked patch within 2 km of the UNOSAT detachment outline whose flow path joins the source's before the main river. Truth is never used to rank. Pass condition, fixed before the first run: a blob within 2 km of the source and in the same catchment ranks top 5 in BOTH of the last two ascending windows before 26 Aug. Baseline: rank by mean raw offset magnitude alone.</p>\n<h3>5 \u00b7 Replay</h3><p>The flood front runs down the D8 flow path through the DHM gauge brackets. The tripwire fires only if the source valley was in the top N of the last pass; its delay is the sum of the four sliders.</p>\n<p class=\"note\">The thresholds and weights above are in <code>pipeline/config.json</code>, committed before the first results (see Data, and the git history). A few implementation constants live in <code>rank.py</code> and <code>clean.py</code>; they are listed under Limits. The browser scorer is tested to reproduce the pipeline ranking exactly.</p>",
+ "sources_html": "<h2 id=\"s-title\">Sources</h2>\n<p>Data</p><ul><li>NISAR L2 GUNW, GOFF and GCOV, provisional (NASA/JPL/ISRO), via ASF DAAC and NASA Earthdata (collection NISAR_L2_GUNW_PROVISIONAL_V1).</li><li>UNOSAT product 4257: detachment zone (Landsat 9, 26 Aug 2026), flood extent, affected buildings and roads, barrier lakes.</li><li>Copernicus EMS rapid mapping EMSR927.</li><li>Nepal Department of Hydrology and Meteorology river-watch ten-minute stage series, as archived by Acharya &amp; Paudel (Zenodo 22679444).</li><li>USGS earthquake catalogue (us7000tbwb, us7000tc90); GEOFON (gfz2026qrfy).</li><li>Copernicus DEM GLO-30 (ESA, AWS open data); GLIMS/RGI glacier outlines; WorldPop population; OpenStreetMap (ODbL); ERA5 reanalysis via Open-Meteo.</li></ul>\n<p>Papers</p><ul><li>Kuto\u011flu, Softa &amp; Akg\u00fcn (2026). Remote Sensing 18(21), 3727 (NISAR observations of differential rock\u2013ice deformation before the Langtang cascade).</li><li>Meena (2026). NISAR offsets measure pre-failure motion but do not single out the Bhote Koshi avalanche source. Research Square.</li><li>Acharya (2026). The Bhote Koshi\u2013Trishuli flash flood of 26 August 2026: warning latency exceeded flood travel time. EarthArXiv 14687, v5.</li><li>Hassan et al. (2026). Extreme heat and snow drought preconditioned the August 2026 Nepal rock\u2013ice avalanche flood. Research Square.</li><li>Sah (2026). Sentinel-1 analysis of the source slope, code and data release: https://doi.org/10.5281/zenodo.22676918.</li></ul>\n<p>Links</p><ul><li><a href=\"https://search.asf.alaska.edu/#/?dataset=NISAR\" target=\"_blank\" rel=\"noopener\">NISAR L2 (ASF)</a></li><li><a href=\"https://earthquake.usgs.gov/earthquakes/eventpage/us7000tbwb\" target=\"_blank\" rel=\"noopener\">USGS us7000tbwb</a></li><li><a href=\"https://geofon.gfz.de/eqinfo/event.php?id=gfz2026qrfy\" target=\"_blank\" rel=\"noopener\">GEOFON</a></li><li><a href=\"https://eartharxiv.org/repository/view/14687/\" target=\"_blank\" rel=\"noopener\">Acharya 2026</a></li><li><a href=\"https://www.mdpi.com/2072-4292/18/21/3727\" target=\"_blank\" rel=\"noopener\">Kuto\u011flu 2026</a></li><li><a href=\"https://www.researchsquare.com/article/rs-11022365/v1\" target=\"_blank\" rel=\"noopener\">Meena 2026</a></li><li><a href=\"https://www.researchsquare.com/article/rs-11167819/v1\" target=\"_blank\" rel=\"noopener\">Hassan 2026</a></li><li><a href=\"https://doi.org/10.5281/zenodo.22676918\" target=\"_blank\" rel=\"noopener\">Sah 2026</a></li><li><a href=\"https://ndrrma.gov.np/\" target=\"_blank\" rel=\"noopener\">NDRRMA SitRep</a></li><li><a href=\"https://kathmandupost.com/national/2026/08/27/how-the-bhotekoshi-flood-unfolded-over-10-hours\" target=\"_blank\" rel=\"noopener\">Kathmandu Post (not archived)</a></li><li><a href=\"https://unosat.org/products/4257\" target=\"_blank\" rel=\"noopener\">UNOSAT 4257</a></li><li><a href=\"https://rapidmapping.emergency.copernicus.eu/EMSR927\" target=\"_blank\" rel=\"noopener\">Copernicus EMSR927</a></li><li><a href=\"https://www.dhm.gov.np/hydrology/river-watch\" target=\"_blank\" rel=\"noopener\">DHM river watch</a></li><li><a href=\"https://open-meteo.com/en/docs/historical-weather-api\" target=\"_blank\" rel=\"noopener\">ERA5 via Open-Meteo</a></li><li><a href=\"https://www.worldpop.org/\" target=\"_blank\" rel=\"noopener\">WorldPop</a></li><li><a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\" rel=\"noopener\">OpenStreetMap</a></li><li><a href=\"https://www.glims.org/\" target=\"_blank\" rel=\"noopener\">GLIMS/RGI</a></li><li><a href=\"https://registry.opendata.aws/copernicus-dem/\" target=\"_blank\" rel=\"noopener\">Copernicus DEM</a></li><li><a href=\"https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us7000tbwb&amp;format=geojson\" target=\"_blank\" rel=\"noopener\">USGS</a></li></ul>\n<p class=\"note\">Code: MIT licence. Map library: MapLibre GL JS (BSD-3). The Kathmandu Post article is cited from Acharya's archive; the article itself was not saved.</p>",
  "gcov_pair": [
   "gcov_A098_20260819",
   "gcov_A098_20260831"
@@ -161,191 +165,216 @@
  ],
  "gcov_change": "gcovchange_A098_20260819_20260831",
  "sah": {
-  "text": "Sah (2026) tested routine 12-day Sentinel-1 products at this slope and found no motion above about 13 mm a month.",
+  "text": "Sah (2026) tested routine Sentinel-1 products at this slope and found no motion above 12.8 mm a month (48-day pairs).",
   "source": "sah"
  },
+ "timing": {
+  "days_before": 7,
+  "hours_on_asf": 37.4,
+  "last_pass": "A098_20260726_20260819",
+  "on_asf_before": 4,
+  "n_pre": 7
+ },
+ "why_missing": "In 14 Jul \u2192 26 Jul no moving patch formed within 2 km of the source. That pass had the noisiest offsets of the summer: the 3\u03c3 cut was 0.75 m, above the 0.50 m that the fastest tenth of the detachment zone moved. Phase coherence at the site was the best of the 7 passes, but no phase motion there passed the \u00b150 mm threshold.",
  "meena": [
   {
    "id": "A098_20260620_20260702",
    "disp_m": 0.99,
-   "days": 12
+   "days": 12,
+   "stat": "crown median"
   },
   {
    "id": "A098_20260702_20260714",
    "disp_m": 0.54,
-   "days": 12
+   "days": 12,
+   "stat": "crown median"
   },
   {
    "id": "A098_20260714_20260726",
    "disp_m": 0.3,
-   "days": 12
+   "days": 12,
+   "stat": "crown median"
   },
   {
    "id": "A098_20260726_20260819",
    "disp_m": 0.96,
-   "days": 24
+   "days": 24,
+   "stat": "crown median"
   },
   {
    "id": "A098_20260819_20260831",
    "disp_m": 0.33,
-   "days": 12
+   "days": 12,
+   "stat": "crown median"
   }
  ],
  "era5": {
-  "t2026": 3.741,
-  "clim": 2.436,
-  "anom": 1.305,
-  "z": 3.72,
+  "t2026": 1.657,
+  "clim": 0.358,
+  "anom": 1.299,
+  "z": 3.69,
   "rank": 2,
   "n": 36,
-  "snow_pct": 1.5,
+  "snow_pct": 7.2,
+  "elev_m": 5510.0,
+  "point": [
+   85.515,
+   28.271
+  ],
+  "grid": {
+   "latitude": 28.25,
+   "longitude": 85.5
+  },
+  "snow_pct_alt": 1.5,
   "years": [
    [
     1991,
-    2.398
+    0.314
    ],
    [
     1992,
-    1.518
+    -0.552
    ],
    [
     1993,
-    2.475
+    0.396
    ],
    [
     1994,
-    2.946
+    0.87
    ],
    [
     1995,
-    2.032
+    -0.048
    ],
    [
     1996,
-    2.298
+    0.209
    ],
    [
     1997,
-    2.589
+    0.509
    ],
    [
     1998,
-    2.421
+    0.336
    ],
    [
     1999,
-    1.805
+    -0.277
    ],
    [
     2000,
-    2.154
+    0.077
    ],
    [
     2001,
-    2.477
+    0.391
    ],
    [
     2002,
-    2.175
+    0.096
    ],
    [
     2003,
-    2.109
+    0.032
    ],
    [
     2004,
-    1.97
+    -0.112
    ],
    [
     2005,
-    2.423
+    0.346
    ],
    [
     2006,
-    2.673
+    0.604
    ],
    [
     2007,
-    2.234
+    0.161
    ],
    [
     2008,
-    2.468
+    0.4
    ],
    [
     2009,
-    2.695
+    0.621
    ],
    [
     2010,
-    2.282
+    0.207
    ],
    [
     2011,
-    2.286
+    0.205
    ],
    [
     2012,
-    2.414
+    0.339
    ],
    [
     2013,
-    2.546
+    0.466
    ],
    [
     2014,
-    2.691
+    0.614
    ],
    [
     2015,
-    2.546
+    0.471
    ],
    [
     2016,
-    2.686
+    0.605
    ],
    [
     2017,
-    2.855
+    0.784
    ],
    [
     2018,
-    3.004
+    0.921
    ],
    [
     2019,
-    2.996
+    0.92
    ],
    [
     2020,
-    2.905
+    0.829
    ],
    [
     2021,
-    3.077
+    0.991
    ],
    [
     2022,
-    3.459
+    1.379
    ],
    [
     2023,
-    3.379
+    1.307
    ],
    [
     2024,
-    3.839
+    1.771
    ],
    [
     2025,
-    3.596
+    1.525
    ],
    [
     2026,
-    3.741
+    1.657
    ]
   ],
-  "span": "1 Jul\u201325 Aug"
+  "span": "1 Jul\u201325 Aug",
+  "ordinal": "2nd",
+  "y0": 1991
  },
  "sensitivity": {
   "note": "Same pipeline, but each GUNW's wet + hydrostatic tropospheric phase screens are subtracted before ranking. Headline keeps the pre-registered processing.",

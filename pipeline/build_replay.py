@@ -16,8 +16,17 @@ import numpy as np
 import hydro
 from grid import CFG, DATA, RAW, TO_UTM, find
 
-COLLAPSE = datetime(2026, 8, 26, 2, 52, 10, tzinfo=timezone.utc)
+COLLAPSE = datetime.fromisoformat(CFG["windows"]["event_utc"].replace("Z", "+00:00"))   # pre-registered event time (USGS origin)
 NPT = timezone(timedelta(hours=5, minutes=45))
+
+
+def source_short(url: str) -> str:
+    for key, name in (("eartharxiv", "Acharya 2026"), ("earthquake.usgs.gov", "USGS"), ("kathmandupost", "Kathmandu Post (not archived)"),
+                      ("ndrrma", "NDRRMA"), ("zenodo.22679444", "Acharya & Paudel data"), ("rs18213727", "Kutoğlu 2026"), ("rs-11167819", "Hassan 2026"),
+                      ("geofon", "GEOFON"), ("unosat", "UNOSAT"), ("copernicus", "Copernicus EMS")):
+        if key in url:
+            return name
+    return url.split("/")[2] if "//" in url else url
 
 
 def t_of_npt(s: str) -> float:
@@ -93,23 +102,34 @@ def main():
         if v["name"] not in seen:
             dedup.append(v); seen.add(v["name"])
 
-    U = {
-        "usgs": "usgs", "acharya": "acharya", "ndrrma": "ndrrma", "kpost": "kpost",
-    }
-    events = [
-        dict(t_min=0.0, npt="08:37", label="Ice and rock fall from the north flank of Langtang Lirung. USGS later catalogues it as an M5.2 landslide.", source="usgs"),
-        dict(t_min=0.0, npt="08:37", label="Nepal's operational log records an M4.4 earthquake, not a landslide.", source="kpost"),
-        dict(t_min=2.83, npt="08:40", label="Rasuwagadhi gauge sends its last reading: 1.62 m against a 6 m warning level (27%).", source="acharya"),
-        dict(t_min=12.83, npt="08:50", label="Rasuwagadhi is silent, destroyed. Syabrubesi sends its last reading: 3.8 m against 5.5 m (69%).", source="acharya"),
-        dict(t_min=22.83, npt="09:00", label="Syabrubesi is silent. The district office calls the hydrology department.", source="acharya"),
-        dict(t_min=37.83, npt="09:15", label="DHM confirms the flood and issues the first warning for the Trishuli.", source="acharya"),
-        dict(t_min=38.83, npt="09:16", label="Mass SMS: 679,295 messages to four districts.", source="acharya"),
-        dict(t_min=41.35, npt="09:18", label="USGS first publishes the event, as an M4.4 earthquake.", source="usgs"),
-        dict(t_min=42.83, npt="09:20", label="Betrawati sends its last reading: 3.55 m against 4.1 m (87%). By 09:30 it is gone.", source="acharya"),
-    ]
+    # Event log: every item comes from raw/event/timeline.json, which carries a source URL and a verbatim quote.
+    timeline = json.loads((RAW / "event" / "timeline.json").read_text())["events"]
+    tmax = anchors[-1][0] + 1
+    events = []
+    for e in timeline:
+        t = e.get("t_min_after_collapse")
+        if t is None or t < -1 or t > tmax or not e.get("source_url"):
+            continue
+        url = e["source_url"].split(" ")[0]
+        events.append(dict(t_min=round(max(t, 0.0), 2), npt=(e.get("npt") or "")[11:16], label=e["label"], url=url,
+                           src=source_short(url), quote=e.get("quote", ""), kind=e.get("kind")))
+    sms = next(e for e in timeline if e.get("kind") == "alert" and e["label"].lower().startswith("mass sms"))
+    facts = json.loads((RAW / "event" / "facts.json").read_text())["facts"]
+    collapse_npt = facts["timing"]["collapse_npt"]["value"]
+    # places with a sourced arrival report of their own (villages_arrival.json) carry it alongside the routed estimate
+    places = {p["name"]: p for p in json.loads((RAW / "event" / "villages_arrival.json").read_text())["places"]}
+    for v in dedup:
+        pl = places.get(v["name"])
+        for rep in (pl or {}).get("other_arrival_reports") or []:
+            tr = rep.get("time_range") or ([rep["time"], rep["time"]] if rep.get("time") else None)
+            if tr:
+                v.setdefault("reported", []).append(dict(t_lo=tr[0]["t_min"], t_hi=tr[1]["t_min"], npt=tr[0]["npt"] + ("–" + tr[1]["npt"] if tr[1] is not tr[0] else ""),
+                                                          source_url=rep["source_url"].split(" ")[0], quote=rep.get("quote", "")))
+        if pl and pl.get("lead_time_min"):
+            v["lead_time"] = dict(pl["lead_time_min"], source_url=pl["lead_time_min"]["source_url"].split(" ")[0])
     out = dict(
-        collapse_utc=COLLAPSE.isoformat().replace("+00:00", "Z"), collapse_npt="08:37:10",
-        alert_min=38.83, alert_label="Mass SMS dispatch (09:16 NPT)",
+        collapse_utc=COLLAPSE.isoformat().replace("+00:00", "Z"), collapse_npt=collapse_npt,
+        alert_min=round(sms["t_min_after_collapse"], 2), alert_label=sms["label"], alert_source=sms["source_url"].split(" ")[0], alert_quote=sms.get("quote", ""),
         path=path, path_km=path_km, front=[[round(t, 2), round(k, 2)] for t, k in anchors],
         gauges=gauges, villages=dedup, events=events,
         note=("Arrival at a gauge is the DHM ten-minute bracket: after its last normal reading, by its first rise or silence; "

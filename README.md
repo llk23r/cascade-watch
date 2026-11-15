@@ -3,11 +3,11 @@
 **A replay of the 26 August 2026 Langtang flood on real NISAR radar.**
 NASA Space Apps Challenge 2026 · *Dancing with the SARs* · Toronto
 
-> With rules fixed in advance, would NISAR have put the Langtang valley on a watch list a week before it fell?
+> With rules fixed in advance, would NISAR have put the Langtang valley on a watch list before it fell?
 
-At 08:37 NPT on 26 August 2026 an ice–rock mass broke off the north flank of Langtang Lirung (USGS us7000tbwb). The flood ran down the Lhende Khola, Bhote Koshi and Trishuli and killed 1,455 people in Nepal, with 5,285 missing (USGS, as of 4 Oct). It destroyed every river gauge in its path, each one at 27–87% of its warning level. The public SMS went out **38.8 minutes** after the collapse, 16–26 minutes after the wave hit Syabrubesi.
+At 08:37:10 NPT on 26 August 2026 a combined ice and bedrock mass broke away high on the Langtang massif (USGS us7000tbwb; UNOSAT mapped a 1.96 km² detachment zone). The flood ran down the Bhote Koshi and the Trishuli and killed at least 1,455 people in Nepal, with 5,285 missing (USGS, as of 4 Oct). The three gauges nearest the source were destroyed before any crossed its warning level (last readings 27%, 69% and 87% of warning). The public SMS went out **38.8 minutes** after the collapse, 16–26 minutes after the wave hit Syabrubesi (Acharya & Paudel 2026).
 
-Cascade Watch runs a pre-registered screening rule over every NISAR pass of that summer. It ranks every moving slope in a 37 × 33 km box and then checks where the slope that actually fell landed in that ranking.
+Cascade Watch runs a pre-registered screening rule over every NISAR pass of that summer, explains each step with a narrated guided tour, and shows the raw records behind every number. It ranks every moving slope in a 37 × 33 km box and then checks where the slope that actually fell landed in that ranking.
 
 ## The answer, from real data
 
@@ -15,18 +15,34 @@ Cascade Watch runs a pre-registered screening rule over every NISAR pass of that
 |---|---|
 | Last NISAR pass before the collapse (26 Jul → 19 Aug, ascending track 98, on ASF from 24 Aug 13:30 UTC) | **source valley ranked #2 of 189** moving slopes |
 | Raw-offset baseline (rank by offset magnitude alone, Meena-style) | #7 of 157 |
-| Pass before that (14 → 26 Jul) | **not ranked**: monsoon decorrelation hid it |
+| Pass before that (14 → 26 Jul) | **not ranked**: no moving patch formed near the source (noisiest offsets of the summer: 3σ cut 0.75 m vs 0.50 m site motion) |
 | Pre-registered pass test (top 5 in *both* of the last two passes) | **not passed** |
 | Descending track 48, last pass (23 Jul → 16 Aug) | #13 of 220 |
 | Same screen with the products' tropospheric screens removed (sensitivity) | #2 of 186 in the last pass; still not ranked the pass before |
 | Sentinel-1 C-band control | pending (see *Not done* below) |
 
 What this means:
-- **Yes, the valley would have been on a short watch list a week early.** In the last pass, five of the top eight blobs drain into the source catchment, and the top three all lie within 3.2 km of the detachment zone.
-- **It was also near the top most of the summer (6 of 7 ascending passes in the top five), and after the collapse.** The screen says *watch this valley*, not *it falls next week*, which is exactly what a watch list is for.
-- **The radar measurement agrees with an independent analysis.** Inside the UNOSAT detachment zone, our fastest-tenth GOFF motion was 0.95, 0.40, 0.50, 1.02 and 0.43 m over the five pre/co-event passes. Meena (2026) reports 0.99, 0.54, 0.30, 0.96 and 0.33 m for the same passes.
-- **The season was primed.** ERA5 at the source: 1 Jul–25 Aug 2026 was the 2nd warmest of 36 years (+1.3 °C, z = +3.7), with 1.5% of normal snowfall. This matches Hassan et al.
-- **A ground tripwire would have bought time.** If a ground sensor on the #2 valley had raised a siren within ~4.5 minutes, Syabrubesi would have had about 13 minutes of warning instead of being hit 21 minutes before the SMS.
+- **By the pre-registered test: no.** The source valley ranked #2 in the last pass but was missing one pass earlier.
+- **In the last pass alone it was on a short list.** That pass was acquired 7 days before the collapse and went public on ASF 37 hours before it. A "hit" is any moving patch within 2 km of the UNOSAT outline that drains to the same channel; here it was phase patch `p+43`, 1.3 km from the outline.
+- **It was near the top most of the summer (6 of 7 ascending passes in the top five) and after the collapse too.** Only 4 of those 7 pairs were public before the collapse; 3 were processed later. The screen says *watch this valley*, not *it falls next week*.
+- **The motion is real, but it is not a precursor signal by itself.** Inside the detachment zone the fastest tenth moved 1.02 m in the last pass (zone median 0.05 m), and 0.95 m in 20 Jun–2 Jul. Meena (2026) reports 0.96 m for the same last pass, as a crown median over a smaller area: a check on magnitude, not a like-for-like match.
+- **The season was hot.** ERA5 (0.25° cell, 5,510 m): 1 Jul–25 Aug 2026 was the 2nd warmest of 36 years (+1.3 °C, z = +3.7). Snowfall was 7% of normal, but that figure depends on the elevation used (1.5% at 5,190 m).
+- **A ground tripwire is a what-if.** If a sensor on the watched valley had raised a siren within ~4.5 minutes, Syabrubesi would have had about 13 minutes of warning instead of being hit about 21 minutes before the SMS.
+
+## The rule, and why it is plausible
+
+Every pass: find moving patches (≥ 5 cells of 80 m; offsets above 3× scene noise or phase beyond ±50 mm), score each, watch the top 5.
+
+| Factor | Why it is there |
+|---|---|
+| motion ÷ its own noise | only motion the radar measured clearly counts; a clean 5 cm beats a noisy 50 cm |
+| × direction coherence | a failing slope moves as one block; noise points every way |
+| × 1.5 if neighbours move opposite ways | a crack opening between blocks |
+| × 1.3 if glacier ice sits on rock ≥ 30° | where ice–rock avalanches start |
+| × (1 + 0.25·log10(1 + people below)) | risk = hazard × exposure; log so towns do not swamp motion |
+| × (1 + 0.5·(heat anomaly − 1)) | warm, low-snow summers weaken ice; the same for every patch in a pass, so it never changes the order |
+
+The rules are in `pipeline/config.json`, committed (0f0f98a, 04:20 local) before the first results commit (6c80d0e, 05:02). They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. **The real test is other events**; see *Backtest*.
 
 ## Run it
 
@@ -46,6 +62,20 @@ python clean.py && python rank.py && python build_replay.py && python build_laye
 python render.py
 cd .. && node tests/score_parity.test.js    # browser scorer == pipeline ranking
 ```
+
+## Using the app
+
+The window works like a macOS app: the 3-D valley fills it, and glass panes float on top.
+
+- **Sidebar.** The five chapters (The Morning, The Creep, The Haystack, The Race, The Answer). Below them, every NISAR pass with the rank of the slope that fell under the current rules, and the scorecard.
+- **Inspector** (right). The chapter you are on: the story, charts and controls. **Back** and the next chapter's name sit at the bottom.
+- **Toolbar.** Map layer (Motion, Phase, Coherence, Radar, Terrain), orbit (Ascending 98 or Descending 48), Method, Sources and keyboard shortcuts.
+- **Timeline** (bottom). The summer's passes, then the 65 minutes of 26 August, then the pass after. Drag it, or press play.
+- First visit opens a welcome sheet: **Start the replay** runs the wave, **Skip to the answer** jumps to the result.
+
+Keyboard: `1`–`5` chapters, `Space` play/pause, `←` `→` step through passes and minutes, `S` sidebar, `I` inspector, `L` next layer, `?` all shortcuts.
+
+The page follows the system light or dark appearance, reduced motion, reduced transparency and increased contrast. Below 860 px wide it switches to a phone layout: map on top, the chapter in a bottom sheet, chapters in a tab bar. Add `?intro=0` to the URL to skip the welcome sheet, or `?intro=1` to show it again.
 
 `raw/event/{timeline,facts,villages_arrival}.json` are compiled by hand from the fetched sources. Every item carries its source URL and a verbatim quote, and the replay only uses items that have one.
 
@@ -102,7 +132,7 @@ All thresholds and weights are in [`pipeline/config.json`](pipeline/config.json)
 ## Layout
 
 ```
-index.html, web/          the app (MapLibre GL JS 4.7.1 from unpkg)
+index.html, web/          the app: macOS-style glass UI, MapLibre GL JS 4.7.1 from unpkg, no build step
 data/                     everything the app reads (pipeline output)
 pipeline/                 fetch → clean → rank → replay → render
 tests/                    score parity test, headless screenshots, demo recorder
