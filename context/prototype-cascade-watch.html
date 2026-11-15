@@ -1,0 +1,726 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cascade Watch</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one screen. A moonlit relief map is the stage; a script column beside it walks five chapters in order. */
+:root{
+  color-scheme: dark;
+  --night:#0a111e; --deep:#0f1929; --panel:#121d30; --rule:#26354f;
+  --ice:#e8f0f7; --mist:#9aabc2; --dim:#63758f;
+  --water:#58b8ff; --fringe-a:#35d0e6; --fringe-b:#c76bf2; --fringe-c:#f3cf55;
+  --alarm:#ff6152; --safe:#48d9a4; --mark:#ffd166;
+  --display:'Bricolage Grotesque','Avenir Next','Segoe UI',sans-serif;
+  --body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--night);color:var(--ice);font:400 15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--fringe-a);outline-offset:2px}
+
+.app{height:100%;max-width:1600px;margin:0 auto;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:10px;
+  padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+.top{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px}
+.brand{font:700 20px/1 var(--display);letter-spacing:-.01em}
+.sub{color:var(--mist);font-size:13px}
+.badge{margin-left:auto;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mark);border:1px solid var(--mark);border-radius:4px;padding:5px 8px}
+
+.chapters{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.chapters::-webkit-scrollbar{display:none}
+.chapters button{flex:1 0 auto;display:flex;align-items:baseline;gap:8px;background:none;border:0;border-top:2px solid var(--rule);padding:8px 10px 4px 0;cursor:pointer;color:var(--dim);text-align:left;white-space:nowrap}
+.chapters button b{font:500 11px/1 var(--mono)}
+.chapters button span{font:500 14px/1.2 var(--display)}
+.chapters button:hover{color:var(--mist)}
+.chapters button[aria-current="true"]{color:var(--ice);border-top-color:var(--fringe-a)}
+
+.work{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:14px;min-height:0}
+.stage{display:grid;grid-template-rows:minmax(0,1fr) auto;gap:8px;min-width:0;min-height:0}
+.stagebox{position:relative;border:1px solid var(--rule);border-radius:10px;overflow:hidden;background:var(--deep);min-height:0}
+.stagebox canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tip{position:absolute;pointer-events:none;background:var(--night);border:1px solid var(--rule);border-radius:6px;padding:7px 9px;font-size:12px;line-height:1.35;max-width:220px;z-index:2}
+.tip b{display:block;font-weight:600}
+.tip span{color:var(--mist);font-family:var(--mono);font-size:11px}
+
+.transport{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;min-height:38px}
+.group{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;min-width:0}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:6px 9px;font:500 11.5px/1 var(--mono);color:var(--mist);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fringe-a);border-color:var(--fringe-a);color:var(--night)}
+.seg button.lost:not([aria-pressed="true"]){border-style:dashed}
+.lab{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin-left:auto;font-size:12px;color:var(--mist)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-3px;margin-right:6px}
+.lg-move{background:radial-gradient(circle,var(--fringe-c) 0 22%,var(--fringe-b) 24% 48%,var(--fringe-a) 50% 100%)}
+.lg-lost{border:1px dashed var(--mist)}
+.lg-truth{border:2px solid var(--mark)}
+#scrub{flex:1 1 180px;min-width:120px;accent-color:var(--alarm)}
+.btn{background:var(--fringe-a);color:var(--night);border:0;border-radius:6px;padding:8px 14px;font-weight:600;font-size:13px;cursor:pointer}
+.btn.ghost{background:none;color:var(--ice);border:1px solid var(--rule)}
+.btn:hover{filter:brightness(1.1)}
+.clock{font:500 13px/1 var(--mono);color:var(--mist);min-width:92px;text-align:right}
+
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:20px 20px 22px;overflow:auto;min-width:0;min-height:0}
+.chap{display:grid;gap:13px}
+.eyebrow{font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0}
+h2{font:700 27px/1.1 var(--display);letter-spacing:-.015em;margin:0;text-wrap:balance}
+p{margin:0;color:var(--mist);max-width:62ch}
+p strong{color:var(--ice);font-weight:600}
+.note{font-size:12.5px;color:var(--dim)}
+.note b{color:var(--mark);font-weight:500}
+
+.facts{display:grid;gap:0;margin:2px 0;border-top:1px solid var(--rule)}
+.facts div{display:grid;grid-template-columns:104px 1fr;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--rule)}
+.facts dt{font:500 22px/1 var(--mono);font-variant-numeric:tabular-nums}
+.facts dt small{font-size:12px;color:var(--mist)}
+.facts dd{margin:0;color:var(--mist);font-size:13.5px}
+.facts .late dt{color:var(--alarm)}
+.question{font:500 19px/1.25 var(--display);color:var(--ice);text-wrap:balance;margin:0}
+
+.bars{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;align-items:end;height:118px}
+.bars button{display:grid;grid-template-rows:auto 1fr;gap:4px;height:100%;background:none;border:0;padding:0;cursor:pointer;min-width:0}
+.bars .v{font:500 11px/1 var(--mono);color:var(--mist);align-self:end;text-align:center;white-space:nowrap}
+.bars .b{align-self:end;border-radius:3px 3px 0 0;background:var(--fringe-a);min-height:3px}
+.bars .lost .b{background:repeating-linear-gradient(135deg,var(--rule) 0 4px,transparent 4px 8px);border:1px dashed var(--dim);border-bottom:0}
+.bars button[aria-pressed="true"] .b{background-color:var(--mark)}
+.bars button[aria-pressed="true"] .v{color:var(--ice)}
+.barlabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;font:400 10px/1.25 var(--mono);color:var(--dim);text-align:center}
+
+.rankbox{position:sticky;top:-1px;z-index:1;background:var(--panel);padding:8px 0 6px;border-bottom:1px solid var(--rule)}
+.rank{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rank .n{font:700 46px/0.9 var(--display);font-variant-numeric:tabular-nums}
+.rank .of{color:var(--mist);font-size:13.5px}
+.rank.in .n{color:var(--safe)} .rank.out .n{color:var(--alarm)}
+.strip{position:relative;height:26px;margin-top:20px;border-radius:4px;background:var(--deep);border:1px solid var(--rule)}
+.strip .cut{position:absolute;inset:0 auto 0 0;background:var(--safe);opacity:.22;border-right:1px solid var(--safe);transition:width .35s}
+.strip .pin{position:absolute;top:-6px;bottom:-6px;width:3px;margin-left:-1.5px;background:var(--mark);border-radius:2px;transition:left .7s cubic-bezier(.2,.8,.2,1)}
+.strip .pin span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font:500 11px/1.5 var(--mono);color:var(--mark);white-space:nowrap}
+.strip .pin.l span{left:0;transform:none} .strip .pin.r span{left:auto;right:0;transform:none}
+.ends{display:flex;justify-content:space-between;font:400 10.5px/1.6 var(--mono);color:var(--dim)}
+.rules{display:grid;border-top:1px solid var(--rule)}
+.rule{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--rule);cursor:pointer}
+.rule b{display:block;font-weight:600;font-size:14px}
+.rule small{display:block;color:var(--mist);font-size:12.5px;line-height:1.35}
+.sw{appearance:none;-webkit-appearance:none;width:40px;height:22px;border-radius:11px;background:var(--rule);position:relative;cursor:pointer;margin:0;transition:background .2s;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--ice);transition:left .2s}
+.sw:checked{background:var(--fringe-a)} .sw:checked::after{left:21px;background:var(--night)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.sl{display:grid;grid-template-columns:minmax(0,1fr) 120px 58px;gap:10px;align-items:center;font-size:13.5px;color:var(--mist)}
+.sl input{width:100%;accent-color:var(--fringe-a)}
+.sl output{font:500 12px/1 var(--mono);color:var(--ice);text-align:right;font-variant-numeric:tabular-nums}
+.verdict{font-size:14px;color:var(--ice);padding:10px 12px;border-radius:6px;background:var(--deep);border:1px solid var(--rule)}
+.verdict.in{border-color:var(--safe)} .verdict.out{border-color:var(--alarm)}
+.toplist{display:grid;font-size:12.5px;border-top:1px solid var(--rule)}
+.toplist div{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:8px;padding:5px 0;border-bottom:1px solid var(--rule);color:var(--mist);font-variant-numeric:tabular-nums}
+.toplist div.src{color:var(--mark)}
+.toplist i{font-style:normal;font-family:var(--mono)}
+
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 8px 7px 0;border-bottom:1px solid var(--rule);white-space:nowrap}
+th{font:500 10.5px/1.3 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+td.late{color:var(--alarm)} td.gain{color:var(--safe)} td.none{color:var(--dim)}
+tr.hit td:first-child{color:var(--alarm)}
+.log{display:grid;gap:0;font-size:13px;border-top:1px solid var(--rule)}
+.log div{display:grid;grid-template-columns:48px 1fr;gap:10px;padding:6px 0;border-bottom:1px solid var(--rule);color:var(--dim)}
+.log div.on{color:var(--ice)} .log i{font-style:normal;font-family:var(--mono)}
+.answer{font:500 19px/1.35 var(--display);color:var(--ice);margin:0;text-wrap:pretty}
+.answer em{font-style:normal;color:var(--mark)}
+.prov{display:grid;gap:10px}
+.prov h3{font:500 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 4px}
+.prov ul{margin:0;padding-left:18px;color:var(--mist);font-size:13.5px}
+.prov li{margin:2px 0}
+
+.foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.foot .hint{color:var(--dim);font-size:12px;margin-left:auto}
+
+@media (max-width:980px){
+  html,body{height:auto}
+  .app{height:auto}
+  .work{grid-template-columns:minmax(0,1fr)}
+  .stagebox{aspect-ratio:37/33;max-width:100%}
+  .panel{overflow:visible}
+  .legend{margin-left:0}
+  h2{font-size:24px}
+  .foot .hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){ .strip .pin,.strip .cut,.sw,.sw::after{transition:none} }
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">Cascade Watch</div>
+    <div class="sub">A replay of the Langtang flood, 26 August 2026</div>
+    <div class="badge" title="Timings and headline measurements are published. Slope ranking and most arrival times are synthetic until the NISAR run replaces them.">Illustrative data</div>
+  </header>
+
+  <nav class="chapters" aria-label="Chapters" id="nav">
+    <button data-ch="1"><b>1</b><span>The morning</span></button>
+    <button data-ch="2"><b>2</b><span>The creep</span></button>
+    <button data-ch="3"><b>3</b><span>The haystack</span></button>
+    <button data-ch="4"><b>4</b><span>The race</span></button>
+    <button data-ch="5"><b>5</b><span>The answer</span></button>
+  </nav>
+
+  <div class="work">
+    <section class="stage">
+      <div class="stagebox" id="stagebox">
+        <canvas id="cv" role="img" aria-label="Relief map of the Langtang study box with moving slopes, and a profile of the flood wave against the warnings"></canvas>
+        <div class="tip" id="tip" hidden></div>
+      </div>
+      <div class="transport">
+        <div class="group" id="t-win">
+          <span class="lab">Radar window</span>
+          <div class="seg" id="wins"></div>
+        </div>
+        <div class="group" id="t-race" style="flex:1 1 320px" hidden>
+          <button class="btn" id="play" type="button">Play</button>
+          <input type="range" id="scrub" min="0" max="65" step="0.1" value="20" aria-label="Minutes after the collapse">
+          <span class="clock" id="clock"></span>
+        </div>
+        <div class="legend" id="legend">
+          <span><i class="lg-move"></i>Moving ground, tighter rings are faster</span>
+          <span><i class="lg-lost"></i>Signal lost</span>
+          <span><i class="lg-truth"></i>What fell, with a 2 km circle</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel" id="panel">
+      <div class="chap" id="c1">
+        <p class="eyebrow">26 August 2026 · Rasuwa, Nepal</p>
+        <h2>The alert went out 38 minutes after the mountain fell</h2>
+        <p>At 08:37 a mass of ice and rock broke off the north flank of Langtang Lirung and dropped about 1,200 m into the Lhende Khola. The flood ran down the Bhote Koshi and the Trishuli. At least <strong>1,454 people died</strong> in Nepal and more than 5,000 are missing.</p>
+        <dl class="facts">
+          <div class="late"><dt>12.8 <small>min</small></dt><dd>The wave reaches the first river gauge</dd></div>
+          <div class="late"><dt>38.8 <small>min</small></dt><dd>The public SMS alert goes out</dd></div>
+          <div><dt>5 <small>passes</small></dt><dd>NISAR radar images of the slope in the weeks before, with no gaps</dd></div>
+        </dl>
+        <p>The radar had recorded that slope moving, along with dozens of others. Nobody had a rule for telling them apart.</p>
+        <p class="eyebrow">The question this replay answers</p>
+        <p class="question">With rules fixed in advance, would this valley have been on a watch list a week early?</p>
+      </div>
+
+      <div class="chap" id="c2" hidden>
+        <p class="eyebrow">20 June to 19 August</p>
+        <h2>Radar watched the slope creep for seven weeks</h2>
+        <p>NISAR passes every 12 days. Each pair of passes gives a map of how far the ground moved in between. On the map, coloured rings are moving ground, and tighter rings mean faster motion.</p>
+        <div>
+          <div class="bars" id="bars"></div>
+          <div class="barlabs" id="barlabs"></div>
+        </div>
+        <p>In the last window the source slope moved <strong>0.96 m in 24 days</strong>, about 4 cm a day. The two mid-July windows were lost: wet monsoon snow scrambles the signal. The rate never sped up, so the creep alone was no alarm.</p>
+        <div class="row">
+          <span class="lab">Radar band</span>
+          <div class="seg" id="bands">
+            <button type="button" data-band="L" aria-pressed="true">L-band · NISAR</button>
+            <button type="button" data-band="C" aria-pressed="false">C-band · Sentinel-1</button>
+          </div>
+        </div>
+        <p class="note" id="bandnote"></p>
+        <p class="note"><b>Published:</b> 0.96 m, the lost July windows, no acceleration (Meena 2026); the C-band null (Sah 2026). <b>Synthetic:</b> every other slope and the earlier bar heights.</p>
+      </div>
+
+      <div class="chap" id="c3" hidden>
+        <p class="eyebrow">The ranking problem</p>
+        <h2>One moving slope among dozens</h2>
+        <p>Moving ground is normal here. Glaciers flow every day. Ranked by speed alone, the slope that fell sits in the middle of the list. Switch the rules on one at a time.</p>
+        <div class="rankbox">
+          <div class="rank" id="rank"><span class="n" id="rank-n"></span><span class="of" id="rank-of"></span></div>
+          <div class="strip"><div class="cut" id="cut"></div><div class="pin" id="pin"><span id="pinlab"></span></div></div>
+          <div class="ends"><span>#1 most suspicious</span><span id="strip-n"></span></div>
+        </div>
+        <div class="rules">
+          <label class="rule" for="r-sigma"><span><b>Trust clean signals</b><small>Divide speed by its uncertainty, so noisy patches drop.</small></span><input type="checkbox" class="sw" id="r-sigma"></label>
+          <label class="rule" for="r-dir"><span><b>Moving straight downhill</b><small>Reward motion that lines up with the fall line.</small></span><input type="checkbox" class="sw" id="r-dir"></label>
+          <label class="rule" for="r-opp"><span><b>Neighbours pulling apart</b><small>One block sinks while the next one rises (Kutoğlu 2026).</small></span><input type="checkbox" class="sw" id="r-opp"></label>
+          <label class="rule" for="r-ice"><span><b>Hanging ice over rock</b><small>The kind of terrain that fails as an avalanche.</small></span><input type="checkbox" class="sw" id="r-ice"></label>
+          <label class="rule" for="r-people"><span><b>People in the channel below</b><small>Settlements within 30 minutes of flood travel.</small></span><input type="checkbox" class="sw" id="r-people"></label>
+        </div>
+        <div class="row">
+          <button class="btn" type="button" id="all">Apply all rules</button>
+          <button class="btn ghost" type="button" id="none">Speed only</button>
+        </div>
+        <label class="sl" for="nsens"><span>Slopes we can afford to instrument</span><input type="range" id="nsens" min="1" max="12" step="1" value="5"><output id="o-n"></output></label>
+        <div class="verdict" id="verdict"></div>
+        <div class="toplist" id="toplist"></div>
+        <p class="note"><b>Synthetic ranking.</b> The mock was built so the rules can lift this slope. The real NISAR run decides whether they do, and a miss will be shown as a miss.</p>
+      </div>
+
+      <div class="chap" id="c4" hidden>
+        <p class="eyebrow">26 August, 08:37 onward</p>
+        <h2>The wave against the warning</h2>
+        <p>Slow radar picks the valley. A fast sensor on that slope does the rest. Press play and watch which arrives first in each village.</p>
+        <div class="verdict" id="tripnote"></div>
+        <div class="tablewrap"><table id="vtable"></table></div>
+        <p class="eyebrow">Tripwire delays, in minutes</p>
+        <label class="sl" for="d-rec"><span>Sensor records the fall</span><input type="range" id="d-rec" min="0" max="5" step="0.5" value="0.5"><output id="o-rec"></output></label>
+        <label class="sl" for="d-recog"><span>Recognise a collapse, not a quake</span><input type="range" id="d-recog" min="0" max="20" step="0.5" value="2"><output id="o-recog"></output></label>
+        <label class="sl" for="d-conf"><span>Confirm it can flood</span><input type="range" id="d-conf" min="0" max="15" step="0.5" value="1"><output id="o-conf"></output></label>
+        <label class="sl" for="d-cast"><span>Sound the sirens</span><input type="range" id="d-cast" min="0" max="15" step="0.5" value="1"><output id="o-cast"></output></label>
+        <p class="eyebrow">What happened, minute by minute</p>
+        <div class="log" id="log"></div>
+        <p class="note"><b>Published:</b> 08:37, 12.8 min, 38.8 min and the log above (Acharya 2026, press timelines). <b>Placeholders:</b> arrival times below Rasuwagadhi, until the gauge series is loaded. The profile is schematic.</p>
+      </div>
+
+      <div class="chap" id="c5" hidden>
+        <p class="eyebrow">Read off the replay</p>
+        <h2>What the replay says</h2>
+        <p class="answer" id="answer"></p>
+        <p>Even a siren at minute four leaves the first village only minutes. Further down the valley it leaves half an hour or more, where the real alert left almost none.</p>
+        <div class="prov">
+          <div><h3>Published and real</h3><ul>
+            <li>Collapse at 08:37, first gauge at 12.8 min, SMS alert at 38.8 min</li>
+            <li>Five NISAR pairs, 20 June to 31 August, and 0.96 m of motion in the last 24 days</li>
+            <li>The strongest radar signal sat 1.4 km from what fell</li>
+            <li>Routine 12-day Sentinel-1 products showed nothing</li>
+          </ul></div>
+          <div><h3>Synthetic until the NISAR run</h3><ul>
+            <li>Every other moving slope, and so the ranking</li>
+            <li>The terrain, drawn to resemble the valley</li>
+            <li>Arrival times below Rasuwagadhi</li>
+          </ul></div>
+          <div><h3>Next</h3><ul>
+            <li>Run the same rules on the real NISAR offset and phase products</li>
+            <li>Report the rank as it comes out, with the count of slopes above it</li>
+          </ul></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="foot">
+    <button class="btn ghost" type="button" id="prev">Back</button>
+    <button class="btn" type="button" id="next">Next: the creep</button>
+    <span class="hint">Arrow keys change chapter. Hover a slope for its numbers.</span>
+  </footer>
+</div>
+
+<script id="core">
+/* Pure data and rules. No DOM. Every array here is a stand-in for a pipeline export. */
+var CW = (function(){
+  var seed = 20260826;
+  function rnd(){ seed = (seed*16807) % 2147483647; return (seed-1)/2147483646; }
+  function h2(x,y){ var n=(Math.imul(x,374761393)+Math.imul(y,668265263))|0; n=Math.imul(n^(n>>>13),1274126177); n^=n>>>16; return (n>>>0)/4294967295; }
+  function vn(x,y){ var xi=Math.floor(x), yi=Math.floor(y), xf=x-xi, yf=y-yi, u=xf*xf*(3-2*xf), v=yf*yf*(3-2*yf);
+    var a=h2(xi,yi), b=h2(xi+1,yi), c=h2(xi,yi+1), d=h2(xi+1,yi+1); return a+(b-a)*u+(c-a)*v+(a-b-c+d)*u*v; }
+  function ridged(x,y){ var s=0,a=0.5,f=1,i; for(i=0;i<5;i++){ s+=a*(1-Math.abs(2*vn(x*f,y*f)-1)); f*=2.03; a*=0.5; } return s/0.96875; }
+  function fbm(x,y){ var s=0,a=0.5,f=1,i; for(i=0;i<4;i++){ s+=a*vn(x*f,y*f); f*=2.1; a*=0.5; } return s/0.9375; }
+  function dseg(px,py,ax,ay,bx,by){ var dx=bx-ax, dy=by-ay, t=((px-ax)*dx+(py-ay)*dy)/(dx*dx+dy*dy); t=t<0?0:t>1?1:t; var qx=ax+t*dx-px, qy=ay+t*dy-py; return Math.sqrt(qx*qx+qy*qy); }
+  function dpoly(px,py,P){ var m=1e9,i,d; for(i=0;i<P.length-1;i++){ d=dseg(px,py,P[i][0],P[i][1],P[i+1][0],P[i+1][1]); if(d<m)m=d; } return m; }
+
+  // Box is 37 x 33 km, x east, y south, centred on 28.289N 85.521E.
+  var TRUTH = {x:17.9, y:18.5, r:0.45};
+  var FALL = [[17.9,18.5],[17.6,16.4],[16.5,14.6]];
+  var RIVER = [[25,12.4],[20.5,13.7],[16.5,14.6],[12.5,15.5],[8.5,15.2],[4.5,16.5],[3.3,19.6],[2.3,25],[0.8,30.8],[-1.5,37]];
+  var LVALLEY = [[39,22],[30,24.4],[22,26],[13,27.6],[6,29.6],[0.8,30.8]];
+  var PLACES = [{n:'Rasuwagadhi',x:4.5,y:16.5},{n:'Timure',x:3.3,y:19.6},{n:'Syabrubesi',x:0.8,y:30.8}];
+
+  function height(x,y){
+    var r = ridged(x*0.085+11.3, y*0.085+4.7);
+    var hg = 0.30 + 0.42*r + 0.07*(fbm(x*0.4+2.1,y*0.4+9.9)-0.5);
+    var mx=(x-18.2)/6.0, my=(y-20.8)/4.2; hg += 0.30*Math.exp(-(mx*mx+my*my));
+    var d1=dpoly(x,y,RIVER); hg -= 0.30*Math.exp(-(d1*d1)/3.2);
+    var d2=dpoly(x,y,LVALLEY); hg -= 0.24*Math.exp(-(d2*d2)/4.0);
+    var tilt=((37-x)/37)*0.6+(y/33)*0.5-0.25; hg -= 0.16*(tilt<0?0:tilt>1?1:tilt);
+    return hg<0?0:hg>1?1:hg;
+  }
+
+  var WINDOWS = [
+    {label:'20 Jun – 2 Jul', short:'20 Jun', lost:false},
+    {label:'2 – 14 Jul', short:'2 Jul', lost:true},
+    {label:'14 – 26 Jul', short:'14 Jul', lost:true},
+    {label:'26 Jul – 7 Aug', short:'26 Jul', lost:false},
+    {label:'26 Jul – 19 Aug', short:'to 19 Aug', lost:false}
+  ];
+
+  var BLOBS = [];
+  (function(){
+    var tries=0, i, ok, x, y, hg, glacier, r;
+    while(BLOBS.length<48 && tries<8000){
+      tries++; x=1.6+rnd()*33.8; y=1.6+rnd()*29.8; hg=height(x,y);
+      if(hg<0.52) continue;
+      if(Math.hypot(x-TRUTH.x,y-TRUTH.y)<3.6) continue;
+      ok=true; for(i=0;i<BLOBS.length;i++){ if(Math.hypot(x-BLOBS[i].x,y-BLOBS[i].y)<1.9){ ok=false; break; } }
+      if(!ok) continue;
+      glacier = hg>0.56;
+      r = rnd();
+      BLOBS.push({id:BLOBS.length+1, x:x, y:y, elev:Math.round((1300+hg*6000)/10)*10, area:0.25+rnd()*rnd()*2.4, glacier:glacier,
+        rate: glacier ? 1.2+rnd()*9.5 : 0.8+rnd()*2.6, coh:0.42+rnd()*0.42, dirc:0.42+rnd()*0.40,
+        opp: rnd()<0.12, ice: glacier && rnd()<0.28, people: r<0.62?0:r<0.86?1:r<0.96?2:3,
+        ph1:rnd()*6.283, ph2:rnd()*6.283, wob:rnd()});
+    }
+    // The source: strongest NISAR signal, 1.4 km from the detachment outline (Kutoğlu 2026).
+    BLOBS.push({id:0, src:true, x:16.9, y:17.5, elev:5190, area:0.76, glacier:true, rate:4.0, coh:0.62, dirc:0.87, opp:true, ice:true, people:3, ph1:1.1, ph2:4.0, wob:0.5,
+      rateW:[3.6,1.4,1.6,3.8,4.0], cohW:[0.66,0.30,0.28,0.70,0.74], dircW:[0.80,0.55,0.58,0.84,0.87]});
+  })();
+
+  var COH_FLOOR = 0.33, RATE_FLOOR = 1.5;   // fixed before any run
+
+  function observe(b,w,band){
+    var mon = (w===1||w===2), coh, rate, dirc;
+    if(b.src){ rate=b.rateW[w]; coh=b.cohW[w]; dirc=b.dircW[w]; }
+    else { coh=b.coh*(mon?(b.glacier?0.5:0.8):1); rate=b.rate*(0.85+0.3*((b.wob*7+w*0.37)%1)); dirc=b.dirc; }
+    if(band==='C') coh*= b.glacier?0.35:0.75;
+    var sigma = 0.25+1.6*(1-coh);
+    return {coh:coh, rate:rate, dirc:dirc, sigma:sigma, visible:coh>=COH_FLOOR};
+  }
+  function score(b,o,R){
+    var s=o.rate;
+    if(R.sigma) s=o.rate/o.sigma;
+    if(R.dir) s*=Math.pow(o.dirc/0.6,1.5);
+    if(R.opp && b.opp) s*=1.3;
+    if(R.ice && b.ice) s*=1.3;
+    if(R.people) s*=1+0.1*b.people;
+    return s;
+  }
+  function rank(w,band,R){
+    var rows=BLOBS.map(function(b){ var o=observe(b,w,band), hot=o.visible&&o.rate>=RATE_FLOOR; return {b:b,o:o,hot:hot,score:hot?score(b,o,R):0,rank:null}; });
+    var ranked=rows.filter(function(r){return r.hot;}).sort(function(a,b){return b.score-a.score;});
+    ranked.forEach(function(r,i){ r.rank=i+1; });
+    var hit=null, i; for(i=0;i<ranked.length;i++){ if(Math.hypot(ranked[i].b.x-TRUTH.x,ranked[i].b.y-TRUTH.y)<=2){ hit=ranked[i]; break; } }
+    return {rows:rows, ranked:ranked, hit:hit, srcRank:hit?hit.rank:null, n:ranked.length};
+  }
+
+  // Wave arrival in minutes after the 08:37 collapse. Rasuwagadhi is published; the rest are placeholders.
+  var VILLAGES = [{n:'Rasuwagadhi',t:12.8,e:1800},{n:'Timure',t:16,e:1760},{n:'Syabrubesi',t:24,e:1460},{n:'Betrawati',t:43,e:620},{n:'Bidur',t:55,e:540}];
+  var PROFILE = [[0,5190],[0.8,4300],[2,3750],[4,3200],[7,2600],[10,2150],[12.8,1800],[16,1760],[20,1600],[24,1460],[30,1150],[36,880],[43,620],[49,575],[55,540],[65,470]];
+  var LOG = [[0,'08:37','Ice and rock break off at about 5,190 m. Seismometers record it worldwide.'],[3,'08:40','A river gauge reads 1.62 m. Its warning level is 6 m.'],[13,'08:50','The Syabrubesi gauge stops transmitting.'],[23,'09:00','The district office phones the hydrology department.'],[38.8,'09:15','The SMS alert reaches phones in four districts.']];
+  var ALERT = 38.8, TMAX = 65;
+  function pchip(P){ var n=P.length, d=[], m=new Array(n), i; for(i=0;i<n-1;i++) d[i]=(P[i+1][1]-P[i][1])/(P[i+1][0]-P[i][0]);
+    m[0]=d[0]; m[n-1]=d[n-2]; for(i=1;i<n-1;i++) m[i]=(d[i-1]*d[i]<=0)?0:2*d[i-1]*d[i]/(d[i-1]+d[i]);
+    return function(t){ var i=0; while(i<n-2&&t>P[i+1][0])i++; var h=P[i+1][0]-P[i][0], s=(t-P[i][0])/h; s=s<0?0:s>1?1:s; var s2=s*s, s3=s2*s;
+      return (2*s3-3*s2+1)*P[i][1]+(s3-2*s2+s)*h*m[i]+(-2*s3+3*s2)*P[i+1][1]+(s3-s2)*h*m[i+1]; }; }
+
+  return {height:height, fbm:fbm, TRUTH:TRUTH, FALL:FALL, RIVER:RIVER, LVALLEY:LVALLEY, PLACES:PLACES, WINDOWS:WINDOWS, BLOBS:BLOBS,
+    observe:observe, rank:rank, VILLAGES:VILLAGES, LOG:LOG, ALERT:ALERT, TMAX:TMAX, elevAt:pchip(PROFILE)};
+})();
+if (typeof module !== 'undefined') module.exports = CW;
+</script>
+
+<script>
+(function(){
+'use strict';
+var K = CW;
+function $(id){ return document.getElementById(id); }
+var cs = getComputedStyle(document.documentElement);
+function tok(n){ return cs.getPropertyValue(n).trim(); }
+var C = {night:tok('--night'), deep:tok('--deep'), rule:tok('--rule'), ice:tok('--ice'), mist:tok('--mist'), dim:tok('--dim'), water:tok('--water'),
+  fa:tok('--fringe-a'), fb:tok('--fringe-b'), fc:tok('--fringe-c'), alarm:tok('--alarm'), safe:tok('--safe'), mark:tok('--mark')};
+function rgb(hex){ var n=parseInt(hex.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+function rgba(hex,a){ var c=rgb(hex); return 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')'; }
+var FR = [rgb(C.fa), rgb(C.fb), rgb(C.fc)];
+function cyc(p,a){ p=((p%3)+3)%3; var i=Math.floor(p), f=p-i, A=FR[i], B=FR[(i+1)%3];
+  return 'rgba('+Math.round(A[0]+(B[0]-A[0])*f)+','+Math.round(A[1]+(B[1]-A[1])*f)+','+Math.round(A[2]+(B[2]-A[2])*f)+','+a+')'; }
+var FB='"IBM Plex Sans","Segoe UI",sans-serif', FM='"IBM Plex Mono",ui-monospace,monospace', FD='"Bricolage Grotesque","Avenir Next",sans-serif';
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+var S = {ch:1, win:4, band:'L', rules:{sigma:false,dir:false,opp:false,ice:false,people:false}, n:5, d:{rec:0.5,recog:2,conf:1,cast:1}, t:20, playing:false};
+var cur = null, last = null, hover = null;
+var NAMES = {1:'the morning',2:'the creep',3:'the haystack',4:'the race',5:'the answer'};
+
+/* ---------- derived ---------- */
+function derive(){
+  cur = K.rank(S.win, S.ch===2?S.band:'L', S.rules);
+  last = K.rank(4, 'L', S.rules);
+}
+function onList(){ return !!(last.srcRank && last.srcRank<=S.n); }
+function tripT(){ return S.d.rec+S.d.recog+S.d.conf+S.d.cast; }
+function clockAt(t){ var m=8*60+37+Math.floor(t+1e-6); var h=Math.floor(m/60), mm=m%60; return (h<10?'0':'')+h+':'+(mm<10?'0':'')+mm; }
+function signed(v){ var r=Math.round(v); return (r<0?'−':'+')+Math.abs(r); }
+function leadText(v){ var r=Math.round(v); return r<0 ? Math.abs(r)+' min late' : '+'+r+' min'; }
+
+/* ---------- canvas ---------- */
+var box=$('stagebox'), cv=$('cv'), ctx=cv.getContext('2d'), cw=0, ch=0, dpr=1, view={s:1,ox:0,oy:0}, terrain=null, tTimer=null;
+function X(x){ return view.ox+x*view.s; } function Y(y){ return view.oy+y*view.s; }
+function ramp(h){
+  var st=[[0,10,20,34],[0.25,17,33,52],[0.45,30,46,66],[0.58,52,66,86],[0.64,112,132,154],[0.80,176,194,212],[1,232,240,247]], i;
+  for(i=0;i<st.length-1;i++) if(h<=st[i+1][0]) break; if(i>st.length-2) i=st.length-2;
+  var a=st[i], b=st[i+1], f=(h-a[0])/(b[0]-a[0]); f=f<0?0:f>1?1:f;
+  return [a[1]+(b[1]-a[1])*f, a[2]+(b[2]-a[2])*f, a[3]+(b[3]-a[3])*f];
+}
+function buildTerrain(){
+  var gw=Math.max(140,Math.min(440,Math.round(cw/2.2))), gh=Math.max(100,Math.round(gw*ch/cw));
+  var H=new Float32Array(gw*gh), i, j, kx=cw/gw/view.s, ky=ch/gh/view.s, wx, wy;
+  for(j=0;j<gh;j++) for(i=0;i<gw;i++){ wx=((i+0.5)*cw/gw-view.ox)/view.s; wy=((j+0.5)*ch/gh-view.oy)/view.s; H[j*gw+i]=K.height(wx,wy); }
+  var oc=document.createElement('canvas'); oc.width=gw; oc.height=gh;
+  var o=oc.getContext('2d'), img=o.createImageData(gw,gh), D=img.data, p=0, h, hl, hr, hu, hd, sx, sy, nx, ny, L, hs, c, kk, q;
+  for(j=0;j<gh;j++) for(i=0;i<gw;i++){
+    h=H[j*gw+i]; hl=H[j*gw+(i>0?i-1:0)]; hr=H[j*gw+(i<gw-1?i+1:i)]; hu=H[(j>0?j-1:0)*gw+i]; hd=H[(j<gh-1?j+1:j)*gw+i];
+    sx=(hr-hl)*6/(2*kx); sy=(hd-hu)*6/(2*ky); nx=-sx*1.25; ny=-sy*1.25; L=Math.sqrt(nx*nx+ny*ny+1);
+    hs=(nx*-0.58+ny*-0.56+0.59)/L; if(hs<0)hs=0;
+    c=ramp(h); kk=0.42+0.86*hs;
+    q=Math.floor(h*26); if(q!==Math.floor(hr*26)||q!==Math.floor(hd*26)) kk*=1.15;
+    wx=((i+0.5)*cw/gw-view.ox)/view.s; wy=((j+0.5)*ch/gh-view.oy)/view.s;
+    if(wx<0||wx>37||wy<0||wy>33) kk*=0.5;
+    D[p++]=Math.min(255,c[0]*kk); D[p++]=Math.min(255,c[1]*kk); D[p++]=Math.min(255,c[2]*kk); D[p++]=255;
+  }
+  o.putImageData(img,0,0); terrain=oc;
+}
+function resize(){
+  var r=box.getBoundingClientRect(); var nw=Math.max(200,Math.round(r.width)), nh=Math.max(160,Math.round(r.height));
+  if(nw===cw && nh===ch && terrain) return;
+  cw=nw; ch=nh; dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.round(cw*dpr); cv.height=Math.round(ch*dpr);
+  view.s=Math.min(cw/37,ch/33)*0.94; view.ox=(cw-37*view.s)/2; view.oy=(ch-33*view.s)/2;
+  if(!terrain){ buildTerrain(); } else { clearTimeout(tTimer); tTimer=setTimeout(function(){ buildTerrain(); kick(); },140); }
+  kick();
+}
+function text(t,x,y,o){ o=o||{};
+  ctx.font=(o.w||500)+' '+(o.size||11)+'px '+(o.font||FB); ctx.textAlign=o.align||'left'; ctx.textBaseline=o.base||'alphabetic';
+  if(o.halo!==false){ ctx.lineJoin='round'; ctx.lineWidth=3.5; ctx.strokeStyle=rgba(C.night,0.9); ctx.strokeText(t,x,y); }
+  ctx.fillStyle=o.color||C.ice; ctx.fillText(t,x,y); }
+function poly(P,style,w,dash,off){ ctx.beginPath(); for(var i=0;i<P.length;i++){ if(i) ctx.lineTo(X(P[i][0]),Y(P[i][1])); else ctx.moveTo(X(P[i][0]),Y(P[i][1])); }
+  ctx.strokeStyle=style; ctx.lineWidth=w; ctx.lineJoin='round'; ctx.lineCap='round'; ctx.setLineDash(dash||[]); ctx.lineDashOffset=off||0; ctx.stroke(); ctx.setLineDash([]); }
+function blobR(b){ return Math.max(5.5, Math.sqrt(b.area/Math.PI)*view.s*1.9); }
+function blobPath(b,cx,cy,R){ ctx.beginPath(); for(var a=0;a<=30;a++){ var th=a/30*6.2832, rr=R*(1+0.22*Math.sin(3*th+b.ph1)+0.13*Math.sin(5*th+b.ph2));
+  var px=cx+Math.cos(th)*rr*1.12, py=cy+Math.sin(th)*rr*0.9; if(a) ctx.lineTo(px,py); else ctx.moveTo(px,py); } ctx.closePath(); }
+
+function drawMap(now){
+  var s=view.s, i, small=s<12;
+  if(terrain){ ctx.imageSmoothingEnabled=true; ctx.imageSmoothingQuality='high'; ctx.drawImage(terrain,0,0,cw,ch); }
+  poly(K.LVALLEY, rgba(C.water,0.45), 1.3); poly(K.RIVER, rgba(C.water,0.9), 2);
+  ctx.setLineDash([5,5]); ctx.strokeStyle=rgba(C.ice,0.32); ctx.lineWidth=1; ctx.strokeRect(X(0),Y(0),37*s,33*s); ctx.setLineDash([]);
+  text('NISAR study box · 37 × 33 km', X(37)-8, Y(0)+16, {size:10.5,font:FM,color:C.mist,align:'right',w:400});
+  // scale bar and north
+  var bx=X(37)-8-5*s, by=Y(33)-12; ctx.strokeStyle=C.ice; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(bx,by-4); ctx.lineTo(bx,by); ctx.lineTo(bx+5*s,by); ctx.lineTo(bx+5*s,by-4); ctx.stroke();
+  text('5 km', bx+2.5*s, by-6, {size:10.5,font:FM,align:'center',w:400});
+  // peak
+  var px=X(18.2), py=Y(20.8); ctx.beginPath(); ctx.moveTo(px,py-5); ctx.lineTo(px+5,py+4); ctx.lineTo(px-5,py+4); ctx.closePath(); ctx.fillStyle=C.ice; ctx.fill();
+  text(small?'Langtang Lirung':'Langtang Lirung 7,234 m', px+9, py+4, {size:11});
+  if(!small){
+    text('Lhende Khola', X(10.6), Y(14.2), {size:10.5,color:C.water,w:400});
+    text('Bhote Koshi', X(4.0), Y(23.4), {size:10.5,color:C.water,w:400});
+    text('Langtang valley', X(18.5), Y(27.9), {size:10.5,color:C.water,w:400});
+  }
+  for(i=0;i<K.PLACES.length;i++){ var pl=K.PLACES[i], vx=X(pl.x), vy=Y(pl.y);
+    ctx.beginPath(); ctx.arc(vx,vy,3.5,0,6.2832); ctx.fillStyle=C.night; ctx.fill(); ctx.strokeStyle=C.ice; ctx.lineWidth=1.5; ctx.stroke();
+    text(pl.n, vx+8, vy+4, {size:11,w:600}); }
+
+  var tx=X(K.TRUTH.x), ty=Y(K.TRUTH.y);
+  if(S.ch===1){
+    var path=K.FALL.concat(K.RIVER.slice(3));
+    ctx.save(); ctx.shadowColor=C.alarm; ctx.shadowBlur=12; poly(path, rgba(C.alarm,0.35), 5); ctx.restore();
+    poly(path, C.alarm, 2.5, [10,12], reduce?0:-(now/38)%22);
+    var ph=reduce?0.5:(now/1600)%1;
+    ctx.beginPath(); ctx.arc(tx,ty,6+ph*26,0,6.2832); ctx.strokeStyle=rgba(C.alarm,1-ph); ctx.lineWidth=2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(tx,ty,5,0,6.2832); ctx.fillStyle=C.alarm; ctx.fill();
+    text('08:37 · the collapse', tx+12, ty-8, {size:12.5,w:600,color:C.ice});
+    text('+13 min', X(4.5)+8, Y(16.5)+18, {size:11,font:FM,color:C.alarm,w:500});
+    text(small?'08:50':'gauge silent 08:50', X(0.8)+8, Y(30.8)+18, {size:11,font:FM,color:C.alarm,w:500});
+    return;
+  }
+
+  var showRank = (S.ch===3||S.ch===5), rows=cur.rows, top=cur.ranked.length?cur.ranked[0].score:1, r, b, cx, cy, R, k, n;
+  for(i=0;i<rows.length;i++){
+    r=rows[i]; b=r.b; cx=X(b.x); cy=Y(b.y); R=blobR(b);
+    if(!r.o.visible){ blobPath(b,cx,cy,R); ctx.fillStyle=rgba(C.ice,0.05); ctx.fill(); ctx.setLineDash([3,3]); ctx.strokeStyle=rgba(C.mist,0.5); ctx.lineWidth=1; ctx.stroke(); ctx.setLineDash([]); continue; }
+    if(!r.hot){ blobPath(b,cx,cy,R); ctx.strokeStyle=rgba(C.mist,0.45); ctx.lineWidth=1; ctx.stroke(); continue; }
+    blobPath(b,cx,cy,R*1.1); ctx.fillStyle=rgba(C.night,0.6); ctx.fill();
+    n=2+Math.min(7,Math.round(r.o.rate*0.7));
+    var al = showRank ? 0.4+0.5*Math.min(1,r.score/top) : 0.8;
+    for(k=n;k>=1;k--){ blobPath(b,cx,cy,R*k/n); ctx.fillStyle=cyc(k*0.9+(reduce?0:now*0.0011), al); ctx.fill(); }
+    if(showRank && r.rank<=S.n){ ctx.beginPath(); ctx.arc(cx+R*0.9,cy-R*0.9,8.5,0,6.2832); ctx.fillStyle=C.ice; ctx.fill();
+      text(String(r.rank), cx+R*0.9, cy-R*0.9+3.5, {size:10.5,font:FM,align:'center',color:C.night,halo:false,w:500}); }
+    if(hover===r){ blobPath(b,cx,cy,R*1.25); ctx.strokeStyle=C.ice; ctx.lineWidth=1.5; ctx.stroke(); }
+  }
+  // what fell, and the 2 km circle
+  ctx.beginPath(); ctx.arc(tx,ty,2*s,0,6.2832); ctx.setLineDash([4,5]); ctx.strokeStyle=rgba(C.mark,0.9); ctx.lineWidth=1.3; ctx.stroke(); ctx.setLineDash([]);
+  ctx.beginPath(); ctx.arc(tx,ty,Math.max(3.5,K.TRUTH.r*s),0,6.2832); ctx.strokeStyle=C.mark; ctx.lineWidth=2; ctx.stroke();
+  var src=rows[rows.length-1], lab;
+  if(!src.o.visible) lab = S.band==='C'&&S.ch===2 ? 'Source slope: nothing in C-band' : 'Source slope: signal lost';
+  else if(showRank) lab = 'Source slope: #'+cur.srcRank+' of '+cur.n;
+  else lab = 'Source slope: '+src.o.rate.toFixed(1)+' cm a day';
+  text(lab, tx, ty-2*s-8, {size:12.5,w:600,color:C.mark,align:'center'});
+}
+
+function drawRace(now){
+  var g=ctx.createLinearGradient(0,0,0,ch); g.addColorStop(0,C.deep); g.addColorStop(1,C.night); ctx.fillStyle=g; ctx.fillRect(0,0,cw,ch);
+  var small=cw<560, x0=small?14:28, x1=cw-(small?14:28), y0=small?96:112, y1=ch-98, i, t;
+  function tx(t){ return x0+(t/K.TMAX)*(x1-x0); } function ey(e){ return y0+(1-(e-300)/5100)*(y1-y0); }
+  var T=tripT(), has=onList(), A=K.ALERT;
+  // far ridge
+  ctx.beginPath(); ctx.moveTo(x0,y1); for(t=0;t<=K.TMAX;t+=0.5) ctx.lineTo(tx(t), ey(Math.min(5350, K.elevAt(t)+700+900*K.fbm(t*0.22+3,1.7)))); ctx.lineTo(x1,y1); ctx.closePath(); ctx.fillStyle=rgba(C.ice,0.05); ctx.fill();
+  // mountain
+  ctx.beginPath(); ctx.moveTo(x0,y1); for(t=0;t<=K.TMAX+0.001;t+=0.25) ctx.lineTo(tx(t),ey(K.elevAt(t))); ctx.lineTo(x1,y1); ctx.closePath();
+  g=ctx.createLinearGradient(0,y0,0,y1); g.addColorStop(0,'rgba(214,226,238,0.95)'); g.addColorStop(0.16,'rgba(122,142,166,0.9)'); g.addColorStop(0.5,'rgba(44,62,88,0.95)'); g.addColorStop(1,'rgba(18,30,50,1)'); ctx.fillStyle=g; ctx.fill();
+  // axis
+  ctx.strokeStyle=C.rule; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x0,y1+0.5); ctx.lineTo(x1,y1+0.5); ctx.stroke();
+  for(t=0;t<=60;t+=(small?20:10)){ ctx.beginPath(); ctx.moveTo(tx(t),y1); ctx.lineTo(tx(t),y1+5); ctx.stroke();
+    text(clockAt(t), tx(t), y1+18, {size:10.5,font:FM,color:C.mist,align:t===0?'left':'center',halo:false,w:400}); }
+  // strips
+  var sy=y1+28, sh=17;
+  ctx.fillStyle=rgba(C.alarm,0.5); ctx.fillRect(x0,sy,tx(A)-x0,sh); ctx.fillStyle=rgba(C.safe,0.28); ctx.fillRect(tx(A),sy,x1-tx(A),sh);
+  text(small?'As it happened: 38.8 min silent':'As it happened: 38.8 minutes with no warning', x0+7, sy+12.5, {size:11,w:600,halo:false});
+  if(has){ var te=Math.min(tx(T),x1); ctx.fillStyle=rgba(C.alarm,0.5); ctx.fillRect(x0,sy+sh+5,te-x0,sh); ctx.fillStyle=rgba(C.safe,0.28); ctx.fillRect(te,sy+sh+5,x1-te,sh);
+    text('With a tripwire: '+T.toFixed(1)+' min', Math.max(x0+7, Math.min(te+7, x1-150)), sy+sh+17.5, {size:11,w:600,halo:false}); }
+  else { ctx.setLineDash([3,3]); ctx.strokeStyle=C.dim; ctx.strokeRect(x0+0.5,sy+sh+5.5,x1-x0-1,sh-1); ctx.setLineDash([]);
+    text(small?'No tripwire: valley not listed':'No tripwire: the valley was not on the watch list', x0+7, sy+sh+17.5, {size:11,w:500,color:C.mist,halo:false}); }
+  // alert lines
+  function vline(t,col,on,l1,l2,ly){ var x=tx(t); if(x>x1) return; ctx.beginPath(); ctx.moveTo(x,ly+6); ctx.lineTo(x,y1); ctx.setLineDash(on?[]:[4,5]); ctx.strokeStyle=rgba(col,on?1:0.55); ctx.lineWidth=on?2:1.3; ctx.stroke(); ctx.setLineDash([]);
+    var right=x>cw*(small?0.45:0.62); text(l1, x+(right?-7:7), ly-11, {size:12,w:600,color:col,align:right?'right':'left'}); text(l2, x+(right?-7:7), ly+3, {size:10.5,font:FM,color:C.mist,align:right?'right':'left',w:400}); }
+  vline(A, C.ice, S.t>=A, 'SMS alert', clockAt(A)+' · +38.8 min', y0-30);
+  if(has) vline(T, C.safe, S.t>=T, 'Tripwire siren', clockAt(T)+' · +'+T.toFixed(1)+' min', y0-64);
+  // wave
+  var tn=Math.max(0,Math.min(K.TMAX,S.t));
+  ctx.beginPath(); for(t=0;t<=tn;t+=0.25) { if(t) ctx.lineTo(tx(t),ey(K.elevAt(t))); else ctx.moveTo(tx(t),ey(K.elevAt(t))); } ctx.lineTo(tx(tn),ey(K.elevAt(tn)));
+  ctx.save(); ctx.shadowColor=C.alarm; ctx.shadowBlur=14; ctx.strokeStyle=C.alarm; ctx.lineWidth=4.5; ctx.lineJoin='round'; ctx.lineCap='round'; ctx.stroke(); ctx.restore();
+  var fx=tx(tn), fy=ey(K.elevAt(tn)), ph=reduce?0.4:(now/900)%1;
+  ctx.beginPath(); ctx.arc(fx,fy,7+ph*12,0,6.2832); ctx.strokeStyle=rgba(C.alarm,0.8*(1-ph)); ctx.lineWidth=2; ctx.stroke();
+  ctx.beginPath(); ctx.arc(fx,fy,6,0,6.2832); ctx.fillStyle=C.ice; ctx.fill(); ctx.strokeStyle=C.alarm; ctx.lineWidth=3; ctx.stroke();
+  // playhead through the strips
+  ctx.beginPath(); ctx.moveTo(fx,y1); ctx.lineTo(fx,sy+2*sh+7); ctx.strokeStyle=C.ice; ctx.lineWidth=1; ctx.stroke();
+  text('5,190 m', tx(0)+9, ey(5190)-8, {size:10.5,font:FM,color:C.mist,w:400});
+  // villages
+  var levels=[];
+  for(i=0;i<K.VILLAGES.length;i++){
+    var v=K.VILLAGES[i], vx=tx(v.t), vy=ey(v.e), real=signed(v.t-A), trip=has?signed(v.t-T):null;
+    ctx.font='600 12px '+FB; var w1=ctx.measureText(v.n).width; ctx.font='500 11px '+FM; var w2=ctx.measureText(real+(trip?' → '+trip:'')+' min').width, w=Math.max(w1,w2);
+    var lv=0, l0=Math.min(vx-4, x1-w); while(levels[lv]!==undefined && l0<levels[lv]+10) lv++; levels[lv]=l0+w;
+    var ly=vy-30-lv*36, lx=Math.min(vx-4, x1-w);
+    ctx.beginPath(); ctx.moveTo(vx,vy-7); ctx.lineTo(vx,ly+8); ctx.strokeStyle=rgba(C.mist,0.6); ctx.lineWidth=1; ctx.stroke();
+    var hit=S.t>=v.t, warned=!hit && ((has&&S.t>=T&&T<v.t)||(S.t>=A&&A<v.t));
+    ctx.beginPath(); ctx.arc(vx,vy,6,0,6.2832); ctx.fillStyle=hit?C.alarm:C.night; ctx.fill(); ctx.strokeStyle=hit?C.alarm:(warned?C.safe:C.ice); ctx.lineWidth=2.5; ctx.stroke();
+    text(v.n, lx, ly-8, {size:12,w:600});
+    ctx.font='500 11px '+FM; var rw=ctx.measureText(real).width;
+    text(real, lx, ly+5, {size:11,font:FM,color:(v.t-A)<0?C.alarm:C.safe});
+    if(trip){ var aw=ctx.measureText(' → ').width; text(' → ', lx+rw, ly+5, {size:11,font:FM,color:C.mist});
+      text(trip+' min', lx+rw+aw, ly+5, {size:11,font:FM,color:(v.t-T)<0?C.alarm:C.safe}); }
+    else text(' min', lx+rw, ly+5, {size:11,font:FM,color:C.mist});
+  }
+  // clock
+  text(clockAt(S.t), x1, small?36:42, {size:small?28:36,w:700,font:FD,align:'right',halo:false});
+  if(!small) text(S.t.toFixed(1)+' min after the collapse', x1, 62, {size:11,font:FM,color:C.mist,align:'right',halo:false,w:400});
+  text(small?'Schematic profile · lead: real → tripwire':'Schematic profile · under each village: minutes of lead as it happened → with a tripwire', x0, ch-9, {size:10.5,font:FM,color:C.dim,halo:false,w:400});
+}
+
+var looping=false, lastNow=0;
+function frame(now){
+  if(S.playing){ var dt=Math.min(80, now-lastNow); S.t+=dt/1000*(K.TMAX/20); if(S.t>=K.TMAX){ S.t=K.TMAX; S.playing=false; renderPlay(); } syncTime(); }
+  lastNow=now; paint(now);
+  if(S.playing || !reduce) requestAnimationFrame(frame); else looping=false;
+}
+function paint(now){ if(!cw) return; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,cw,ch); if(S.ch===4) drawRace(now); else drawMap(now); }
+function kick(){ if(!looping){ looping=true; lastNow=performance.now(); requestAnimationFrame(frame); } }
+
+/* ---------- DOM ---------- */
+function el(tag,cls,txt){ var e=document.createElement(tag); if(cls) e.className=cls; if(txt!==undefined) e.textContent=txt; return e; }
+function buildStatic(){
+  var wins=$('wins'), bars=$('bars'), labs=$('barlabs'), src=K.BLOBS[K.BLOBS.length-1];
+  K.WINDOWS.forEach(function(w,i){
+    var b=el('button',w.lost?'lost':'',w.label); b.type='button'; b.dataset.win=i; wins.appendChild(b);
+    var bar=el('button',w.lost?'lost':''); bar.type='button'; bar.dataset.win=i; bar.setAttribute('aria-label',w.label+(w.lost?', signal lost':', '+src.rateW[i]+' centimetres a day'));
+    bar.appendChild(el('span','v',w.lost?'lost':src.rateW[i].toFixed(1)+' cm/d')); var bb=el('span','b'); bb.style.height=(w.lost?34:Math.round(src.rateW[i]/4.2*100))+'%'; bar.appendChild(bb); bars.appendChild(bar);
+    labs.appendChild(el('span','',w.label));
+  });
+  var log=$('log'); K.LOG.forEach(function(L){ var d=el('div'); d.dataset.t=L[0]; d.appendChild(el('i','',L[1])); d.appendChild(el('span','',L[2])); log.appendChild(d); });
+}
+function renderPlay(){ $('play').textContent = S.playing ? 'Pause' : (S.t>=K.TMAX ? 'Replay' : 'Play'); }
+function syncTime(){
+  $('scrub').value=S.t; $('clock').textContent=clockAt(S.t)+' · +'+S.t.toFixed(1);
+  var rows=$('log').children, i; for(i=0;i<rows.length;i++) rows[i].className = S.t>=+rows[i].dataset.t ? 'on' : '';
+  var tr=$('vtable').querySelectorAll('tr[data-t]'); for(i=0;i<tr.length;i++) tr[i].className = S.t>=+tr[i].dataset.t ? 'hit' : '';
+}
+function render(){
+  derive();
+  var i, n, has=onList(), T=tripT();
+  // chapters
+  var nb=$('nav').children; for(i=0;i<nb.length;i++) nb[i].setAttribute('aria-current', String(+nb[i].dataset.ch===S.ch));
+  for(i=1;i<=5;i++) $('c'+i).hidden = i!==S.ch;
+  $('prev').hidden = S.ch===1;
+  $('next').textContent = S.ch<5 ? 'Next: '+NAMES[S.ch+1] : 'Back to the start';
+  // transport
+  var mapCh=(S.ch===2||S.ch===3||S.ch===5);
+  $('t-win').hidden=!mapCh; $('t-race').hidden=S.ch!==4; $('legend').hidden=!mapCh;
+  var wb=$('wins').children; for(i=0;i<wb.length;i++) wb[i].setAttribute('aria-pressed', String(i===S.win));
+  var bb=$('bars').children; for(i=0;i<bb.length;i++) bb[i].setAttribute('aria-pressed', String(i===S.win));
+  var bd=$('bands').children; for(i=0;i<bd.length;i++) bd[i].setAttribute('aria-pressed', String(bd[i].dataset.band===S.band));
+  $('bandnote').textContent = S.band==='C'
+    ? 'C-band loses its lock on ice between passes. Sah (2026) tested the routine 12-day Sentinel-1 products at this slope and found nothing above about 13 mm a month.'
+    : 'L-band has a longer wavelength and keeps its lock on ice and snow far better. Switch to C-band to see what the older radar held.';
+  // chapter 3
+  var r=cur.srcRank; n=cur.n;
+  $('rank-n').textContent = r ? '#'+r : '—';
+  $('rank-of').textContent = r ? 'of '+n+' moving slopes, in the window '+K.WINDOWS[S.win].label : 'The source is not visible in this window';
+  $('rank').className = 'rank '+(r&&r<=S.n?'in':'out');
+  $('strip-n').textContent = '#'+n;
+  $('cut').style.width = Math.min(100,S.n/Math.max(1,n)*100)+'%';
+  var pin=$('pin'), pos = r ? (n>1?(r-1)/(n-1)*100:0) : 100; pin.style.left=pos+'%'; pin.style.opacity=r?1:0.25; pin.className='pin'+(pos<12?' l':pos>88?' r':'');
+  $('pinlab').textContent = r ? 'the slope that fell, #'+r : 'not visible';
+  ['sigma','dir','opp','ice','people'].forEach(function(k){ $('r-'+k).checked=S.rules[k]; });
+  $('nsens').value=S.n; $('o-n').textContent=S.n;
+  var v=$('verdict');
+  if(!r){ v.className='verdict out'; v.textContent='In this window the source is hidden by lost signal, so it cannot be ranked.'; }
+  else if(r<=S.n){ v.className='verdict in'; v.textContent='The top '+S.n+' slopes get a ground sensor. The slope above the Lhende Khola is one of them.'; }
+  else { v.className='verdict out'; v.textContent='The top '+S.n+' slopes get a ground sensor. The slope that fell is not one of them: '+(r-1)+' slopes rank above it.'; }
+  var tl=$('toplist'); tl.textContent='';
+  cur.ranked.slice(0,5).forEach(function(row){ var d=el('div',row.b.src?'src':''); d.appendChild(el('i','','#'+row.rank));
+    d.appendChild(el('span','', row.b.src?'The slope that fell':'Slope '+row.b.id+(row.b.glacier?', glacier':', rock'))); d.appendChild(el('i','',row.o.rate.toFixed(1)+' cm/d')); tl.appendChild(d); });
+  // chapter 4
+  ['rec','recog','conf','cast'].forEach(function(k){ $('d-'+k).value=S.d[k]; $('o-'+k).textContent=S.d[k].toFixed(1); });
+  var tn=$('tripnote');
+  if(has){ tn.className='verdict in'; tn.textContent='The valley ranked #'+last.srcRank+', inside the top '+S.n+', so a sensor sat on the slope. The siren sounds '+T.toFixed(1)+' minutes after the fall, '+(K.ALERT-T).toFixed(1)+' minutes before the SMS.'; }
+  else { tn.className='verdict out'; tn.textContent='With the current rules the valley ranked '+(last.srcRank?'#'+last.srcRank:'nowhere')+', outside the top '+S.n+'. No sensor, no tripwire. Go back to chapter 3 and apply the rules.'; }
+  var tb=$('vtable'); tb.textContent='';
+  var hr=el('tr'); ['Village','Wave','As it happened','With tripwire'].forEach(function(h){ hr.appendChild(el('th','',h)); }); tb.appendChild(hr);
+  K.VILLAGES.forEach(function(vl){ var tr=el('tr'); tr.dataset.t=vl.t; tr.appendChild(el('td','',vl.n)); tr.appendChild(el('td','',clockAt(vl.t)));
+    var a=vl.t-K.ALERT; tr.appendChild(el('td',a<0?'late':'gain',leadText(a)));
+    if(has){ var b=vl.t-T; tr.appendChild(el('td',b<0?'late':'gain',leadText(b))); } else tr.appendChild(el('td','none','no siren')); tb.appendChild(tr); });
+  // chapter 5
+  var ans=$('answer'); ans.textContent='';
+  function say(t,em){ ans.appendChild(em?el('em','',t):document.createTextNode(t)); }
+  if(last.srcRank){ say('With the rules as set, the slope above the Lhende Khola ranked '); say('#'+last.srcRank+' of '+last.n,true); say(' moving slopes in the window that closed a week before the fall. ');
+    if(has){ say('It would have carried one of '+S.n+' sensors, and a siren would have sounded '); say(T.toFixed(1)+' minutes',true); say(' after the collapse, '); say((K.ALERT-T).toFixed(1)+' minutes',true); say(' before the SMS alert.'); }
+    else { say((last.srcRank-1)+' slopes ranked above it, so it would not have carried one of the '+S.n+' sensors.'); } }
+  else say('With the rules as set, the source slope could not be ranked.');
+  renderPlay(); syncTime(); kick();
+}
+function go(c){ S.ch=c<1?1:c>5?5:c; hover=null; $('tip').hidden=true; if(S.ch!==4) S.playing=false; if(S.ch===3||S.ch===5){ if(K.WINDOWS[S.win].lost && S.ch===5) S.win=4; } render(); $('panel').scrollTop=0; }
+
+function wire(){
+  $('nav').addEventListener('click',function(e){ var b=e.target.closest('button'); if(b) go(+b.dataset.ch); });
+  $('prev').addEventListener('click',function(){ go(S.ch-1); });
+  $('next').addEventListener('click',function(){ go(S.ch<5?S.ch+1:1); });
+  function pickWin(e){ var b=e.target.closest('button'); if(b){ S.win=+b.dataset.win; render(); } }
+  $('wins').addEventListener('click',pickWin); $('bars').addEventListener('click',pickWin);
+  $('bands').addEventListener('click',function(e){ var b=e.target.closest('button'); if(b){ S.band=b.dataset.band; render(); } });
+  ['sigma','dir','opp','ice','people'].forEach(function(k){ $('r-'+k).addEventListener('change',function(e){ S.rules[k]=e.target.checked; render(); }); });
+  $('all').addEventListener('click',function(){ for(var k in S.rules) S.rules[k]=true; render(); });
+  $('none').addEventListener('click',function(){ for(var k in S.rules) S.rules[k]=false; render(); });
+  $('nsens').addEventListener('input',function(e){ S.n=+e.target.value; render(); });
+  ['rec','recog','conf','cast'].forEach(function(k){ $('d-'+k).addEventListener('input',function(e){ S.d[k]=+e.target.value; render(); }); });
+  $('play').addEventListener('click',function(){ if(S.t>=K.TMAX) S.t=0; S.playing=!S.playing; if(S.playing && S.t>K.TMAX-0.5) S.t=0; renderPlay(); kick(); });
+  $('scrub').addEventListener('input',function(e){ S.t=+e.target.value; S.playing=false; renderPlay(); syncTime(); kick(); });
+  document.addEventListener('keydown',function(e){ var t=e.target, tag=t&&t.tagName; if(tag==='INPUT'||e.metaKey||e.ctrlKey||e.altKey) return;
+    if(e.key==='ArrowRight'){ go(S.ch+1); e.preventDefault(); } else if(e.key==='ArrowLeft'){ go(S.ch-1); e.preventDefault(); }
+    else if(e.key===' ' && S.ch===4 && tag!=='BUTTON'){ $('play').click(); e.preventDefault(); } });
+  var tip=$('tip');
+  box.addEventListener('pointermove',function(e){
+    if(!(S.ch===2||S.ch===3||S.ch===5)||!cur){ return; }
+    var rc=box.getBoundingClientRect(), mx=e.clientX-rc.left, my=e.clientY-rc.top, best=null, bd=1e9, i, r, d;
+    for(i=0;i<cur.rows.length;i++){ r=cur.rows[i]; d=Math.hypot(X(r.b.x)-mx,Y(r.b.y)-my); if(d<blobR(r.b)+5 && d<bd){ bd=d; best=r; } }
+    if(best!==hover){ hover=best; kick(); }
+    if(!best){ tip.hidden=true; return; }
+    tip.textContent=''; tip.appendChild(el('b','',best.b.src?'The slope that fell':'Slope '+best.b.id+(best.b.glacier?', glacier':', rock')));
+    var line = !best.o.visible ? 'signal lost, coherence '+best.o.coh.toFixed(2) : best.o.rate.toFixed(1)+' cm/day · coherence '+best.o.coh.toFixed(2)+(best.rank?' · rank #'+best.rank:' · below threshold');
+    tip.appendChild(el('span','',line));
+    var tags=[]; if(best.b.opp) tags.push('neighbours pulling apart'); if(best.b.ice) tags.push('hanging ice over rock'); if(best.b.people) tags.push(['','few','some','many'][best.b.people]+' people below');
+    if(tags.length){ tip.appendChild(document.createElement('br')); tip.appendChild(el('span','',tags.join(' · '))); }
+    tip.hidden=false; var tw=tip.offsetWidth, th=tip.offsetHeight; tip.style.left=Math.max(6,Math.min(cw-tw-6,mx+14))+'px'; tip.style.top=Math.max(6,Math.min(ch-th-6,my+14))+'px';
+  });
+  box.addEventListener('pointerleave',function(){ hover=null; tip.hidden=true; kick(); });
+  if(window.ResizeObserver) new ResizeObserver(resize).observe(box); else window.addEventListener('resize',resize);
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(kick);
+}
+function start(data){
+  try{ if(data && data.S){ var k; for(k in data.S) if(k in S && k!=='playing') S[k]=data.S[k]; } }catch(e){}
+  buildStatic(); wire(); render(); resize();
+}
+var hot = window.claude && window.claude.hot;
+try{ if(hot && hot.snapshot) hot.snapshot(function(){ return {S:S}; }); }catch(e){}
+if(hot && hot.ready) hot.ready(start); else start((hot && hot.data) || {});
+})();
+</script>
+
+</body></html>

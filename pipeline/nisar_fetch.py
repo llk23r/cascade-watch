@@ -195,9 +195,13 @@ def main(levels: list[str]) -> None:
     manifest_path = OUT / "manifest.json"
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {}
     jobs = []
-    for level in levels:
+    for spec in levels:
+        level, _, only = spec.partition(":")  # e.g. GCOV:20260819,20260831 limits to those dates
+        only_dates = set(only.split(",")) if only else None
         chosen = pick(search(level))
         for k, p in sorted(chosen.items()):
+            if only_dates and not (set(k[3:]) & only_dates):
+                continue
             manifest[name_of(k)] = {
                 "level": level,
                 "scene": p["sceneName"],
@@ -211,7 +215,7 @@ def main(levels: list[str]) -> None:
             jobs.append((level, k, p["url"]))
     manifest_path.write_text(json.dumps(manifest, indent=1))
     print(f"{len(jobs)} granules to subset", flush=True)
-    with cf.ProcessPoolExecutor(max_workers=6) as ex:
+    with cf.ProcessPoolExecutor(max_workers=4) as ex:
         futs = {ex.submit(fetch_one, *j): j for j in jobs}
         for f in cf.as_completed(futs):
             j = futs[f]

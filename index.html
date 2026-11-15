@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cascade Watch</title>
+<meta name="description" content="A replay of the 26 August 2026 Langtang flood on real NISAR radar: with rules fixed in advance, would the valley have been on a watch list a week before it fell?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+<link rel="stylesheet" href="web/style.css">
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <a class="brand" href="#" aria-label="Cascade Watch, back to the start"><span class="mark" aria-hidden="true"></span>Cascade Watch</a>
+    <span class="sub">The Langtang flood, 26 Aug 2026, replayed on real NISAR radar</span>
+    <span class="badges">
+      <span class="badge real" title="Every number on this page comes from the files in /data, produced by the pipeline from NISAR L2 products and the sources listed under Sources.">Real NISAR data</span>
+      <span class="badge prov" title="NISAR L2 GUNW/GOFF/GCOV products are provisional (composite release P05023/X05026).">Provisional L2</span>
+    </span>
+    <nav class="toplinks">
+      <button type="button" class="linkish" data-open="method">Method</button>
+      <button type="button" class="linkish" data-open="sources">Sources</button>
+      <a class="linkish" href="https://github.com/" id="repo-link" hidden>Code</a>
+    </nav>
+  </header>
+
+  <main class="work">
+    <section class="stage" aria-label="Map">
+      <div id="map" role="region" aria-label="3D map of the Langtang study box and flood corridor"></div>
+      <div class="sweep" id="sweep" aria-hidden="true"></div>
+
+      <div class="scorecard" id="scorecard" aria-live="polite">
+        <div class="sc-head"><span class="sc-label">Scorecard</span><span class="sc-win" id="sc-win"></span></div>
+        <div class="sc-rank"><span class="sc-n" id="sc-n">—</span><span class="sc-of" id="sc-of"></span></div>
+        <dl class="sc-grid">
+          <div><dt>Blobs above it</dt><dd id="sc-above">—</dd></div>
+          <div><dt>Visible at floor</dt><dd id="sc-vis">—</dd></div>
+          <div><dt>Raw-offset baseline</dt><dd id="sc-base">—</dd></div>
+          <div><dt>Sentinel-1 control</dt><dd id="sc-s1">—</dd></div>
+          <div><dt>Tripwire alert</dt><dd id="sc-trip">—</dd></div>
+          <div><dt>Minutes gained</dt><dd id="sc-gain">—</dd></div>
+        </dl>
+      </div>
+
+      <div class="layerbar" role="group" aria-label="Map layer">
+        <button type="button" data-layer="motion" aria-pressed="true">Motion</button>
+        <button type="button" data-layer="phase" aria-pressed="false">Phase</button>
+        <button type="button" data-layer="coh" aria-pressed="false">Coherence</button>
+        <button type="button" data-layer="radar" aria-pressed="false">Radar image</button>
+        <button type="button" data-layer="none" aria-pressed="false">Terrain</button>
+      </div>
+      <div class="legend" id="legend"></div>
+      <div class="radar-compare" id="radar-compare" hidden>
+        <span class="rc-l" id="rc-a"></span>
+        <input type="range" id="rc-slider" min="0" max="1" step="0.01" value="1" aria-label="Blend from before to after the collapse">
+        <span class="rc-r" id="rc-b"></span>
+      </div>
+      <div class="tip" id="tip" hidden></div>
+    </section>
+
+    <aside class="panel" id="panel">
+      <nav class="chapters" id="nav" aria-label="Chapters">
+        <button type="button" data-ch="1"><b>1</b><span>Morning</span></button>
+        <button type="button" data-ch="2"><b>2</b><span>Creep</span></button>
+        <button type="button" data-ch="3"><b>3</b><span>Haystack</span></button>
+        <button type="button" data-ch="4"><b>4</b><span>Race</span></button>
+        <button type="button" data-ch="5"><b>5</b><span>Answer</span></button>
+      </nav>
+      <div class="chapbody" id="chapbody"></div>
+      <div class="panelfoot">
+        <button class="btn ghost" type="button" id="prev">Back</button>
+        <button class="btn" type="button" id="next">Next</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="timeline" id="timeline">
+    <button class="play" type="button" id="play" aria-label="Play the replay"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="play-icon" d="M8 5v14l11-7z"/></svg></button>
+    <div class="track-wrap">
+      <div class="track" id="track" role="slider" tabindex="0" aria-label="Replay time" aria-valuemin="0" aria-valuemax="1000" aria-valuenow="0">
+        <div class="segs" id="segs"></div>
+        <div class="evzone" id="evzone"><span>26 Aug · minutes after 08:37</span></div>
+        <div class="knob" id="knob"><span id="knob-lab"></span></div>
+      </div>
+      <div class="ticks" id="ticks"></div>
+    </div>
+    <div class="trackpick" role="group" aria-label="Orbit track">
+      <button type="button" data-track="A" aria-pressed="true" title="NISAR ascending track 98, frame 16">Asc 98</button>
+      <button type="button" data-track="D" aria-pressed="false" title="NISAR descending track 48, frame 74">Desc 48</button>
+    </div>
+  </footer>
+</div>
+
+<dialog class="sheet" id="sheet-method" aria-labelledby="m-title"></dialog>
+<dialog class="sheet" id="sheet-sources" aria-labelledby="s-title"></dialog>
+
+<noscript><p class="noscript">Cascade Watch needs JavaScript and WebGL to draw the 3D map.</p></noscript>
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script src="web/score.js"></script>
+<script src="web/app.js"></script>
+</body>
+</html>

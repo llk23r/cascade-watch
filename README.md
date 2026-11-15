@@ -1,0 +1,107 @@
+# Cascade Watch
+
+**A replay of the 26 August 2026 Langtang flood on real NISAR radar.**
+NASA Space Apps Challenge 2026 · *Dancing with the SARs* · Toronto
+
+> With rules fixed in advance, would NISAR have put the Langtang valley on a watch list a week before it fell?
+
+At 08:37 NPT on 26 August 2026 an ice–rock mass broke off the north flank of Langtang Lirung (USGS us7000tbwb). The flood ran down the Lhende Khola, Bhote Koshi and Trishuli and killed 1,455 people in Nepal, with 5,285 missing (USGS, as of 4 Oct). It destroyed every river gauge in its path, each one at 27–87% of its warning level. The public SMS went out **38.8 minutes** after the collapse, 16–26 minutes after the wave hit Syabrubesi.
+
+Cascade Watch runs a pre-registered screening rule over every NISAR pass of that summer. It ranks every moving slope in a 37 × 33 km box and then checks where the slope that actually fell landed in that ranking.
+
+## The answer, from real data
+
+| | Result |
+|---|---|
+| Last NISAR pass before the collapse (26 Jul → 19 Aug, ascending track 98, on ASF from 24 Aug 13:30 UTC) | **source valley ranked #2 of 189** moving slopes |
+| Raw-offset baseline (rank by offset magnitude alone, Meena-style) | #7 of 157 |
+| Pass before that (14 → 26 Jul) | **not ranked**: monsoon decorrelation hid it |
+| Pre-registered pass test (top 5 in *both* of the last two passes) | **not passed** |
+| Descending track 48, last pass (23 Jul → 16 Aug) | #13 of 220 |
+| Sentinel-1 C-band control | pending (see *Not done* below) |
+
+What this means:
+- **Yes, the valley would have been on a short watch list a week early.** Four of the top eight blobs in the last pass drain into the source catchment.
+- **It was also near the top most of the summer, and after the collapse.** The screen says *watch this valley*, not *it falls next week*, which is exactly what a watch list is for.
+- **The radar measurement agrees with an independent analysis.** Inside the UNOSAT detachment zone, our fastest-tenth GOFF motion was 0.95, 0.40, 0.50, 1.02 and 0.43 m over the five pre/co-event passes. Meena (2026) reports 0.99, 0.54, 0.30, 0.96 and 0.33 m for the same passes.
+- **A ground tripwire would have bought time.** If a ground sensor on the #2 valley had raised a siren within ~4.5 minutes, Syabrubesi would have had about 13 minutes of warning instead of being hit 21 minutes before the SMS.
+
+## Run it
+
+```bash
+# view (no build needed: everything the page reads is in /data)
+python3 -m http.server 8000      # then open http://localhost:8000
+
+# rebuild from scratch (needs a NASA Earthdata login in ~/.netrc)
+uv venv --python 3.12 .venv && source .venv/bin/activate
+uv pip install numpy scipy h5py fsspec aiohttp requests earthaccess rasterio pyproj shapely pillow scikit-image asf_search pyogrio geopandas
+python pipeline/fetch_ancillary.py          # DEM, glaciers, WorldPop, OSM, ERA5, Meena zones
+python pipeline/fetch_event.py              # USGS, Zenodo, UNOSAT, Copernicus EMS, DHM gauges, GEOFON, papers
+python pipeline/nisar_fetch.py GUNW GOFF    # box subsets of every NISAR pair (no full downloads)
+python pipeline/nisar_fetch.py GCOV:20260726,20260819,20260831,20260912,20260816,20260828
+cd pipeline
+python clean.py && python rank.py && python build_replay.py && python build_layers.py && python build_context.py
+python render.py
+cd .. && node tests/score_parity.test.js    # browser scorer == pipeline ranking
+```
+
+`raw/event/{timeline,facts,villages_arrival}.json` are compiled by hand from the fetched sources. Every item carries its source URL and a verbatim quote, and the replay only uses items that have one.
+
+## Pipeline
+
+| Stage | Script | What it does |
+|---|---|---|
+| 1 Fetch | `nisar_fetch.py` | Reads only the study box (463 × 412 cells, 80 m, UTM 45N) out of each remote NISAR L2 GUNW / GOFF granule (~1–2 GB each) through authenticated HTTP range requests; GCOV 10 m backscatter for key dates. Prefers composite release P05023, the one that existed at the time. |
+| 2 Clean | `clean.py` | **Offsets:** cull GOFF (σ ≤ 1 m, SNR ≥ 5, 5×5 median test), remove the bulk shift, project slant-range and along-track offsets onto the DEM fall line (variance-weighted), pick the lowest-noise layer per pass; the sign is checked against glacier flow. **Phase:** subtract the ionosphere screen, use λ from the product's centre frequency, apply a coherence floor of 0.30 / 0.40 and connected components, remove a robust plane, subtract the 3–5 km ring median. |
+| 3 Rank | `rank.py` | Blobs (≥ 5 cells) from both channels; bootstrap σ, direction coherence, opposing-neighbour flag, ice-over-rock (GLIMS/RGI + slope), WorldPop residents along the first 30 km of the D8 flow path, ERA5 heat anomaly. Score = (motion/σ) × dir. coherence × bonuses × exposure × season. Truth (UNOSAT 4257 detachment zone) is used **only to score**. |
+| 4 Replay | `build_replay.py` | Flood path = D8 routing on Copernicus DEM from the source; front timing = DHM ten-minute gauge brackets; tripwire = sum of four delays, armed only if the source valley was in the top N of the last pass. |
+| 5 Show | `render.py`, `build_layers.py`, `build_context.py`, `index.html`, `web/` | Terrarium terrain tiles, shaded relief, motion/phase/coherence overlays, NISAR GCOV before/after change map; MapLibre 3-D page; scorer re-implemented in `web/score.js`. |
+
+All thresholds and weights are in [`pipeline/config.json`](pipeline/config.json), committed **before the first real run** (see `git log`). Sliders in the page show sensitivity; the headline uses the committed values. `tests/score_parity.test.js` checks the browser ranking against the pipeline for every window.
+
+## Data
+
+| Data | Source | Use |
+|---|---|---|
+| NISAR L2 GUNW, GOFF (provisional, doi 10.5067/NIL2GUNW-P1) | NASA/JPL-ISRO via ASF DAAC / Earthdata | motion, coherence, geometry (20 pairs, May–Oct 2026, tracks 98 A and 48 D) |
+| NISAR L2 GCOV | ASF DAAC | 10 m backscatter before/after; change map of the avalanche path |
+| Detachment zone, flood extent, affected buildings/roads, barrier lakes | UNOSAT product 4257 | truth (scoring only), "what happened" layer |
+| Rapid mapping EMSR927 | Copernicus EMS | event context |
+| Ten-minute gauge series, 26 Aug | Nepal DHM river watch, archived in Zenodo 22679444 (Acharya & Paudel) | front timing, gauge failures |
+| Event catalogue | USGS us7000tbwb / us7000tc90, GEOFON gfz2026qrfy | collapse time, classification history |
+| Copernicus DEM GLO-30 | ESA / AWS open data | terrain, fall lines, flow routing |
+| Glacier outlines | GLIMS / RGI | ice-over-rock flag, stable-ground mask |
+| Population | WorldPop | people below each slope |
+| Rivers, places | OpenStreetMap (ODbL) | channels, labels |
+| 2 m temperature 1991–2026 | ERA5 via Open-Meteo | season anomaly |
+| Source series, 101-zone screen | Meena 2026, Zenodo 22730419 (CC BY 4.0) | independent cross-check |
+
+## Honest limits
+
+- The pre-registered test **fails**: the source valley disappears in the 14–26 Jul pass.
+- Phase blobs carry millimetre σ, so they dominate a motion/σ score. Their phase is **not** corrected for tropospheric delay, which at 5,000 m can mimic motion.
+- The 2 km hit zone around a 2 km² outline is generous: several blobs qualify in most passes.
+- NISAR L2 is provisional; there is no earlier-year NISAR archive to separate seasonal snow change from precursor motion.
+- Arrival times between gauges are interpolated along the flow path; beyond Betrawati they are extrapolated.
+
+## Not done
+
+- **Sentinel-1 C-band control.** `pipeline/fetch_s1.py` is ready: 8 S1 pairs on descending orbit 121, matched to the NISAR windows. ASF's HyP3 service first needs the account owner to accept the ASF Terms of Service at <https://urs.earthdata.nasa.gov/approve_app?client_id=BO_n7nTIlMljdvU6kRRB3g>. After that, run `python pipeline/fetch_s1.py all` (then `wait`, then `process manifest`) and rerun the ranking on the S1 rasters. Until then the page shows the control as pending, and quotes Sah (2026): routine 12-day Sentinel-1 products showed no motion above ~13 mm/month at this slope.
+
+## Challenge checklist
+
+- NASA data from the challenge resources is the core: NISAR L2 GUNW/GOFF/GCOV via ASF and Earthdata.
+- Interactive, open-source (MIT), runs from static files with no backend and no keys.
+- Visualises Earth-surface change: glacier and slope motion per pass, coherence loss, before/after backscatter change.
+- Every source is cited in the app (Sources panel) and here.
+- `demo/cascade-watch-30s.mp4`: a 30-second tour of the app.
+
+## Layout
+
+```
+index.html, web/          the app (MapLibre GL JS 4.7.1 from unpkg)
+data/                     everything the app reads (pipeline output)
+pipeline/                 fetch → clean → rank → replay → render
+tests/                    score parity test, headless screenshots, demo recorder
+raw/                      downloads and intermediates (git-ignored)
+```
