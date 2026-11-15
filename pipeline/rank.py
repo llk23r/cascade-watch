@@ -1,9 +1,10 @@
 """Stage 3 — Moving blobs per window: extract, describe, score, rank, score against truth.
 
-Truth (UNOSAT outline, else the USGS source point) is used ONLY after ranking,
-to measure where the true source landed. Writes:
-  data/windows.json, data/blobs_<window>.geojson, data/truth.geojson,
-  data/source_series.json, data/scorecard.json
+Truth (UNOSAT outline, else the USGS source point; for a backtest site the point
+in pipeline/backtest.json) is used ONLY after ranking, to measure where the true
+source landed. A negative control has no truth. Writes, in the site's data dir
+(data/ for Langtang, data/sites/<site>/ otherwise, see grid.py / CW_SITE):
+  windows.json, blobs_<window>.geojson, truth.geojson, source_series.json, scorecard.json
 """
 from __future__ import annotations
 
@@ -21,11 +22,14 @@ from shapely.ops import unary_union
 
 import hydro
 from clean import PROD, glacier_mask
-from grid import CELL, CFG, DATA, NX, NY, RAW, ROOT, TO_LL, TO_UTM, TRANSFORM, XC, YC, dem, find, slope_fall_line
+from grid import (CELL, CFG, DATA, DEFAULT_SITE, EVENT_UTC, NX, NY, RAW, ROOT, SITE, SITE_CFG, TO_LL, TO_UTM, TRANSFORM, TRUTH,
+                  XC, YC, dem, find, slope_fall_line)
 
-BC, SC, TC = CFG["blobs"], CFG["score"], CFG["truth"]
+BC, SC, TC = CFG["blobs"], CFG["score"], TRUTH  # TC is None for a negative control
 RNG = np.random.default_rng(20260826)
-EVENT = datetime.fromisoformat(CFG["windows"]["event_utc"].replace("Z", "+00:00"))
+EVENT = datetime.fromisoformat(EVENT_UTC.replace("Z", "+00:00")) if EVENT_UTC else None
+SEASON_NOT_FETCHED = ("ERA5 not fetched for this backtest site: the season factor is the same for every patch in a pass "
+                      "and cannot change ranks, so it is set to 1")
 
 
 def to_ll(g):
@@ -38,18 +42,23 @@ def to_utm(g):
 
 # ---------------------------------------------------------------- truth
 def truth():
-    p = find("detachment.geojson")
+    if TC is None:
+        return None, {"kind": "none: negative control"}
+    p = find(TC["outline_file"]) if TC["outline_file"] else None
     if p:
         gj = json.loads(Path(p).read_text())
         geom = unary_union([shape(f["geometry"]) for f in gj["features"]])
         return to_utm(geom), {"kind": "UNOSAT possible-detachment outline (product 4257)", "path": str(Path(p).relative_to(ROOT))}
-    lon, lat = TC["source_lonlat"]
-    return Point(*TO_UTM.transform(lon, lat)), {"kind": "USGS event location us7000tbwb (outline unavailable)", "lonlat": [lon, lat]}
+    lon, lat = TC["lonlat"]
+    kind = "USGS event location us7000tbwb (outline unavailable)" if SITE == DEFAULT_SITE else TC["kind"]
+    return Point(*TO_UTM.transform(lon, lat)), {"kind": kind, "lonlat": [lon, lat]}
 
 
 # ---------------------------------------------------------------- season
 def season_anomaly(end: date) -> dict:
     """z-score of mean 2 m temperature, 1 May -> window end, 2026 vs 1991–2020 (ERA5 via Open-Meteo)."""
+    if not SITE_CFG["era5"]:
+        return {"value": 1.0, "z": None, "note": SEASON_NOT_FETCHED}
     p = find("openmeteo_raw_era5_default_elev.json")
     if p is None:
         return {"value": 1.0, "z": None, "note": "ERA5 unavailable"}
@@ -193,35 +202,41 @@ def run():
     slope, _ = slope_fall_line(z)
     ice = glacier_mask()
     tgeom, tmeta = truth()
-    # source path and the tributary length before it meets the main stem
-    sx, sy = TO_UTM.transform(*TC["source_lonlat"])
-    rows, cols, xs, ys, along = hydro.path_from(sx, sy)
-    src_cells = rows * hydro.HNX + cols
-    src_index = {int(c): float(a) for c, a in zip(src_cells, along)}
-    src_river, _ = hydro.first_named_river(xs, ys, along)
-    # The source drains down an (unnamed in OSM) tributary, the Lhende Khola, into the Bhote Koshi.
-    # "Same channel" = a slope whose flow path joins the source path before that main stem.
-    main, trib_len = hydro.first_named_river(xs, ys, along, within_m=200.0, names={"Bhote Koshi", "Trishuli River", "Trishuli Ganga River"})
-    if trib_len is None:
-        _, _, acc = hydro.flow()
-        accs = acc[rows, cols] * hydro.HCELL**2 / 1e6
-        big = np.where(accs > 500)[0]
-        trib_len = float(along[big[0]]) if big.size else float(along[-1])
+    src_index, trib_len, src_river, main = {}, 0.0, None, None
+    if tgeom is not None:
+        # source path and the tributary length before it meets the main stem
+        sx, sy = TO_UTM.transform(*TC["lonlat"])
+        rows, cols, xs, ys, along = hydro.path_from(sx, sy)
+        src_cells = rows * hydro.HNX + cols
+        src_index = {int(c): float(a) for c, a in zip(src_cells, along)}
+        src_river, _ = hydro.first_named_river(xs, ys, along)
+        # Langtang: the source drains down an (unnamed in OSM) tributary, the Lhende Khola, into the Bhote Koshi.
+        # "Same channel" = a slope whose flow path joins the source path before that main stem. Backtest sites
+        # name no river: the main stem starts where the source path first has 500 km2 upstream area.
+        names = SITE_CFG["main_stem_names"]
+        if names:
+            main, trib_len = hydro.first_named_river(xs, ys, along, within_m=200.0, names=names)
+        if trib_len is None or not names:
+            trib_len = hydro.main_stem_along(rows, cols, along)
+            if not names:
+                main, _ = hydro.first_named_river(xs[along >= trib_len], ys[along >= trib_len], along[along >= trib_len])
     ctx = dict(z=z, slope=slope, ice=ice, src_index=src_index, trib_len=trib_len)
     manifest = json.loads((RAW / "nisar" / "manifest.json").read_text())
 
     windows, series, card = [], [], {"windows": {}}
     yy, xx = np.meshgrid(YC, XC, indexing="ij")
-    if tgeom.geom_type == "Point":
-        zone_mask = np.hypot(xx - sx, yy - sy) <= 1000
-    else:
-        zone_mask = rasterio.features.rasterize([(tgeom, 1)], out_shape=(NY, NX), transform=TRANSFORM, all_touched=True).astype(bool)
-    tll = to_ll(tgeom)
-    c = tll.centroid
-    zone = to_ll(tgeom.buffer(TC["hit_radius_km"] * 1000, 64))
-    (DATA / "truth.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": [
-        {"type": "Feature", "properties": {**tmeta, "role": "truth", "center": [round(c.x, 5), round(c.y, 5)]}, "geometry": mapping(tll)},
-        {"type": "Feature", "properties": {"role": "hit_zone", "radius_km": TC["hit_radius_km"]}, "geometry": mapping(zone)}]}))
+    zone_mask = None
+    if tgeom is not None:
+        if tgeom.geom_type == "Point":
+            zone_mask = np.hypot(xx - sx, yy - sy) <= 1000
+        else:
+            zone_mask = rasterio.features.rasterize([(tgeom, 1)], out_shape=(NY, NX), transform=TRANSFORM, all_touched=True).astype(bool)
+        tll = to_ll(tgeom)
+        c = tll.centroid
+        zone = to_ll(tgeom.buffer(TC["hit_radius_km"] * 1000, 64))
+        (DATA / "truth.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": [
+            {"type": "Feature", "properties": {**tmeta, "role": "truth", "center": [round(c.x, 5), round(c.y, 5)]}, "geometry": mapping(tll)},
+            {"type": "Feature", "properties": {"role": "hit_zone", "radius_km": TC["hit_radius_km"]}, "geometry": mapping(zone)}]}))
     names = sorted(p.stem for p in PROD.glob("*.npz"))
     for name in names:
         info = json.loads((PROD / f"{name}.json").read_text())
@@ -231,16 +246,20 @@ def run():
         blobs = extract(name, ctx)
         for b in blobs:
             drainage(b, ctx)
-            b["dist_truth_km"] = float(b["_geom"].distance(tgeom) / 1000)
+            b["dist_truth_km"] = float(b["_geom"].distance(tgeom) / 1000) if tgeom is not None else None
             b["season_anomaly"] = season["value"]
             b["score"] = score(b, season["value"])
         ranked = sorted([b for b in blobs if b["score"] > 0], key=lambda b: -b["score"])
         for i, b in enumerate(ranked):
             b["rank"] = i + 1
-        hit = next((b for b in ranked if b["dist_truth_km"] <= TC["hit_radius_km"] and b["same_channel"]), None)
+
+        def is_hit(b):
+            return tgeom is not None and b["dist_truth_km"] <= TC["hit_radius_km"] and b["same_channel"]
+
+        hit = next((b for b in ranked if is_hit(b)), None)
         offs = sorted([b for b in blobs if b["channel"] == "offsets" and b["raw_offset_m"] is not None], key=lambda b: -b["raw_offset_m"])
-        base_hit = next((i + 1 for i, b in enumerate(offs) if b["dist_truth_km"] <= TC["hit_radius_km"] and b["same_channel"]), None)
-        near = [b for b in blobs if b["dist_truth_km"] <= TC["hit_radius_km"] and b["same_channel"]]
+        base_hit = next((i + 1 for i, b in enumerate(offs) if is_hit(b)), None)
+        near = [b for b in blobs if is_hit(b)]
         gun = manifest.get(f"GUNW_{name}", {})
         gof = manifest.get(f"GOFF_{name}", {})
         avail = gof.get("asf_processingDate") or gun.get("asf_processingDate")
@@ -250,19 +269,25 @@ def run():
                  offsets_layer=info.get("offsets_layer"), offsets_noise_m=info.get("offsets_noise_m"),
                  phase_noise_mm=info["phase_noise_mm"], season=season, n_blobs=len(blobs), n_ranked=len(ranked),
                  gunw=gun.get("scene"), goff=gof.get("scene"), crid=gof.get("crid") or gun.get("crid"), asf_processed=avail,
-                 phase="pre" if d1 <= EVENT.date() else ("co" if d0 <= EVENT.date() < d1 else "post"))
+                 phase=("control" if EVENT is None else
+                        "pre" if d1 <= EVENT.date() else ("co" if d0 <= EVENT.date() < d1 else "post")))
         windows.append(w)
         card["windows"][name] = dict(source_rank=hit["rank"] if hit else None, blobs_above=(hit["rank"] - 1) if hit else None,
                                      n_ranked=len(ranked), baseline_rank=base_hit, n_offsets=len(offs),
                                      source_visible=bool(near) and any(b["score"] > 0 for b in near),
                                      hit_id=hit["id"] if hit else None,
-                                     top5=[dict(id=b["id"], channel=b["channel"], dist_truth_km=round(b["dist_truth_km"], 2), lon=round(b["lon"], 4), lat=round(b["lat"], 4)) for b in ranked[:5]])
+                                     top5=[dict(id=b["id"], channel=b["channel"],
+                                                dist_truth_km=round(b["dist_truth_km"], 2) if tgeom is not None else None,
+                                                lon=round(b["lon"], 4), lat=round(b["lat"], 4)) for b in ranked[:5]])
         feats = []
         for b in blobs:
             g = to_ll(b["_geom"].simplify(30, preserve_topology=True))
             props = {k: (float(f"{v:.6g}") if isinstance(v, float) else v) for k, v in b.items() if not k.startswith("_")}
             feats.append({"type": "Feature", "properties": props, "geometry": mapping(g)})
         (DATA / f"blobs_{name}.geojson").write_text(json.dumps({"type": "FeatureCollection", "features": feats}, separators=(",", ":")))
+        print(name, "ranked", len(ranked), "source rank", card["windows"][name]["source_rank"], "baseline", base_hit, flush=True)
+        if zone_mask is None:
+            continue
         # the source site itself, independent of blob detection
         P = np.load(PROD / f"{name}.npz")
         rr = zone_mask  # cells inside the UNOSAT detachment zone (or 1 km around the point)
@@ -280,16 +305,22 @@ def run():
         srow.update(phase_coh_median=float(np.nanmedian(c)), phase_valid_share=float(np.isfinite(lv).mean()),
                     phase_median_mm=float(np.nanmedian(lv)) if np.isfinite(lv).sum() >= 3 else None)
         series.append(srow)
-        print(name, "ranked", len(ranked), "source rank", card["windows"][name]["source_rank"], "baseline", base_hit, flush=True)
 
-    last2 = [f"A098_{w}" for w in CFG["windows"]["pre_event_last_two_ascending"]]
-    ranks = [card["windows"].get(w, {}).get("source_rank") for w in last2]
-    card["pass"] = dict(rule=CFG["pass_condition"]["rule"], windows=last2, ranks=ranks,
-                        passed=all(r is not None and r <= CFG["pass_condition"]["top_n"] for r in ranks))
+    last2 = SITE_CFG["last_two_ascending"]
+    if last2:
+        ranks = [card["windows"].get(w, {}).get("source_rank") for w in last2]
+        card["pass"] = dict(rule=CFG["pass_condition"]["rule"], windows=last2, ranks=ranks,
+                            passed=all(r is not None and r <= CFG["pass_condition"]["top_n"] for r in ranks))
+    else:
+        card["pass"] = None  # negative control: no event, no pass test
     card["config_sha256"] = hashlib.sha256((ROOT / "pipeline" / "config.json").read_bytes()).hexdigest()
     card["truth"] = tmeta
     card["source_path_first_river"] = src_river
     card["tributary_length_km"] = round(trib_len / 1000, 2)
+    if SITE != DEFAULT_SITE:
+        card.update(site=SITE, role=SITE_CFG["role"], event_utc=EVENT_UTC, main_stem_first_river=main,
+                    backtest_sha256=hashlib.sha256((ROOT / "pipeline" / "backtest.json").read_bytes()).hexdigest(),
+                    season_note=SEASON_NOT_FETCHED)
     (DATA / "windows.json").write_text(json.dumps(windows, indent=1))
     (DATA / "source_series.json").write_text(json.dumps(series, indent=1))
     (DATA / "scorecard.json").write_text(json.dumps(card, indent=1))

@@ -9,7 +9,9 @@ Phase (GUNW): unwrapped phase minus the ionosphere screen -> line-of-sight mm
 -> coherence/connected-component mask -> robust plane removal -> subtract the
 median of a 3-5 km ring -> relative LOS motion.
 
-Writes raw/products/<window>.npz and raw/products/<window>.json.
+Writes <site raw>/products/<window>.npz and <window>.json (raw/products/ for Langtang;
+see grid.py / CW_SITE). A window that cannot be processed gets <window>.failed.json
+with the reason instead, and the run moves on.
 """
 from __future__ import annotations
 
@@ -213,25 +215,36 @@ def run(names: list[str] | None = None) -> None:
     ice = glacier_mask()
     stable = (~ice) & (slope < 20)
     for name in names or windows_available():
-        g = np.load(RAW / "nisar" / f"GUNW_{name}.npz")
-        direction = name[0]
-        los, at, inc = interp_radar_grid(g, z)
-        off = offsets_channel(name, g, z, slope, f, los, at, stable)
-        ph = phase_channel(name, g, direction)
-        info = {"window": name, "direction": direction, "lambda_m": ph["lam"], "phase_noise_mm": ph["noise_mm"],
-                "phase_valid_share": float(ph["ok"].mean()),
-                "phase_ice_lost_share": float(((~ph["ok"]) & ice).sum() / max(ice.sum(), 1))}
-        arrays = dict(los_rel_mm=ph["los_rel_mm"].astype(np.float32), coh=ph["coh"].astype(np.float32), inc=inc.astype(np.float32))
-        if off is not None:
-            info.update(offsets_layer=off["layer"], offsets_noise_m=off["noise"], offsets_valid_share=off["valid_share"],
-                        offsets_ice_lost_share=float(((~off["okp"]) & ice).sum() / max(ice.sum(), 1)),
-                        glacier_median_s_m=float(np.nanmedian(off["s"][ice])) if ice.any() else None,
-                        stable_median_s_m=float(np.nanmedian(off["s"][stable])))
-            arrays.update(s=off["s"].astype(np.float32), sig=off["sig"].astype(np.float32), dircoh=off["dircoh"].astype(np.float32),
-                          corr=off["corr"].astype(np.float32), rg=off["rg"].astype(np.float32), az=off["az"].astype(np.float32))
-        np.savez_compressed(PROD / f"{name}.npz", **arrays)
-        (PROD / f"{name}.json").write_text(json.dumps(info, indent=1))
-        print(json.dumps({k: (round(v, 4) if isinstance(v, float) else v) for k, v in info.items()}), flush=True)
+        try:
+            clean_window(name, z, slope, f, ice, stable)
+            (PROD / f"{name}.failed.json").unlink(missing_ok=True)
+        except Exception as e:  # recorded, never filled: rank.py only sees windows that were processed
+            for ext in (".npz", ".json"):
+                (PROD / f"{name}{ext}").unlink(missing_ok=True)
+            (PROD / f"{name}.failed.json").write_text(json.dumps({"window": name, "error": repr(e)[:500]}, indent=1))
+            print("FAILED", name, repr(e)[:300], flush=True)
+
+
+def clean_window(name: str, z, slope, f, ice, stable) -> None:
+    g = np.load(RAW / "nisar" / f"GUNW_{name}.npz")
+    direction = name[0]
+    los, at, inc = interp_radar_grid(g, z)
+    off = offsets_channel(name, g, z, slope, f, los, at, stable)
+    ph = phase_channel(name, g, direction)
+    info = {"window": name, "direction": direction, "lambda_m": ph["lam"], "phase_noise_mm": ph["noise_mm"],
+            "phase_valid_share": float(ph["ok"].mean()),
+            "phase_ice_lost_share": float(((~ph["ok"]) & ice).sum() / max(ice.sum(), 1))}
+    arrays = dict(los_rel_mm=ph["los_rel_mm"].astype(np.float32), coh=ph["coh"].astype(np.float32), inc=inc.astype(np.float32))
+    if off is not None:
+        info.update(offsets_layer=off["layer"], offsets_noise_m=off["noise"], offsets_valid_share=off["valid_share"],
+                    offsets_ice_lost_share=float(((~off["okp"]) & ice).sum() / max(ice.sum(), 1)),
+                    glacier_median_s_m=float(np.nanmedian(off["s"][ice])) if ice.any() else None,
+                    stable_median_s_m=float(np.nanmedian(off["s"][stable])))
+        arrays.update(s=off["s"].astype(np.float32), sig=off["sig"].astype(np.float32), dircoh=off["dircoh"].astype(np.float32),
+                      corr=off["corr"].astype(np.float32), rg=off["rg"].astype(np.float32), az=off["az"].astype(np.float32))
+    np.savez_compressed(PROD / f"{name}.npz", **arrays)
+    (PROD / f"{name}.json").write_text(json.dumps(info, indent=1))
+    print(json.dumps({k: (round(v, 4) if isinstance(v, float) else v) for k, v in info.items()}), flush=True)
 
 
 if __name__ == "__main__":

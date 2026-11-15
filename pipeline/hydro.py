@@ -2,6 +2,7 @@
 
 Used for (a) which channel a slope drains into, (b) people living along the
 first 30 km below it, (c) the real flood path from the source to the Trishuli.
+The corridor comes from the site settings in grid.py (CORRIDOR_UTM).
 """
 from __future__ import annotations
 
@@ -14,12 +15,9 @@ import numpy as np
 from rasterio.transform import from_origin
 from rasterio.warp import Resampling
 
-from grid import CRS, TO_LL, TO_UTM, find, warp_to
+from grid import CORRIDOR_UTM, CRS, HCELL, TO_LL, TO_UTM, find, warp_to
 
-HCELL = 90.0
-# Corridor (lon 85.10–85.75, lat 27.85–28.45) in UTM 45N, snapped to 90 m.
-HX0, HX1 = 313200.0, 377100.0
-HY0, HY1 = 3081600.0, 3148200.0
+HX0, HX1, HY0, HY1 = CORRIDOR_UTM
 HNX = int((HX1 - HX0) // HCELL)
 HNY = int((HY1 - HY0) // HCELL)
 HTRANSFORM = from_origin(HX0, HY1, HCELL, HCELL)
@@ -89,6 +87,14 @@ def rc_of_utm(x: float, y: float):
 
 def utm_of_rc(r, c):
     return HX0 + (np.asarray(c) + 0.5) * HCELL, HY1 - (np.asarray(r) + 0.5) * HCELL
+
+
+def main_stem_along(rows, cols, along, min_area_km2: float = 500.0):
+    """Distance along a path to its first cell with at least `min_area_km2` upstream area (end of path if none)."""
+    _, _, acc = flow()
+    accs = acc[rows, cols] * HCELL**2 / 1e6
+    big = np.where(accs > min_area_km2)[0]
+    return float(along[big[0]]) if big.size else float(along[-1])
 
 
 def path_from(x: float, y: float, max_km: float = 200.0, snap_acc_km2: float | None = None):

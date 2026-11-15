@@ -1,13 +1,19 @@
 #!/usr/bin/env python
-"""Fetch real ancillary geodata for Cascade Watch (Langtang, 26 Aug 2026).
+"""Fetch real ancillary geodata for Cascade Watch.
 
-Everything lands in raw/ancillary/<name>/ and is described in
-raw/ancillary/manifest.json. Re-runnable: each step skips outputs that already
-exist (use --force to redo a step). Real data only: if a source fails, the
-failure is written to the manifest "missing" array and the step moves on.
+The study box and corridor come from grid.py (CW_SITE, default langtang). Everything
+lands in <site raw>/ancillary/<name>/ (raw/ancillary/ for Langtang) and is described
+in its manifest.json. Re-runnable: each step skips outputs that already exist (use
+--force to redo a step). Real data only: if a source fails, the failure is written
+to the manifest "missing" array and the step moves on.
+
+Backtest sites get only what the ranking reads: DEM, RGI glacier outlines, WorldPop,
+OSM rivers. ERA5 is not fetched for them: the season factor is the same for every
+patch in a pass, so it cannot change ranks (rank.py sets it to 1 and says so).
 
 Usage:
     .venv/bin/python -I pipeline/fetch_ancillary.py [--only dem,glaciers,population,osm,era5,meena] [--force]
+                                                    [--keep-downloads]
 
 Earthdata credentials are read from ~/.netrc by earthaccess (never printed).
 """
@@ -31,19 +37,25 @@ import numpy as np
 import requests
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "raw" / "ancillary"
-MANIFEST = OUT / "manifest.json"
-UA = {"User-Agent": "cascade-watch-ancillary-fetch/1.0 (research; python-requests)"}
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # grid.py, also under python -I
+from grid import (CELL, CORRIDOR_LONLAT, CRS, DEFAULT_SITE, NX, NY, RAW, SITE, TRUTH,  # noqa: E402
+                  X_EDGE0, X_EDGE1, Y_EDGE0, Y_EDGE1)
 
-# ---------------------------------------------------------------- regions
-UTM = "EPSG:32645"
-BOX_X0, BOX_X1 = 336440.0, 373480.0
-BOX_Y0, BOX_Y1 = 3113640.0, 3146600.0
-GRID80 = dict(res=80.0, cols=463, rows=412)          # exactly the study grid
+OUT = RAW / "ancillary"
+MANIFEST = OUT / "manifest.json"
+CACHE = ROOT / "raw" / "cache"   # national downloads shared between sites (git-ignored)
+UA = {"User-Agent": "cascade-watch-ancillary-fetch/1.0 (research; python-requests)"}
+FULL = SITE == DEFAULT_SITE      # the Langtang replay also wants debris, GLIMS, roads, places, ERA5, Meena
+
+# ---------------------------------------------------------------- regions (all from grid.py)
+UTM = CRS
+BOX_X0, BOX_X1 = X_EDGE0, X_EDGE1
+BOX_Y0, BOX_Y1 = Y_EDGE0, Y_EDGE1
+GRID80 = dict(res=CELL, cols=NX, rows=NY)            # exactly the study grid
 GRID30 = dict(res=30.0, cols=math.ceil((BOX_X1 - BOX_X0) / 30.0),
-              rows=math.ceil((BOX_Y1 - BOX_Y0) / 30.0))  # 1235 x 1099, same origin
-CORRIDOR = (85.10, 27.85, 85.75, 28.45)              # W, S, E, N (lon/lat)
-SOURCE_PT = (28.271, 85.515)                          # lat, lon
+              rows=math.ceil((BOX_Y1 - BOX_Y0) / 30.0))  # 1235 x 1099 for Langtang, same origin
+CORRIDOR = CORRIDOR_LONLAT                           # W, S, E, N (lon/lat)
+SOURCE_PT = (TRUTH["lonlat"][1], TRUTH["lonlat"][0]) if TRUTH else None  # lat, lon
 SOURCE_ELEV = 5190   # unsourced earlier guess, kept only as a sensitivity run; primary uses the API DEM elevation
 EVENT_YEAR = 2026
 
@@ -120,13 +132,14 @@ class Manifest:
         self.data = {
             "generated_utc": utcnow(),
             "generator": "pipeline/fetch_ancillary.py",
-            "project": "Cascade Watch (NASA Space Apps 2026), Langtang 26 Aug 2026 replay",
+            "project": "Cascade Watch (NASA Space Apps 2026), site " + SITE,
             "regions": {
-                "study_box_utm45n": {"crs": UTM, "x": [BOX_X0, BOX_X1], "y": [BOX_Y0, BOX_Y1],
-                                     "grid_80m": "463 cols x 412 rows, origin (336440, 3146600)"},
+                "study_box_utm": {"crs": UTM, "x": [BOX_X0, BOX_X1], "y": [BOX_Y0, BOX_Y1],
+                                  "grid": f"{NX} cols x {NY} rows of {CELL:.0f} m, origin ({BOX_X0:.0f}, {BOX_Y1:.0f})"},
                 "corridor_lonlat": {"w": CORRIDOR[0], "s": CORRIDOR[1],
                                     "e": CORRIDOR[2], "n": CORRIDOR[3]},
-                "source_point": {"lat": SOURCE_PT[0], "lon": SOURCE_PT[1], "elev_m": SOURCE_ELEV},
+                "source_point": ({"lat": SOURCE_PT[0], "lon": SOURCE_PT[1]} | ({"elev_m": SOURCE_ELEV} if FULL else {})
+                                 if SOURCE_PT else None),
             },
             "files": files,
             "missing": missing,
@@ -515,6 +528,10 @@ def step_glaciers(m: Manifest, force: bool):
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
 
+    if not FULL:
+        print("glaciers: debris and GLIMS layers skipped for a backtest site (the ranking reads RGI outlines only)")
+        return
+
     # --- supraglacial debris (RGI 7.0 has no debris attribute)
     _debris(m, d, box, force)
 
@@ -584,13 +601,16 @@ def step_glaciers(m: Manifest, force: bool):
 
 
 # ---------------------------------------------------------------- 3. population
-POP_COUNTRIES = ("NPL", "CHN")  # the box's northern third is in Tibet (Gyirong county)
+# Both countries for every site: the Langtang box's northern third is in Tibet (Gyirong county) and the
+# backtest corridors reach into Tibet too; a country with no cells in the corridor adds nothing.
+POP_COUNTRIES = ("NPL", "CHN")
 
 
-def _worldpop_clip(m: Manifest, d: Path, iso3: str):
+def _worldpop_clip(m: Manifest, d: Path, iso3: str, keep: bool = False):
     """Download one WorldPop R2025A constrained 100 m national file (the server does
     not serve byte ranges, so no remote windowed read), clip to the corridor on the
-    WorldPop 3-arcsec grid, delete the national file. Returns (arr, transform, nodata, crs, meta)."""
+    WorldPop 3-arcsec grid, delete the national file unless `keep` (it is cached in
+    raw/cache/worldpop/ and reused by the next site). Returns (arr, transform, nodata, crs, meta)."""
     import rasterio
     from rasterio.windows import from_bounds
     api = http_get(WORLDPOP_API.replace("NPL", iso3), timeout=60).json()["data"]
@@ -598,15 +618,18 @@ def _worldpop_clip(m: Manifest, d: Path, iso3: str):
     # i.e. the latest year that is not in the future relative to the flood.
     rec = max((r for r in api if int(r["popyear"]) <= EVENT_YEAR), key=lambda r: int(r["popyear"]))
     url, year = rec["files"][0], int(rec["popyear"])
-    tmp = d / f"_tmp_{iso3}"
-    tmp.mkdir(exist_ok=True)
-    full = tmp / Path(url).name
+    cache = CACHE / "worldpop"
+    cache.mkdir(parents=True, exist_ok=True)
+    full = cache / Path(url).name
+    part = full.with_suffix(full.suffix + ".part")
     try:
-        with requests.get(url, headers=UA, stream=True, timeout=900) as r:
-            r.raise_for_status()
-            with open(full, "wb") as fh:
-                for chunk in r.iter_content(1 << 22):
-                    fh.write(chunk)
+        if not full.exists():
+            with requests.get(url, headers=UA, stream=True, timeout=900) as r:
+                r.raise_for_status()
+                with open(part, "wb") as fh:
+                    for chunk in r.iter_content(1 << 22):
+                        fh.write(chunk)
+            part.rename(full)
         nbytes = full.stat().st_size
         with rasterio.open(full) as src:
             win = from_bounds(*CORRIDOR, transform=src.transform).round_offsets().round_lengths()
@@ -614,7 +637,9 @@ def _worldpop_clip(m: Manifest, d: Path, iso3: str):
             tr = src.window_transform(win)
             nod, crs = src.nodata, src.crs
     finally:
-        shutil.rmtree(tmp, ignore_errors=True)
+        part.unlink(missing_ok=True)
+        if not keep:
+            full.unlink(missing_ok=True)
     return arr, tr, nod, crs, dict(iso3=iso3, url=url, year=year, doi=rec.get("doi"),
                                    downloaded_mb=round(nbytes / 1e6, 1), retrieved_utc=utcnow())
 
@@ -632,7 +657,7 @@ def _sum_in_box(arr, tr, nod):
     return float(arr[rows[inside], cols[inside]].astype("float64").sum())
 
 
-def step_population(m: Manifest, force: bool):
+def step_population(m: Manifest, force: bool, keep: bool = False):
     import rasterio
     d = OUT / "population"
     d.mkdir(parents=True, exist_ok=True)
@@ -644,7 +669,7 @@ def step_population(m: Manifest, force: bool):
     parts = []
     for iso3 in POP_COUNTRIES:
         try:
-            parts.append(_worldpop_clip(m, d, iso3))
+            parts.append(_worldpop_clip(m, d, iso3, keep))
         except Exception as e:
             traceback.print_exc()
             m.miss("population", f"WorldPop {iso3} 100 m constrained", WORLDPOP_API.replace("NPL", iso3), repr(e))
@@ -693,20 +718,22 @@ def step_population(m: Manifest, force: bool):
 
 
 # ---------------------------------------------------------------- 4. OSM
-OSM_QUERY = """[out:json][timeout:240][bbox:{s},{w},{n},{e}];
-(
-  node["place"~"^(city|town|village|hamlet|suburb|quarter|neighbourhood|locality|isolated_dwelling)$"]["name"];
-  way["waterway"~"^(river|stream)$"];
-  way["highway"~"^(trunk|primary|secondary|tertiary|track)$"];
-  way["bridge"]["bridge"!="no"];
-  nwr["man_made"="bridge"];
-  nwr["power"="plant"]["plant:source"="hydro"];
-  nwr["power"="generator"]["generator:source"="hydro"];
-  nwr["power"~"^(plant|generator)$"]["source"="hydro"];
-  nwr["power"="plant"]["name"~"hydro",i];
-  nwr["waterway"~"^(dam|weir)$"];
-);
-out geom;"""
+OSM_CLAUSES = {  # Overpass clauses per output layer (order kept from the original single query)
+    "places": ['node["place"~"^(city|town|village|hamlet|suburb|quarter|neighbourhood|locality|isolated_dwelling)$"]["name"];'],
+    "waterways": ['way["waterway"~"^(river|stream)$"];'],
+    "roads": ['way["highway"~"^(trunk|primary|secondary|tertiary|track)$"];'],
+    "bridges": ['way["bridge"]["bridge"!="no"];', 'nwr["man_made"="bridge"];'],
+    "hydro": ['nwr["power"="plant"]["plant:source"="hydro"];', 'nwr["power"="generator"]["generator:source"="hydro"];',
+              'nwr["power"~"^(plant|generator)$"]["source"="hydro"];', 'nwr["power"="plant"]["name"~"hydro",i];',
+              'nwr["waterway"~"^(dam|weir)$"];'],
+}
+# backtest sites need only the rivers (channel names and the stream network in hydro.py)
+OSM_LAYERS = list(OSM_CLAUSES) if FULL else ["waterways"]
+
+
+def osm_query(layers) -> str:
+    body = "\n".join("  " + c for k in layers for c in OSM_CLAUSES[k])
+    return "[out:json][timeout:240][bbox:{s},{w},{n},{e}];\n(\n" + body + "\n);\nout geom;"
 
 # city/town/village/hamlet as specified, plus the finer types because several flood-path
 # settlements (Timure, Langtang, Dhunche, Chilime) are mapped as place=suburb and
@@ -754,7 +781,7 @@ def _osm_geom(el):
 def step_osm(m: Manifest, force: bool):
     d = OUT / "osm"
     d.mkdir(parents=True, exist_ok=True)
-    names = ["places", "waterways", "roads", "bridges", "hydro"]
+    names = OSM_LAYERS
     files = {k: d / f"osm_{k}.geojson" for k in names}
     if all(p.exists() for p in files.values()) and not force:
         for p in files.values():
@@ -762,7 +789,7 @@ def step_osm(m: Manifest, force: bool):
         print("osm: present, skipping")
         return
     w, s, e, n = CORRIDOR
-    q = OSM_QUERY.format(s=s, w=w, n=n, e=e)
+    q = osm_query(names).format(s=s, w=w, n=n, e=e)
     data, used, err = None, None, ""
     for ep in OVERPASS:
         for attempt in range(3):
@@ -790,20 +817,20 @@ def step_osm(m: Manifest, force: bool):
     for el in data.get("elements", []):
         tags = el.get("tags", {})
         cats = []
-        if el["type"] == "node" and tags.get("place") in PLACE_TYPES and "name" in tags:
+        if el["type"] == "node" and tags.get("place") in PLACE_TYPES and "name" in tags and "places" in buckets:
             cats.append("places")
         if el["type"] == "way" and tags.get("waterway") in ("river", "stream"):
             cats.append("waterways")
-        if el["type"] == "way" and tags.get("highway") in ("trunk", "primary", "secondary", "tertiary", "track"):
+        if el["type"] == "way" and tags.get("highway") in ("trunk", "primary", "secondary", "tertiary", "track") and "roads" in buckets:
             cats.append("roads")
-        if (el["type"] == "way" and tags.get("bridge") not in (None, "no")) or tags.get("man_made") == "bridge":
+        if ((el["type"] == "way" and tags.get("bridge") not in (None, "no")) or tags.get("man_made") == "bridge") and "bridges" in buckets:
             cats.append("bridges")
         hydro = ((tags.get("power") == "plant" and tags.get("plant:source") == "hydro")
                  or (tags.get("power") == "generator" and tags.get("generator:source") == "hydro")
                  or (tags.get("power") in ("plant", "generator") and tags.get("source") == "hydro")
                  or (tags.get("power") == "plant" and "hydro" in tags.get("name", "").lower())
                  or tags.get("waterway") in ("dam", "weir"))
-        if hydro:
+        if hydro and "hydro" in buckets:
             cats.append("hydro")
         if not cats:
             continue
@@ -827,8 +854,9 @@ def step_osm(m: Manifest, force: bool):
         m.add(files[k], retrieved_utc=retrieved, source_url=used, license=lic,
               version=f"OSM data as of {osm_base}",
               description=f"{desc[k]} in the corridor bbox; {len(buckets[k])} features; EPSG:4326; all OSM tags as properties.")
-    m.miss("osm", "building count per 500 m grid (optional)", "not attempted",
-           "skipped deliberately to keep Overpass load low; WorldPop 100 m covers exposure")
+    if FULL:
+        m.miss("osm", "building count per 500 m grid (optional)", "not attempted",
+               "skipped deliberately to keep Overpass load low; WorldPop 100 m covers exposure")
     print("osm:", {k: len(v) for k, v in buckets.items()})
 
 
@@ -912,6 +940,12 @@ def _summarise(j: dict, vars_: list[str]):
 
 
 def step_era5(m: Manifest, force: bool):
+    if not FULL:
+        m.miss("era5", "ERA5 season anomaly", "not attempted",
+               "not needed for the backtest: the season factor is identical for every patch in a pass and cannot "
+               "change ranks; rank.py sets it to 1")
+        print("era5: skipped for a backtest site (season factor set to 1 in rank.py)")
+        return
     d = OUT / "era5"
     d.mkdir(parents=True, exist_ok=True)
     f = d / "era5_source_point.json"
@@ -1044,12 +1078,15 @@ def step_meena(m: Manifest, force: bool):
 # ---------------------------------------------------------------- main
 STEPS = {"dem": step_dem, "glaciers": step_glaciers, "population": step_population,
          "osm": step_osm, "era5": step_era5, "meena": step_meena}
+SITE_STEPS = ["dem", "glaciers", "population", "osm"]  # what a backtest site's ranking reads
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--only", default=",".join(STEPS), help="comma list of steps")
+    ap.add_argument("--only", default=",".join(STEPS if FULL else SITE_STEPS), help="comma list of steps")
     ap.add_argument("--force", action="store_true", help="redo selected steps even if outputs exist")
+    ap.add_argument("--keep-downloads", action="store_true",
+                    help="keep national WorldPop files in raw/cache/worldpop/ for the next site")
     a = ap.parse_args()
     steps = [s.strip() for s in a.only.split(",") if s.strip()]
     OUT.mkdir(parents=True, exist_ok=True)
@@ -1058,7 +1095,10 @@ def main():
         print(f"== {s}")
         man.step = s
         try:
-            STEPS[s](man, a.force)
+            if s == "population":
+                step_population(man, a.force, a.keep_downloads)
+            else:
+                STEPS[s](man, a.force)
         except Exception as e:
             traceback.print_exc()
             man.miss(s, f"step {s}", "see script", repr(e))
