@@ -1,0 +1,66 @@
+{
+  "_comment": "Pre-registered rules. Written and committed before any NISAR value was inspected (2026-11-15). Sliders in the page may vary weights to show sensitivity; the headline result always uses these values.",
+  "grid": {
+    "epsg": 32645,
+    "x_edges": [336400, 373440],
+    "y_edges": [3113680, 3146640],
+    "cell_m": 80
+  },
+  "truth": {
+    "source_lonlat": [85.515, 28.271],
+    "hit_radius_km": 2.0,
+    "same_catchment_required": true,
+    "_note": "Truth (UNOSAT 4257 outline if obtainable, else the USGS source point) is used only to score, never to rank."
+  },
+  "windows": {
+    "pre_event_last_two_ascending": ["20260714_20260726", "20260726_20260819"],
+    "event_utc": "2026-08-26T02:52:10Z"
+  },
+  "phase": {
+    "coherence_floor_ascending": 0.30,
+    "coherence_floor_descending": 0.40,
+    "ring_inner_km": 3.0,
+    "ring_outer_km": 5.0,
+    "subtract_ionosphere_screen": true,
+    "remove_plane": true,
+    "blob_threshold_mm": 50.0,
+    "wavelength_from_product_center_frequency": true
+  },
+  "offsets": {
+    "background": "subtract median over the box of quality pixels",
+    "noise_estimate": "1.4826 * MAD of fall-line motion over non-glacier pixels with slope < 20 deg",
+    "motion_threshold_sigma": 3.0,
+    "dir_coherence_window_cells": 5,
+    "dir_coherence_threshold": "scene median",
+    "min_slope_deg_for_fall_line": 10.0,
+    "min_projection_sensitivity": 0.3
+  },
+  "blobs": {
+    "min_cells": 5,
+    "connectivity": 8,
+    "bootstrap_draws": 200,
+    "opposing_sign_radius_km": 1.5,
+    "ice_over_rock_min_slope_deg": 30.0,
+    "people_path_km": 30.0,
+    "people_buffer_km": 1.0
+  },
+  "score": {
+    "formula": "(motion/sigma) * dir_coherence * (opposing_bonus if opposing_sign) * (ice_bonus if ice_over_rock) * (1 + w_pop*log10(1+people_below)) * (1 + w_season*(season_anomaly-1))",
+    "opposing_bonus": 1.5,
+    "ice_bonus": 1.3,
+    "w_pop": 0.25,
+    "w_season": 0.5,
+    "coherence_floor_for_visibility": 0.30
+  },
+  "pass_condition": {
+    "top_n": 5,
+    "rule": "a blob within 2 km of the source and in the same catchment ranks top 5 in BOTH of the last two ascending windows before 26 Aug",
+    "baseline": "rank by mean raw offset magnitude alone"
+  },
+  "tripwire_default_delays_min": {
+    "record": 0.5,
+    "recognise": 2.0,
+    "confirm": 1.0,
+    "broadcast": 1.0
+  }
+}
