@@ -1,0 +1,18 @@
+{
+  "_comment": "Rule v2, pre-registered 2026-11-15 for FUTURE events. The scoring is pipeline/config.json, unchanged. What changes is the unit of success: the zone a valley sensor could watch, not the exact slope. The zone size and list length were chosen AFTER seeing the Langtang and Budhi Gandaki results (data/sensitivity_zone.json), so those two events are development data for v2, not tests of it.",
+  "scoring": "pipeline/config.json (unchanged)",
+  "watch_list": { "top_n": 10 },
+  "zone": { "radius_km": 5.0, "same_drainage_required": true, "drainage_test": "rank.py same_channel: the patch's D8 path joins the failure's D8 path before the main stem" },
+  "success": "a top-10 patch inside the zone in EITHER of the last two ascending passes that were public on ASF before the event",
+  "also_report": [
+    "coverage of BOTH of the last two passes",
+    "per-pass coverage against chance (hypergeometric) and its Poisson-binomial p-value",
+    "distinct valleys on the list per pass (the sensor cost)",
+    "the exact-slope result (2 km, top 5) for continuity with v1"
+  ],
+  "development_results_not_tests": {
+    "langtang": "6 of 7 passes covered (chance 4.7); last two passes: #19, #1 within 5 km",
+    "budhigandaki": "7 of 11 passes covered (chance 3.6, p 0.026); last two passes: #5, #9 within 5 km"
+  },
+  "next_events": "every slope failure in the NISAR era with at least two public pre-event pairs on one track, starting with Lete (Kali Gandaki) once its scar is mapped"
+}
