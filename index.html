@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#14171c" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%234aa3ff'/%3E%3Cstop offset='1' stop-color='%23123f8f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14.5' fill='url(%23g)'/%3E%3Cpath d='M6 50 23 23l8 11 6-8 21 24z' fill='%23fff'/%3E%3Cpath d='M41 12a12 12 0 0 1 12 12' stroke='%23a5ecff' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='41' cy='24' r='3' fill='%23a5ecff'/%3E%3Cpath d='M6 56c6-3 10 3 17 0s10 3 17 0 11 3 18 0' stroke='%23ff6b5e' stroke-width='3.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
-<link rel="stylesheet" href="web/style.css?v=20261115h">
+<link rel="stylesheet" href="web/style.css?v=20261115n">
 </head>
 <body>
 <!-- SF-style symbols, drawn on a 24-unit grid -->
@@ -46,6 +46,7 @@
     <symbol id="i-cube" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12 4 7.5"/></symbol>
     <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8" fill="currentColor"/></symbol>
     <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M3.5 7h9M17.5 7h3M3.5 17h3M11.5 17h9"/><circle cx="15" cy="7" r="2.5"/><circle cx="9" cy="17" r="2.5"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.5 7 3.5 12l5 5M15.5 7l5 5-5 5M13.5 4.5l-3 15"/></symbol>
     <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.6 2H4.4zM10 21h4"/></symbol>
     <symbol id="i-warn" viewBox="0 0 24 24"><path d="M10.3 4.3 2.6 18a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 4.3a2 2 0 0 0-3.4 0zM12 9.5v4.5"/><circle cx="12" cy="17.2" r=".6" fill="currentColor"/></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.2V12l3.2 2"/></symbol>
@@ -97,8 +98,8 @@
         <dl class="w-grid">
           <div title="Moving slopes the screen ranked as more suspicious in this pass"><dt>Slopes ranked above it</dt><dd id="sc-above">—</dd></div>
           <div title="Rank if slopes are ordered by offset size alone, as in Meena 2026"><dt>Offset-only rank</dt><dd id="sc-base">—</dd></div>
-          <div id="sc-test-row"><dt>Pre-registered test</dt><dd id="sc-test">—</dd></div>
-          <div id="sc-s1-row"><dt>C-band check</dt><dd id="sc-s1">—</dd></div>
+          <div id="sc-test-row"><dt>Exact-slope test</dt><dd id="sc-test">—</dd></div>
+          <div id="sc-zone-row" title="Is any top-10 patch within 5 km of the source, draining the same way, in this pass?"><dt>Danger zone (5 km)</dt><dd id="sc-zone">—</dd></div>
           <div id="sc-trip-row"><dt>Tripwire siren, what-if</dt><dd id="sc-trip">—</dd></div>
           <div id="sc-gain-row"><dt>Earlier warning, what-if</dt><dd id="sc-gain">—</dd></div>
         </dl>
@@ -129,6 +130,7 @@
       </div>
       <div class="tb-group glass">
         <button type="button" class="tb-btn tb-guide" id="tour-btn" aria-label="Guided tour with narration (G)" title="Guided tour with narration (G)"><svg class="ic" aria-hidden="true"><use href="#i-guide"/></svg><span>Guide</span></button>
+        <button type="button" class="tb-btn" data-open="eng" aria-label="For engineers: the score on real numbers, the data trail, 37 questions (E)" title="For engineers (E)"><svg class="ic" aria-hidden="true"><use href="#i-code"/></svg></button>
         <button type="button" class="tb-btn" data-open="data" aria-label="Data: every file this page reads" title="Data: every file this page reads"><svg class="ic" aria-hidden="true"><use href="#i-db"/></svg></button>
         <button type="button" class="tb-btn" data-open="method" aria-label="Method" title="Method"><svg class="ic" aria-hidden="true"><use href="#i-info"/></svg></button>
         <button type="button" class="tb-btn" data-open="sources" aria-label="Sources" title="Sources"><svg class="ic" aria-hidden="true"><use href="#i-book"/></svg></button>
@@ -193,13 +195,14 @@
 <dialog class="sheet" id="sheet-sources" aria-labelledby="s-title"></dialog>
 <dialog class="sheet" id="sheet-data" aria-labelledby="d-title"></dialog>
 <dialog class="sheet" id="sheet-rule" aria-labelledby="r-title"></dialog>
+<dialog class="sheet wide" id="sheet-eng" aria-labelledby="e-title"></dialog>
 <dialog class="sheet narrow" id="sheet-keys" aria-labelledby="k-title"></dialog>
 <dialog class="sheet welcome" id="sheet-welcome" aria-labelledby="w-title"></dialog>
 
 <noscript><p class="noscript">Cascade Watch needs JavaScript and WebGL to draw the 3D map.</p></noscript>
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-<script src="web/score.js?v=20261115h"></script>
-<script src="web/app.js?v=20261115h"></script>
-<script src="web/tour.js?v=20261115h"></script>
+<script src="web/score.js?v=20261115n"></script>
+<script src="web/app.js?v=20261115n"></script>
+<script src="web/tour.js?v=20261115n"></script>
 </body>
 </html>

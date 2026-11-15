@@ -13,7 +13,7 @@ Cascade Watch runs a pre-registered screening rule over every NISAR pass of that
 
 | | Result |
 |---|---|
-| Last NISAR pass before the collapse (26 Jul → 19 Aug, ascending track 98, on ASF from 24 Aug 13:30 UTC) | **source valley ranked #2 of 193** moving slopes |
+| Last NISAR pass before the collapse (26 Jul → 19 Aug, ascending track 98, on ASF from 24 Aug 22:36 UTC, once both GUNW and GOFF were out) | **source valley ranked #2 of 193** moving slopes |
 | Raw-offset baseline (rank by offset magnitude alone, Meena-style) | #7 of 161 |
 | Pass before that (14 → 26 Jul) | **not ranked**: no moving patch formed near the source (noisiest offsets of the summer: 3σ cut 0.75 m vs 0.50 m site motion) |
 | Pre-registered pass test (top 5 in *both* of the last two passes) | **not passed** |
@@ -25,7 +25,7 @@ Cascade Watch runs a pre-registered screening rule over every NISAR pass of that
 
 What this means:
 - **By the pre-registered test: no.** The source valley ranked #2 in the last pass but was missing one pass earlier.
-- **In the last pass alone it was on a short list.** That pass was acquired 7 days before the collapse and went public on ASF 37 hours before it. A "hit" is any moving patch within 2 km of the UNOSAT outline that drains to the same channel; here it was phase patch `p+43`, 1.3 km from the outline.
+- **In the last pass alone it was on a short list.** That pass was acquired 7 days before the collapse and went public on ASF 28 hours before it. A "hit" is any moving patch within 2 km of the UNOSAT outline that drains to the same channel; here it was phase patch `p+43`, 1.3 km from the outline.
 - **It was near the top most of the summer (6 of 7 ascending passes in the top five) and after the collapse too.** Only 4 of those 7 pairs were public before the collapse; 3 were processed later. The screen says *watch this valley*, not *it falls next week*.
 - **The motion is real, but it is not a precursor signal by itself.** Inside the detachment zone the fastest tenth moved 1.02 m in the last pass (zone median 0.05 m), and 0.95 m in 20 Jun–2 Jul. Meena (2026) reports 0.96 m for the same last pass, as a crown median over a smaller area: a check on magnitude, not a like-for-like match.
 - **The season was hot.** ERA5 (0.25° cell, 5,510 m): 1 Jul–25 Aug 2026 was the 2nd warmest of 36 years (+1.3 °C, z = +3.7). Snowfall was 7% of normal, but that figure depends on the elevation used (1.5% at 5,190 m).
@@ -60,7 +60,7 @@ python pipeline/fetch_event.py              # USGS, Zenodo, UNOSAT, Copernicus E
 python pipeline/nisar_fetch.py GUNW GOFF    # box subsets of every NISAR pair (no full downloads)
 python pipeline/nisar_fetch.py GCOV:20260726,20260819,20260831,20260912,20260816,20260828
 cd pipeline
-python clean.py && python rank.py && python build_replay.py && python build_layers.py && python build_context.py
+python clean.py && python rank.py && python build_replay.py && python build_layers.py && python build_context.py && python build_engineers.py
 python render.py
 cd .. && node tests/score_parity.test.js    # browser scorer == pipeline ranking
 ```
@@ -132,6 +132,24 @@ Rebuild: `python demo/atlas/parallax.py && python demo/film/render.py` (with the
 | 5 Show | `render.py`, `build_layers.py`, `build_context.py`, `index.html`, `web/` | Terrarium terrain tiles, shaded relief, motion/phase/coherence overlays, NISAR GCOV before/after change map; MapLibre 3-D page; scorer re-implemented in `web/score.js`. |
 
 All thresholds and weights are in [`pipeline/config.json`](pipeline/config.json), committed **before the first real run** (see `git log`). Sliders in the page show sensitivity; the headline uses the committed values. `tests/score_parity.test.js` checks the browser ranking against the pipeline for every window.
+
+## For engineers (in the app)
+
+The toolbar's `</>` button (or **E**) opens a sheet built from `data/engineers.json` (`pipeline/build_engineers.py`; every number read from pipeline outputs):
+
+- **The score, piece by piece.** Pick Langtang (26 Jul → 19 Aug) or Budhi Gandaki (12 → 24 Sep) and a patch; each factor shows its real input, multiplier and running score. Example, the Langtang source (phase patch p+43): 85.3 mm ÷ 0.98 mm = 87 → × 0.98 direction consistency → × 1.78 people → × 1.13 season = 173, rank #2 of 193.
+- **Satellite to screen.** The five stages, where each file lands, and how much NISAR data is on disk: box cut-outs only, read from ASF's HDF5 granules with HTTP range requests (`raw/nisar/`, `raw/sites/<site>/nisar/`, about 1 GB for 90 granules).
+- **The three products.** GUNW (unwrapped phase → line-of-sight mm), GOFF (dense pixel offsets → metres downhill), GCOV (10 m backscatter, pictures only), with the arrays read and the example granule.
+- **37 questions** with two-sentence answers, for defending the method on a whiteboard.
+
+## How it compares
+
+| Work | What it did | Cascade Watch |
+|---|---|---|
+| Kutoğlu, Softa & Akgün 2026 (Remote Sensing 18, 3727) | NISAR phase, both orbit directions, around the known detachment: blocks beside it moving apart (+63 / −71 mm). Hindsight, one known site. | Uses that signal as a rule factor, but searches the whole 37 × 33 km scene without knowing the answer. |
+| Meena 2026 (preprint, Zenodo 22730419) | Measured ~1 m of pre-failure motion; a blind screen found the source among 101 zones but ranked it 43rd of 101 by residual motion (from their Table S7). | Same pass, rules fixed in advance: #2 of 193. Zones differ from our patches, so the comparison is rough. |
+| Intrieri 2018 (Xinmo), Carlà 2019 | Sentinel-1 precursors and failure-time estimates, in hindsight at known slopes. | Forward screen with a pre-registered rule, then a backtest on a disaster it never saw. |
+| Chamoli 2022 (NHESS 22, 3309) | >10 m of motion over five years, timing likely not forecastable from satellite alone. | Agrees: the list places sensors; sirens need a detected collapse. |
 
 ## Data
 

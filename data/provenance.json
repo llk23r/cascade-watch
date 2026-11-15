@@ -140,6 +140,14 @@
    "subject": "Pre-register rule v2 for future events: 5 km zone, top 10",
    "touches_config": false,
    "adds_results": false
+  },
+  {
+   "hash": "6f25ce4416c578e7798c3818485a23526aba6674",
+   "short": "6f25ce4",
+   "time": "2026-11-15T13:24:37-05:00",
+   "subject": "Reframe the backtest result by warning zone across app, tour, film",
+   "touches_config": false,
+   "adds_results": false
   }
  ],
  "granules": [
@@ -986,11 +994,19 @@
   },
   {
    "path": "data/context.json",
-   "bytes": 23306
+   "bytes": 26153
   },
   {
    "path": "data/control.json",
    "bytes": 210
+  },
+  {
+   "path": "data/engineers.json",
+   "bytes": 24807
+  },
+  {
+   "path": "data/prereg_v2.json",
+   "bytes": 1690
   },
   {
    "path": "data/replay.json",
@@ -1010,7 +1026,7 @@
   },
   {
    "path": "data/sensitivity_zone.json",
-   "bytes": 5011
+   "bytes": 5145
   },
   {
    "path": "data/source_series.json",

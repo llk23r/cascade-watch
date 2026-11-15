@@ -1,0 +1,704 @@
+{
+ "note": "Built by pipeline/build_engineers.py from the files listed in each section. Nothing here is typed in by hand.",
+ "formula": "(motion/sigma) * dir_coherence * (opposing_bonus if opposing_sign) * (ice_bonus if ice_over_rock) * (1 + w_pop*log10(1+people_below)) * (1 + w_season*(season_anomaly-1))",
+ "weights": {
+  "opposing_bonus": 1.5,
+  "ice_bonus": 1.3,
+  "w_pop": 0.25,
+  "w_season": 0.5
+ },
+ "coherence_floor": 0.3,
+ "examples": [
+  {
+   "site": "Langtang",
+   "window": "A098_20260726_20260819",
+   "window_label": "26 Jul → 19 Aug",
+   "n_ranked": 193,
+   "public": "2026-08-24T22:36:55Z",
+   "patches": [
+    {
+     "id": "p-49",
+     "why": "top of this pass",
+     "rank": 1,
+     "channel": "phase",
+     "dist_km": 2.52,
+     "same_channel": true,
+     "stream": "Chusumdo Tsangpo",
+     "area_km2": 3.8784,
+     "cells": 606,
+     "elev_m": 5216,
+     "terms": [
+      {
+       "key": "snr",
+       "op": "÷",
+       "label": "Motion ÷ its noise",
+       "input": "82.2 mm toward/away from the satellite ÷ 0.86 mm",
+       "factor": null,
+       "value": 95.43488328096944,
+       "running": 95.43488328096944
+      },
+      {
+       "key": "dir",
+       "op": "×",
+       "label": "Moves as one block",
+       "input": "direction consistency 0.910 (1 = every pixel the same way)",
+       "factor": 0.909774,
+       "running": 86.8241755020607
+      },
+      {
+       "key": "opp",
+       "op": "×",
+       "label": "Neighbours pull apart",
+       "input": "no opposite-moving neighbour",
+       "factor": 1.0,
+       "running": 86.8241755020607
+      },
+      {
+       "key": "ice",
+       "op": "×",
+       "label": "Ice on steep rock",
+       "input": "32% glacier, slope 35° (needs ≥30% and ≥30°)",
+       "factor": 1.3,
+       "running": 112.87142815267892
+      },
+      {
+       "key": "pop",
+       "op": "log",
+       "label": "People downstream",
+       "input": "923 people within 1 km of the first 30 km of its flow path",
+       "factor": 1.741396840039338,
+       "running": 196.55394831580224
+      },
+      {
+       "key": "season",
+       "op": "×",
+       "label": "Hot season",
+       "input": "season factor 1.268 from ERA5 warmth since 1 May",
+       "factor": 1.13407,
+       "running": 222.90593616650185
+      }
+     ],
+     "score": 222.906
+    },
+    {
+     "id": "p+43",
+     "why": "the source: within 2 km, same stream",
+     "rank": 2,
+     "channel": "phase",
+     "dist_km": 1.32,
+     "same_channel": true,
+     "stream": "Chusumdo Tsangpo",
+     "area_km2": 2.6304,
+     "cells": 411,
+     "elev_m": 5247,
+     "terms": [
+      {
+       "key": "snr",
+       "op": "÷",
+       "label": "Motion ÷ its noise",
+       "input": "85.3 mm toward/away from the satellite ÷ 0.98 mm",
+       "factor": null,
+       "value": 86.91946719579036,
+       "running": 86.91946719579036
+      },
+      {
+       "key": "dir",
+       "op": "×",
+       "label": "Moves as one block",
+       "input": "direction consistency 0.984 (1 = every pixel the same way)",
+       "factor": 0.983689,
+       "running": 85.50172376635983
+      },
+      {
+       "key": "opp",
+       "op": "×",
+       "label": "Neighbours pull apart",
+       "input": "no opposite-moving neighbour",
+       "factor": 1.0,
+       "running": 85.50172376635983
+      },
+      {
+       "key": "ice",
+       "op": "×",
+       "label": "Ice on steep rock",
+       "input": "6% glacier, slope 42° (needs ≥30% and ≥30°)",
+       "factor": 1.0,
+       "running": 85.50172376635983
+      },
+      {
+       "key": "pop",
+       "op": "log",
+       "label": "People downstream",
+       "input": "1,317 people within 1 km of the first 30 km of its flow path",
+       "factor": 1.7800117985882602,
+       "running": 152.19407710375475
+      },
+      {
+       "key": "season",
+       "op": "×",
+       "label": "Hot season",
+       "input": "season factor 1.268 from ERA5 warmth since 1 May",
+       "factor": 1.13407,
+       "running": 172.59873702105514
+      }
+     ],
+     "score": 172.599
+    }
+   ]
+  },
+  {
+   "site": "Budhi Gandaki",
+   "window": "A098_20260912_20260924",
+   "window_label": "12 Sep → 24 Sep",
+   "n_ranked": 211,
+   "public": null,
+   "patches": [
+    {
+     "id": "p-2",
+     "why": "top of this pass",
+     "rank": 1,
+     "channel": "phase",
+     "dist_km": 14.43,
+     "same_channel": false,
+     "stream": "Tom Khola",
+     "area_km2": 3.3216,
+     "cells": 519,
+     "elev_m": 4828,
+     "terms": [
+      {
+       "key": "snr",
+       "op": "÷",
+       "label": "Motion ÷ its noise",
+       "input": "91.2 mm toward/away from the satellite ÷ 1.51 mm",
+       "factor": null,
+       "value": 60.2864622931528,
+       "running": 60.2864622931528
+      },
+      {
+       "key": "dir",
+       "op": "×",
+       "label": "Moves as one block",
+       "input": "direction consistency 0.833 (1 = every pixel the same way)",
+       "factor": 0.832598,
+       "running": 50.19438793235443
+      },
+      {
+       "key": "opp",
+       "op": "×",
+       "label": "Neighbours pull apart",
+       "input": "no opposite-moving neighbour",
+       "factor": 1.0,
+       "running": 50.19438793235443
+      },
+      {
+       "key": "ice",
+       "op": "×",
+       "label": "Ice on steep rock",
+       "input": "0% glacier, slope 22° (needs ≥30% and ≥30°)",
+       "factor": 1.0,
+       "running": 50.19438793235443
+      },
+      {
+       "key": "pop",
+       "op": "log",
+       "label": "People downstream",
+       "input": "812 people within 1 km of the first 30 km of its flow path",
+       "factor": 1.727552947310841,
+       "running": 86.71346281100261
+      },
+      {
+       "key": "season",
+       "op": "×",
+       "label": "Hot season",
+       "input": "not fetched here: the same for every patch, so it cannot change a rank",
+       "factor": 1.0,
+       "running": 86.71346281100261
+      }
+     ],
+     "score": 86.7136
+    },
+    {
+     "id": "o283",
+     "why": "best inside the 5 km danger zone",
+     "rank": 5,
+     "channel": "offsets",
+     "dist_km": 4.41,
+     "same_channel": true,
+     "stream": "Shyar Khola",
+     "area_km2": 0.3456,
+     "cells": 54,
+     "elev_m": 5127,
+     "terms": [
+      {
+       "key": "snr",
+       "op": "÷",
+       "label": "Motion ÷ its noise",
+       "input": "1.57 m downhill ÷ 0.073 m",
+       "factor": null,
+       "value": 21.43018918380545,
+       "running": 21.43018918380545
+      },
+      {
+       "key": "dir",
+       "op": "×",
+       "label": "Moves as one block",
+       "input": "direction consistency 0.988 (1 = every pixel the same way)",
+       "factor": 0.988014,
+       "running": 21.173326936248355
+      },
+      {
+       "key": "opp",
+       "op": "×",
+       "label": "Neighbours pull apart",
+       "input": "no opposite-moving neighbour",
+       "factor": 1.0,
+       "running": 21.173326936248355
+      },
+      {
+       "key": "ice",
+       "op": "×",
+       "label": "Ice on steep rock",
+       "input": "96% glacier, slope 35° (needs ≥30% and ≥30°)",
+       "factor": 1.3,
+       "running": 27.525325017122864
+      },
+      {
+       "key": "pop",
+       "op": "log",
+       "label": "People downstream",
+       "input": "1,558 people within 1 km of the first 30 km of its flow path",
+       "factor": 1.7982428636780345,
+       "running": 49.49721928245966
+      },
+      {
+       "key": "season",
+       "op": "×",
+       "label": "Hot season",
+       "input": "not fetched here: the same for every patch, so it cannot change a rank",
+       "factor": 1.0,
+       "running": 49.49721928245966
+      }
+     ],
+     "score": 49.4971
+    },
+    {
+     "id": "o292",
+     "why": "the exact slope: within 2 km",
+     "rank": 10,
+     "channel": "offsets",
+     "dist_km": 1.17,
+     "same_channel": true,
+     "stream": "Shyar Khola",
+     "area_km2": 0.1536,
+     "cells": 24,
+     "elev_m": 4635,
+     "terms": [
+      {
+       "key": "snr",
+       "op": "÷",
+       "label": "Motion ÷ its noise",
+       "input": "0.93 m downhill ÷ 0.053 m",
+       "factor": null,
+       "value": 17.684708994508473,
+       "running": 17.684708994508473
+      },
+      {
+       "key": "dir",
+       "op": "×",
+       "label": "Moves as one block",
+       "input": "direction consistency 0.984 (1 = every pixel the same way)",
+       "factor": 0.98429,
+       "running": 17.406882216204746
+      },
+      {
+       "key": "opp",
+       "op": "×",
+       "label": "Neighbours pull apart",
+       "input": "no opposite-moving neighbour",
+       "factor": 1.0,
+       "running": 17.406882216204746
+      },
+      {
+       "key": "ice",
+       "op": "×",
+       "label": "Ice on steep rock",
+       "input": "50% glacier, slope 30° (needs ≥30% and ≥30°)",
+       "factor": 1.3,
+       "running": 22.62894688106617
+      },
+      {
+       "key": "pop",
+       "op": "log",
+       "label": "People downstream",
+       "input": "1,945 people within 1 km of the first 30 km of its flow path",
+       "factor": 1.822275665737661,
+       "running": 41.23617924263702
+      },
+      {
+       "key": "season",
+       "op": "×",
+       "label": "Hot season",
+       "input": "not fetched here: the same for every patch, so it cannot change a rank",
+       "factor": 1.0,
+       "running": 41.23617924263702
+      }
+     ],
+     "score": 41.2362
+    }
+   ]
+  }
+ ],
+ "products": [
+  {
+   "level": "GUNW",
+   "name": "Geocoded Unwrapped Interferogram",
+   "what": "The change in radar phase between two passes, already on a map grid. One full cycle of phase = half a wavelength of motion toward or away from the satellite.",
+   "used": "unwrapped phase − ionosphere screen → millimetres along the radar line of sight → keep coherent pixels → remove a best-fit plane and the 3–5 km ring median → patches beyond ±50 mm",
+   "example_granule": "NISAR_L2_PR_GUNW_026_098_A_016_028_4000_SH_20260726T233919_20260726T233954_20260819T233918_20260819T233953_P05023_N_F_J_001",
+   "asf_processed": "2026-08-24T22:36:55Z",
+   "crid": "P05023",
+   "arrays": [
+    "unwrappedPhase",
+    "coherenceMagnitude",
+    "connectedComponents",
+    "ionospherePhaseScreen",
+    "po_alongTrackOffset",
+    "po_slantRangeOffset",
+    "po_correlationSurfacePeak"
+   ],
+   "grid": [
+    412,
+    463
+   ],
+   "cell_m": 80,
+   "local_dir": "raw/nisar/",
+   "n_granules": 20,
+   "local_mb": 102,
+   "header_keys": 15
+  },
+  {
+   "level": "GOFF",
+   "name": "Geocoded Pixel Offsets",
+   "what": "How far each small window of the radar image shifted between two passes, found by matching image texture. It follows fast motion (decimetres to metres) that phase cannot.",
+   "used": "cull bad matches (σ > 1 m, SNR < 5, local outliers) → remove the bulk shift → project the range and along-track shifts onto the downhill direction of the DEM → metres downhill, with σ → patches above 3× noise",
+   "example_granule": "NISAR_L2_PR_GOFF_026_098_A_016_028_4000_SH_20260726T233919_20260726T233954_20260819T233918_20260819T233953_P05023_N_F_J_001",
+   "asf_processed": "2026-08-24T13:30:20Z",
+   "crid": "P05023",
+   "arrays": [
+    "layer1–3 × alongTrackOffset",
+    "layer1–3 × alongTrackOffsetVariance",
+    "layer1–3 × correlationSurfacePeak",
+    "layer1–3 × crossOffsetVariance",
+    "layer1–3 × slantRangeOffset",
+    "layer1–3 × slantRangeOffsetVariance",
+    "layer1–3 × snr"
+   ],
+   "grid": [
+    412,
+    463
+   ],
+   "cell_m": 80,
+   "local_dir": "raw/nisar/",
+   "n_granules": 20,
+   "local_mb": 277,
+   "header_keys": 29
+  },
+  {
+   "level": "GCOV",
+   "name": "Geocoded Covariance (radar brightness)",
+   "what": "How strongly each 10 m spot reflects the radar, corrected for terrain. Rough, wet or broken ground shows up differently.",
+   "used": "converted to decibels for the before/after radar pictures; not used in the score",
+   "example_granule": "NISAR_L2_PR_GCOV_028_098_A_016_4005_DHDH_A_20260819T233918_20260819T233953_P05023_N_F_J_001",
+   "asf_processed": "2026-08-24T13:53:33Z",
+   "crid": "P05023",
+   "arrays": [
+    "HHHH_db",
+    "HVHV_db"
+   ],
+   "grid": [
+    3296,
+    3704
+   ],
+   "cell_m": 10,
+   "local_dir": "raw/nisar/",
+   "n_granules": 6,
+   "local_mb": 216,
+   "header_keys": 8
+  }
+ ],
+ "wavelength_m": 0.2419632429378531,
+ "stores": [
+  {
+   "site": "Langtang",
+   "path": "raw/nisar/",
+   "mb": 631,
+   "granules": 46
+  },
+  {
+   "site": "Budhi Gandaki",
+   "path": "raw/sites/budhigandaki/nisar/",
+   "mb": 260,
+   "granules": 28
+  },
+  {
+   "site": "Manang (control)",
+   "path": "raw/sites/manang/nisar/",
+   "mb": 154,
+   "granules": 16
+  }
+ ],
+ "stages": [
+  {
+   "n": 1,
+   "name": "Fetch",
+   "script": "pipeline/nisar_fetch.py",
+   "does": "Opens each NISAR HDF5 file on ASF's cloud and reads only the bytes for the study box (HTTP range requests, Earthdata login).",
+   "writes": "raw/nisar/<LEVEL>_<pair>.npz + .json header + manifest.json"
+  },
+  {
+   "n": 2,
+   "name": "Clean",
+   "script": "pipeline/clean.py",
+   "does": "Turns phase into millimetres and offsets into metres downhill, removes atmosphere and orbit tilts, measures the noise.",
+   "writes": "raw/products/<pair>.npz (motion maps) + .json (noise)"
+  },
+  {
+   "n": 3,
+   "name": "Find and score patches",
+   "script": "pipeline/rank.py",
+   "does": "Groups moving cells into patches, describes each one, scores it with the fixed rule and ranks it. Truth is used only after ranking.",
+   "writes": "data/blobs_<pair>.geojson, data/scorecard.json"
+  },
+  {
+   "n": 4,
+   "name": "Test",
+   "script": "pipeline/backtest.py · sensitivity_zone.py",
+   "does": "Runs the same rules on Budhi Gandaki and a control valley, counts false alarms, compares with chance.",
+   "writes": "data/backtest.json, data/sensitivity_zone.json"
+  },
+  {
+   "n": 5,
+   "name": "Show",
+   "script": "web/score.js",
+   "does": "The page re-scores every patch in your browser with the same formula, so the sliders re-rank instantly.",
+   "writes": "what you see"
+  }
+ ],
+ "ancillary": [
+  {
+   "name": "Copernicus DEM GLO-30",
+   "use": "slope, downhill direction, flow paths"
+  },
+  {
+   "name": "RGI glacier outlines",
+   "use": "the ice-on-rock factor"
+  },
+  {
+   "name": "WorldPop",
+   "use": "people downstream"
+  },
+  {
+   "name": "OpenStreetMap rivers",
+   "use": "which stream a patch drains to"
+  },
+  {
+   "name": "ERA5 (Open-Meteo)",
+   "use": "the season factor"
+  }
+ ],
+ "grid": {
+  "epsg": 32645,
+  "cell_m": 80,
+  "km": [
+   37,
+   33
+  ]
+ },
+ "qa": [
+  {
+   "tag": "Data",
+   "q": "What is NISAR?",
+   "a": "A radar satellite built by NASA and ISRO, India's space agency. It images the same ground every 12 days, day or night, through cloud."
+  },
+  {
+   "tag": "Data",
+   "q": "Why use radar instead of normal satellite photos?",
+   "a": "Radar sends its own microwave pulses, so darkness and cloud do not block it. Langtang was under monsoon cloud for most of the summer."
+  },
+  {
+   "tag": "Data",
+   "q": "What does L-band mean?",
+   "a": "It is the radar's wavelength: 24.2 cm, read from the product's centre frequency. Long waves keep a steady echo over snow and rough slopes, where Sentinel-1's 5.6 cm C-band loses it."
+  },
+  {
+   "tag": "Data",
+   "q": "What is a pass, and what is a pair?",
+   "a": "A pass is one flight over the same strip of ground; NISAR repeats it every 12 days. A pair compares two passes to measure how the ground moved in between."
+  },
+  {
+   "tag": "Data",
+   "q": "What is GUNW?",
+   "a": "NASA's Geocoded Unwrapped Interferogram: the change in radar phase between two passes, already on a map grid. We turn that phase change into millimetres of motion toward or away from the satellite."
+  },
+  {
+   "tag": "Data",
+   "q": "What is GOFF?",
+   "a": "NASA's Geocoded Pixel Offsets: how far each small image window shifted between two passes, found by matching texture. It measures fast motion, decimetres to metres, that phase cannot follow."
+  },
+  {
+   "tag": "Data",
+   "q": "What is GCOV?",
+   "a": "Radar brightness maps at 10 m, corrected for terrain. We use them only for the before-and-after pictures, not in the score."
+  },
+  {
+   "tag": "Data",
+   "q": "Did you download the full NISAR files?",
+   "a": "No. Each granule is one HDF5 file on ASF's cloud, and our script asked only for the bytes inside our study box (HTTP range requests); those cut-outs sit on this laptop under raw/ (90 granules, about 1,045 MB for all three sites)."
+  },
+  {
+   "tag": "Data",
+   "q": "Could a warning really have used that data in time?",
+   "a": "Yes for the last pass: ASF published it on 24 Aug 22:36 UTC, 28 hours before the collapse. We used only that original processing, and only 4 of the 7 pre-collapse pairs were public in time."
+  },
+  {
+   "tag": "Cleaning",
+   "q": "What is coherence?",
+   "a": "A score from 0 to 1 for how alike the radar echo is in the two passes. Below 0.30 the phase is mostly noise, so we ignore it."
+  },
+  {
+   "tag": "Cleaning",
+   "q": "What does 'unwrapped' phase mean?",
+   "a": "Phase repeats every half wavelength (about 12 cm of motion), like a clock hand going round. Unwrapping counts the full turns so the value becomes one smooth measure of motion."
+  },
+  {
+   "tag": "Cleaning",
+   "q": "Why remove the ionosphere, a plane and a ring median from the phase?",
+   "a": "The upper atmosphere and small orbit errors add smooth, fake motion across the whole scene. We subtract NASA's ionosphere estimate, then a best-fit plane, then the median of a 3–5 km ring around each pixel, which leaves only local motion."
+  },
+  {
+   "tag": "Cleaning",
+   "q": "How do offsets become metres downhill?",
+   "a": "The satellite measures shifts in two radar directions, across and along its track. We project both onto the slope's downhill direction from the Copernicus DEM, trusting each by its own uncertainty."
+  },
+  {
+   "tag": "Cleaning",
+   "q": "What is the noise, sigma?",
+   "a": "How much ground that should be still appears to move. We measure it on ice-free slopes under 20° with a robust spread (1.4826 × median absolute deviation); in the last Langtang pass it was 6.6 mm for phase and 0.06 m for offsets."
+  },
+  {
+   "tag": "Cleaning",
+   "q": "What is a patch?",
+   "a": "At least 5 touching 80 m cells that all move past a threshold: ±50 mm in phase, or 3× the noise downhill in offsets. Each patch is one candidate slope."
+  },
+  {
+   "tag": "Score",
+   "q": "What is the score, in one line?",
+   "a": "Motion ÷ its noise × how consistently it moves × 1.5 if neighbours pull apart × 1.3 if ice sits on steep rock × a people factor × a season factor. The highest scores go on the watch list."
+  },
+  {
+   "tag": "Score",
+   "q": "Why divide motion by its noise?",
+   "a": "It asks how many times bigger the motion is than the wobble, which removes the units. That lets metres from offsets and millimetres from phase compete fairly, and a noisy pass counts for less."
+  },
+  {
+   "tag": "Score",
+   "q": "Why multiply the factors instead of adding them?",
+   "a": "Each factor says how much more or less worried to be, so it scales any score the same way. If motion is chaotic, consistency is near 0 and pulls the whole score down, which is what we want."
+  },
+  {
+   "tag": "Score",
+   "q": "What is 'moves as one block' (direction consistency)?",
+   "a": "In each 5×5-cell window we average the motion arrows after making them all length 1. A real slide moves one way and scores near 1; noise points everywhere and scores near 0."
+  },
+  {
+   "tag": "Score",
+   "q": "Why the ×1.5 for neighbours moving opposite ways?",
+   "a": "Two nearby blocks moving in opposite radar directions can mean a crack opening between them. The patch gets it when an opposite-moving patch lies within 1.5 km."
+  },
+  {
+   "tag": "Score",
+   "q": "Why the ×1.3 for ice on steep rock?",
+   "a": "Ice sitting on rock steeper than 30° can break away, which is how the Langtang cascade began. The patch must be at least 30% glacier on the RGI outlines."
+  },
+  {
+   "tag": "Score",
+   "q": "Why use log10 for people downstream?",
+   "a": "Ten times more people adds the same step, not ten times the score, so a town cannot drown out real motion. People come from WorldPop, counted within 1 km of the first 30 km of the flow path."
+  },
+  {
+   "tag": "Score",
+   "q": "Does the season factor change the ranking?",
+   "a": "No. It multiplies every patch in a pass by the same number, so the order stays the same; it only records that the season was primed (2nd warmest of 36 years at the source)."
+  },
+  {
+   "tag": "Score",
+   "q": "Where do the weights 1.5, 1.3, 0.25 and 0.5 come from?",
+   "a": "They are round judgement values, written down before any result was computed. The sliders in the app let anyone change them and watch the ranks move."
+  },
+  {
+   "tag": "Score",
+   "q": "Do bigger patches score higher?",
+   "a": "Partly: averaging more cells shrinks the noise, so a big patch with the same motion is more certain. That is fair statistics, but it means small, fast slopes can rank below large, slow ones."
+  },
+  {
+   "tag": "Score",
+   "q": "Walk me through the Langtang source score.",
+   "a": "85.3 mm toward/away from the satellite ÷ 0.98 mm = 87; × 0.98 consistency = 86; × 1.78 for people = 152; × 1.13 season = 173. That was #2 of 193; the #1 patch, 2.5 km away on the same stream, won by also having ice on steep rock."
+  },
+  {
+   "tag": "Score",
+   "q": "Why not just rank by the biggest motion?",
+   "a": "We tried that as a baseline: ranking by raw offset size alone put the Langtang source #7 of 161. Dividing by noise and adding the other factors moved it to #2 of 193."
+  },
+  {
+   "tag": "Results",
+   "q": "How do we know the rule was not tuned to Langtang?",
+   "a": "The rules file was written and time-stamped in git before any NISAR value was read. Then the unchanged rules ran on Budhi Gandaki, a disaster they had never seen."
+  },
+  {
+   "tag": "Results",
+   "q": "What counts as a hit?",
+   "a": "A ranked patch within 2 km of the mapped source that drains into the same stream, following the steepest-descent (D8) path on the DEM. The truth is used only after ranking, never to rank."
+  },
+  {
+   "tag": "Results",
+   "q": "What did Langtang show?",
+   "a": "In the last pass before the collapse the source ranked #2 of 193 moving slopes. The strict test (top 5 in both of the last two passes) failed because the source was not ranked in 14 Jul → 26 Jul."
+  },
+  {
+   "tag": "Results",
+   "q": "Why did the 14 Jul → 26 Jul pass miss?",
+   "a": "It had the noisiest offsets of the summer: the cut was 3 × 0.25 = 0.74 m, but the crown moved only about 0.30 m (Meena 2026). Phase also lost lock on 72% of the ice, so the slope fell below both thresholds."
+  },
+  {
+   "tag": "Results",
+   "q": "What did Budhi Gandaki show?",
+   "a": "At the exact slope (2 km) it failed: #10 of 211, then not ranked. In the 5 km danger zone, the top 10 covered it in both final passes (#5, #9) and in 7 of 11 passes."
+  },
+  {
+   "tag": "Results",
+   "q": "What does 'about twice chance' mean?",
+   "a": "A random list of 10 patches each pass would cover the zone in about 3.6 of 11 passes; Cascade Watch covered it in 7. The chance of doing that well by luck is about 0.026 (Poisson-binomial)."
+  },
+  {
+   "tag": "Results",
+   "q": "Is the 5 km zone cherry-picked?",
+   "a": "Yes, it was chosen after seeing these two events, so they are development data, not proof. It is now fixed in advance as rule v2, so every new NISAR event is a real test."
+  },
+  {
+   "tag": "Results",
+   "q": "How many false alarms?",
+   "a": "Valleys other than the source that stayed in the top 5 two passes running: 5 in 11 passes at Budhi Gandaki, 4 in 7 at Langtang, 3 in 8 at a control valley with no disaster. That is why the list only places sensors, and only a sensed collapse sounds a siren."
+  },
+  {
+   "tag": "Results",
+   "q": "What does this add to the published NISAR studies of Langtang?",
+   "a": "Kutoğlu et al. (the Turkish team) studied the slope already known to have failed, and Meena's blind screen of the same data ranked the source zone 43rd of 101 by motion alone. Cascade Watch searched the whole scene without knowing the answer, with rules fixed in advance, and put it #2 of 193 (their zones differ from our patches, so this is rough)."
+  },
+  {
+   "tag": "Results",
+   "q": "What would the warning have gained at Timure?",
+   "a": "A ground tripwire on the watched valley could sound sirens about 4.5 minutes after the collapse instead of 38.8. Against the reported arrival at Timure that is 8 to 18 minutes of warning: a what-if, with delays we assumed."
+  }
+ ]
+}

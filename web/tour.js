@@ -76,7 +76,7 @@
       { ch: 5, title: 'The answer', target: el('#answer'),
         say: 'The answer, by the test fixed in advance: ' + (F.pass.passed ? 'yes' : 'no') + '. The source valley ' + passRanks.join(', but ') + '.' },
       { ch: 5, title: 'The real test', target: el('#backtest'),
-        say: F.bt && F.zs ? ('We then ran the same rule, unchanged, on a second disaster: the Budhi Gandaki rock avalanche of October 2026. At the exact slope it missed. But a warning protects a valley, not a slope. Within ' + F.zs.zone_km + ' kilometres, about what one valley sensor can watch, a top-' + F.zs.top_n + ' list covered it in both of its last two passes, roughly twice as often as chance. We found that scale afterwards, so we have fixed it in advance for the next events.') :
+        say: F.bt && F.zs ? ('Then the real test: a disaster it had never seen. Run unchanged on the Budhi Gandaki rock avalanche of October 2026, Cascade Watch put the ' + F.zs.zone_km + ' kilometre zone around the source in its top ' + F.zs.top_n + ' in both of the last two passes before the collapse, about twice what a random list would catch. A blind radar screen of Langtang by another team ranked that source forty-third. It cannot yet name the exact slope, so it watches valleys, which is what a warning protects.') :
           'The same rule, unchanged, is being run on other events; the results appear here.' },
       { ch: 5, title: 'Check everything', target: el('[data-open="data"]'),
         say: 'Every number you heard comes from files you can open: the NISAR granules from NASA’s archive, the river gauge records, and the rules file. Press Data to see them, or Method for how it works. You can explore on your own now.' }

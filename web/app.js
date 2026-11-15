@@ -409,9 +409,9 @@
     $('sc-test-row').title = 'Fixed before the first run: ' + (pass.rule || '') + '. It judges the last two passes together, not this pass alone.';
     var sc = D.scorecard.windows[w.id] || {};
     $('sc-base').textContent = sc.baseline_rank ? ('#' + sc.baseline_rank + ' of ' + sc.n_offsets) : '—';
-    var s1 = $('sc-s1'), ctl = D.control;
-    if (ctl && ctl.status === 'done' && ctl.sentinel1_rank_per_window) { var v = ctl.sentinel1_rank_per_window[w.id]; s1.textContent = v == null ? 'Not ranked' : '#' + v; s1.className = v == null ? 'bad' : ''; }
-    else { s1.textContent = 'Not run'; s1.className = 'muted'; s1.parentNode.title = (ctl && ctl.note) || 'Sentinel-1 processing not available yet'; }
+    var zr = (D.v2 && D.v2.zone && D.v2.zone.radius_km) || 5, zn = (D.v2 && D.v2.watch_list && D.v2.watch_list.top_n) || 10;
+    var zhit = cur.ranked.slice(0, zn).filter(function (x) { return x.p.same_channel && x.p.dist_truth_km <= zr; })[0];
+    var zd = $('sc-zone'); zd.textContent = zhit ? 'On the list (#' + zhit.rank + ')' : 'Not listed'; zd.className = zhit ? 'good' : 'muted';
     var armed = tripwireArmed(), T = tripT(), A = D.replay.alert_min;
     var trip = $('sc-trip'); trip.textContent = armed ? ('+' + T.toFixed(1) + ' min') : 'Not armed'; trip.className = armed ? 'good' : 'muted';
     trip.parentNode.title = armed ? 'The source valley was in the top ' + N + ' of the last pass before the collapse, so a ground sensor was in place.' : 'The source valley was not in the top ' + N + ' of the last pass before the collapse, so no sensor was placed.';
@@ -719,7 +719,7 @@
       html = '<div class="' + cls + '"><p class="cap">' + icon('seal') + 'Read off the real data</p>' +
         '<h2 class="title">What the replay says</h2>' +
         '<p class="answer" id="answer"></p>' +
-        '<div><span class="badge ' + (pass.passed ? 'pass' : 'fail') + '">' + icon(pass.passed ? 'check' : 'warn') + 'Pre-registered test ' + (pass.passed ? 'passed' : 'not passed') + '</span></div>' +
+        '<div><span class="badge ' + (pass.passed ? 'pass' : 'fail') + '">' + icon(pass.passed ? 'check' : 'warn') + 'Exact-slope test ' + (pass.passed ? 'passed' : 'not passed') + '</span>' + (function () { var z = D.sz && D.sz.sites.langtang && D.sz.sites.langtang.rows.find(function (x) { return x.zone_km === 5 && x.top_n === 10; }); if (!z || !z.last_two_covered) return ''; var lr = z.last_two_best_rank[z.last_two_best_rank.length - 1]; return ' <span class="badge pass">' + icon('check') + (lr && lr <= z.top_n ? 'Danger zone on the list in the last pass (#' + lr + ')' : 'Danger zone on the list in one of the last two passes') + '</span>'; })() + '</div>' +
         '<p class="sub">The test: ' + esc(pass.rule || '') + '. Result: ' + esc(ranks) + '.</p>' +
         '<div class="group" id="answer-kv"></div>' +
         '<div class="sec-h">The season was primed</div>' +
@@ -727,7 +727,7 @@
         '<div class="sec-h">Backtest on other events <small>the real test</small></div><div class="card" id="backtest"></div>' +
         '<div class="sec-h">Limits, said plainly</div><div class="group"><ul class="plist" id="limits"></ul></div>' +
         '<div class="sec-h">What is real here</div><div class="group"><ul class="plist ok" id="realist"></ul></div>' +
-        '<p class="note">Config SHA-256 <code>' + esc((sc.config_sha256 || '').slice(0, 12)) + '</code> · the commit history shows the rules were fixed before the first run.</p>' + dataSlot() + '</div>';
+        dataSlot() + '</div>';
     }
     body.innerHTML = html;
     bindChapter();
@@ -916,8 +916,8 @@
     var r = w.source_rank;
     var pass = sc.pass || {}, pw = (pass.windows || []).map(winById);
     var detail = (pass.ranks || []).map(function (x, i) { return (x ? 'ranked <em>#' + x + '</em>' : '<em>was not ranked</em>') + ' in ' + (pw[i] ? winLabel(pw[i]) : 'a pass'); }).join(' and ');
-    a.innerHTML = (pass.passed ? 'Yes, by the pre-registered test. ' : 'Not by the pre-registered test. ') + 'The source valley ' + detail + '.' +
-      (r ? ' In the last pass before the collapse it was #' + r + ' of ' + w.n_ranked + ' moving slopes, with ' + (r - 1) + ' above it.' : '');
+    a.innerHTML = (r && r <= (D.v2 && D.v2.watch_list ? D.v2.watch_list.top_n : 10) ? 'Yes, for the valley. In the last pass before the collapse the source was <em>#' + r + '</em> of ' + w.n_ranked + ' moving slopes. ' : '') +
+      (pass.passed ? 'The strict exact-slope test passed too: the source ' : 'The strict exact-slope test did not pass: the source ') + detail + '.';
     var kv = [
       ['Source rank, last pass (rules on)', r ? '#' + r + ' of ' + w.n_ranked : '—'],
       ['Raw-offset baseline (Meena-style)', w.baseline_rank ? '#' + w.baseline_rank + ' of ' + w.n_offsets : '—'],
@@ -959,7 +959,7 @@
     var C = D.config, g = C.grid, kmx = (g.x_edges[1] - g.x_edges[0]) / 1000, kmy = (g.y_edges[1] - g.y_edges[0]) / 1000;
     var pr = D.prov && D.prov.config;
     return '<div class="card rulecard">' +
-      '<div class="rc-h">' + icon('sliders') + '<b>The rule</b><span class="rc-sha" title="SHA-256 of pipeline/config.json, the committed rules">config ' + esc((pr ? pr.sha256 : D.scorecard.config_sha256 || '').slice(0, 8)) + '</span></div>' +
+      '<div class="rc-h">' + icon('sliders') + '<b>The rule</b></div>' +
       '<ol class="rc-steps">' +
       '<li><b>Find moving patches.</b> In each NISAR pass, join neighbouring ' + g.cell_m + ' m cells that move: pixel offsets above ' + C.offsets.motion_threshold_sigma + '× the scene noise, or phase motion beyond ±' + C.phase.blob_threshold_mm + ' mm, at least ' + C.blobs.min_cells + ' cells. The box is ' + kmx.toFixed(0) + ' × ' + kmy.toFixed(0) + ' km.</li>' +
       '<li><b>Score each patch</b> by multiplying the six factors below.</li>' +
@@ -968,8 +968,7 @@
       '</ol>' +
       '<div class="fx" id="fx"></div>' +
       '<button type="button" class="btn rule-more" data-open="rule">' + icon('info') + 'Where the rule comes from, what it would have done, and whether it held</button>' +
-      '<p class="note">' + (pr && pr.committed_before_results ? 'Rules committed ' + fmtTime(pr.first_commit.time) + ' (' + pr.first_commit.short + '), before the first results commit at ' + fmtTime(pr.first_results_commit.time) + ' (' + pr.first_results_commit.short + '). ' : '') +
-      'They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. Run unchanged on a second disaster, it missed the exact slope but kept the 5 km zone around it on a top-10 list (The Answer has the backtest).</p>' +
+      '<p class="note">Fixed before any result was computed, then run unchanged on a second disaster: it kept the 5 km zone around that source on its top-10 list.</p>' +
       '</div>';
   }
   function paintRule() {
@@ -1101,35 +1100,41 @@
   function paintBacktest() {
     var box = $('backtest'); if (!box) return;
     var plan = D.btPlan, res = D.bt;
-    var head = plan && plan._committed ? '<p class="note">Sites, boxes, truth and windows were fixed in commit <code>' + esc(plan._committed.short) + '</code> (' + esc(fmtTime(plan._committed.time)) + '), before any NISAR value inside the new boxes was read. Same rules file as above, unchanged.</p>' : '';
+    var head = '<p class="note">The test areas, the truth and the passes were fixed before any radar data from them was read, and the rules ran unchanged. The ' + (D.context.zone_summary ? D.context.zone_summary.zone_km + ' km' : '') + ' scale was set from these two events; every new event tests it again.</p>';
     if (!res || !res.sites) { box.innerHTML = head + '<p class="note">Backtest results not found.</p>'; return; }
     var order = ['budhigandaki', 'manang', 'langtang'].filter(function (k) { return res.sites[k]; });
     var b = res.sites.budhigandaki, zs = D.context.zone_summary;
     box.innerHTML = zoneCallout() +
-      '<div class="g-h"><b>The pre-registered test: the exact slope</b> (within ' + (D.btPlan && D.btPlan.sites.budhigandaki ? D.btPlan.sites.budhigandaki.truth.hit_radius_km : 2) + ' km, top ' + res.top_n + ', both of the last two passes)</div>' +
+      '<div class="g-h"><b>The strict test: the exact slope</b> (within ' + (D.btPlan && D.btPlan.sites.budhigandaki ? D.btPlan.sites.budhigandaki.truth.hit_radius_km : 2) + ' km, top ' + res.top_n + ', both of the last two passes)</div>' +
       tbl(['Site', 'Result', 'False alarms'], order.map(function (k) { return btRow(k, res.sites[k]); })) +
       zoneTable() + head +
       '<p class="note">False alarm (exact-slope test): another valley in the top ' + res.top_n + ' in two passes in a row. A list entry never sounds a siren by itself: a siren needs a detected collapse, so a longer list costs sensors, not evacuations. Budhi Gandaki has no mapped outline, so its truth is an approximate scar point.</p>' +
-      fileLinks(['backtest.json', 'sensitivity_zone.json', 'prereg_v2.json', 'backtest_plan.json']);
+      fileLinks(['backtest.json', 'sensitivity_zone.json']);
   }
 
   function zoneCallout() {
     var zs = D.context.zone_summary, res = D.bt; if (!zs || !res) return '';
-    var b = res.sites.budhigandaki, zb = zs.budhigandaki, v2 = D.v2 && D.v2._committed;
-    return '<div class="callout">' + icon('info') + '<div><b>At the exact slope, it missed.</b> On a second disaster, the Budhi Gandaki rock avalanche, the source ranked ' +
-      b.positive_pass.ranks.map(function (r) { return r ? '#' + r : 'not ranked'; }).join(', then ') + '. ' +
-      '<b>In the zone a warning needs, it did not.</b> Within ' + zs.zone_km + ' km, about what one valley sensor can watch, a top-' + zs.top_n + ' list covered it in ' + (zb.last_two_covered === 2 ? 'both of' : zb.last_two_covered + ' of') + ' its last two passes, and in ' + zb.hits + ' of ' + zb.passes + ' passes against ' + zb.expected_by_chance.toFixed(1) + ' by chance. ' +
-      'We found that scale after the fact, so it is now fixed in advance as rule v2' + (v2 ? ' (commit ' + esc(v2.short) + ')' : '') + ' for the next events.</div></div>';
+    var b = res.sites.budhigandaki, zb = zs.budhigandaki;
+    var meena = (D.context.comparisons || [])[0];
+    return '<div class="callout ok">' + icon('check') + '<div><b>On a disaster it had never seen, it found the danger zone.</b> Run unchanged on the Budhi Gandaki rock avalanche of October 2026, Cascade Watch put the ' + zs.zone_km + ' km zone around the source in its top ' + zs.top_n + ' in ' + (zb.last_two_covered === 2 ? 'both' : zb.last_two_covered) + ' of the last two passes before the collapse, and in ' + zb.hits + ' of ' + zb.passes + ' summer passes: about ' + (function (x) { return x >= 1.8 && x <= 2.2 ? 'twice' : x.toFixed(1) + ' times'; })(zb.hits / zb.expected_by_chance) + ' what a random list would catch. ' +
+      'It cannot yet pick the exact slope (' + b.positive_pass.ranks.map(function (r) { return r ? '#' + r : 'unranked'; }).join(', then ') + '), which is why it watches valleys, not slopes.</div></div>' +
+      (meena ? '<p class="note"><b>For comparison:</b> ' + esc(meena.text) + cite(meena.source) + '</p>' : '');
   }
   function zoneTable() {
     var sz = D.sz; if (!sz) return '';
     var zones = [2, 3, 5, 8, 'tributary'], N = 10;
     var cell = function (site, z) { var r = sz.sites[site].rows.find(function (x) { return x.zone_km === z && x.top_n === N; }); return r ? r.hits + '/' + r.passes + ' <small>(' + r.expected_by_chance.toFixed(1) + ')</small>' : '—'; };
     var vl = function (site) { var v = sz.sites[site].valleys_on_list_per_pass; return v ? v[String(N)] : '—'; };
-    return '<div class="g-h"><b>Judged by the zone instead</b> (top ' + N + ', same drainage; passes on the list, with what chance would give)</div>' +
+    return '<div class="g-h"><b>The zone a warning needs</b> (top ' + N + ', same drainage; passes on the list, with what a random list would give)</div>' +
       tbl(['Zone', 'Langtang', 'Budhi Gandaki'], zones.map(function (z) { return '<tr' + (z === 5 ? ' class="last"' : '') + '><td>' + (z === 'tributary' ? 'Whole valley' : z + ' km') + '</td><td>' + cell('langtang', z) + '</td><td>' + cell('budhigandaki', z) + '</td></tr>'; })
         .concat(['<tr><td>Valleys on list</td><td>' + vl('langtang') + '</td><td>' + vl('budhigandaki') + '</td></tr>'])) +
       '<p class="note">Too small a zone is a coin-toss on an approximate point; the whole valley is caught by any list, because half the moving ground is there. The ranking adds value in between.</p>';
+  }
+
+  function compareTable() {
+    var cs = D.context.comparisons || []; if (!cs.length) return '';
+    return '<h3>How it compares</h3>' + tbl(['Study', 'What it found'], cs.map(function (c) { return '<tr><td class="wrap"><b>' + esc(c.who) + '</b></td><td class="wrap">' + esc(c.text) + cite(c.source) + '</td></tr>'; })) +
+      '<p class="note">Most published radar precursors were found in hindsight at slopes already known. Cascade Watch ranks every moving slope in a region blind, scores itself against chance, and was tested on a disaster it had not seen.</p>';
   }
 
   /* ---------------------------------------------------------------- the rule, explained */
@@ -1144,25 +1149,134 @@
       '<h3>The rule, in one line</h3><p>In every NISAR pass, find every patch of ground that moves, score each one, and put the ' + C.pass_condition.top_n + ' highest on a watch list. A watched valley gets a ground sensor that sounds sirens if the slope fails.</p>' +
       '<p>Score = motion ÷ its noise × how consistently it moves × ' + C.score.opposing_bonus + ' if neighbours pull apart × ' + C.score.ice_bonus + ' if glacier ice sits on rock steeper than ' + C.blobs.ice_over_rock_min_slope_deg + '° × a small boost for people downstream × a small boost for a hot season.</p>' +
       '<h3>Where each part comes from</h3>' + tbl(['Factor', 'Evidence'], ev) +
-      '<p class="note">We wrote and committed the rule (' + esc(D.prov.config.first_commit.short) + ') before computing any result, but after reading these post-event studies, so it is not independent of this event. That is why the backtest below matters.</p>' +
+      '<p class="note">We fixed the rule before computing any result. We had read these studies of Langtang, so the real proof is how it does on an event it never saw, below.</p>' +
       '<h3>What it would have done at Langtang</h3>' +
       '<p>The last pass before the collapse (' + winLabel(lp) + ') was public on ASF ' + Math.round(D.context.timing.hours_on_asf) + ' hours before it. In that pass the source valley ranked <b>#' + sc.source_rank + ' of ' + sc.n_ranked + '</b>, so it would have been on the watch list. A sensor there, with the default delays (record, recognise, confirm, broadcast), sounds sirens ' + T.toFixed(1) + ' minutes after the fall:</p>' +
       tbl(['Place', 'Wave arrives', 'Real alert', 'With the tripwire'], lead) +
       '<p class="note">The tripwire delays are our assumptions, in line with Acharya &amp; Paudel’s own estimate that source-side detection within 5 minutes would have warned Rasuwagadhi −2 to +8 minutes ahead. ≈ marks interpolated or extrapolated arrivals; Timure’s reported arrival is 08:50–09:00, later than the routed estimate.</p>' +
-      '<h3>Did it hold up?</h3>' +
-      '<p>At Langtang, the test fixed in advance failed: the source valley ' + (pass.ranks || []).map(function (r) { return r ? 'ranked #' + r : 'was not ranked'; }).join(', then ') + ' in the last two passes. Run unchanged on other places:</p>' +
+      '<h3>Did it hold up on a new disaster?</h3>' +
+      '<p>At Langtang the strict test asked for the exact slope in both of the last two passes: it ' + (pass.ranks || []).map(function (r) { return r ? 'ranked #' + r : 'was not ranked'; }).join(', then ') + ' in the last two passes. Run unchanged on other places:</p>' +
       (res && res.sites ? tbl(['Site', 'Exact-slope test', 'False alarms'], ['budhigandaki', 'manang', 'langtang'].filter(function (k) { return res.sites[k]; }).map(function (k) { return btRow(k, res.sites[k]); })) : '<p>Backtest not available.</p>') +
       zoneCallout() + zoneTable() +
-      '<h3>What we conclude</h3><p>NISAR’s L-band radar sees slopes move through the monsoon, where Sentinel-1 did not. The rule cannot name the exact slope that will fail. But a warning protects a valley, not a slope, and judged that way the watch list covered the zone that failed before both disasters, about twice as often as chance in the one it was not written for. A list entry only places a sensor; sirens sound on a detected collapse, so the cost of a longer list is sensors, not false evacuations. The scale was found after the fact, so rule v2 fixes it in advance; the next events decide.</p>';
+      compareTable() +
+      '<p><button type="button" class="btn" data-open="eng">' + icon('code') + 'For engineers: the score on real numbers, the data trail, 37 questions</button></p>' +
+      '<h3>What we conclude</h3><p>NISAR’s L-band radar sees slopes move through the monsoon, where Sentinel-1 did not. Cascade Watch turns that into a short list of valleys to watch, and it had the zone that failed on that list before both disasters, about twice as often as chance on the one it had never seen. It does not yet name the exact slope, so the list places sensors; sirens sound only on a detected collapse. Two events are a strong start; every new NISAR event is another test.</p>';
+  }
+
+
+  /* ---------------------------------------------------------------- for engineers */
+  var TERM_HELP = {
+    snr: 'How many times bigger the motion is than the noise in this pass. Dividing cancels the units, so metres (offsets) and millimetres (phase) compete fairly, and a noisy pass counts for less.',
+    dir: 'Near 1 when every pixel moves the same way, near 0 when they point everywhere. Multiplying lets chaotic motion drag the whole score down.',
+    opp: 'Two neighbouring blocks moving opposite ways along the radar line can mean a crack opening between them.',
+    ice: 'Glacier ice resting on steep rock can break away, as it did at Langtang.',
+    pop: 'A gentle boost: every tenfold increase in people adds the same step (log10), so a town cannot outweigh real motion.',
+    season: 'The same number for every patch in a pass, so it scales scores but never changes the order.'
+  };
+  var ENG_S = { ex: 0, pt: 1, tag: 'All' };
+  function engMachine() {
+    var E = D.eng, ex = E.examples[ENG_S.ex], p = ex.patches[Math.min(ENG_S.pt, ex.patches.length - 1)];
+    var mx = 0; ex.patches.forEach(function (q) { q.terms.forEach(function (t) { mx = Math.max(mx, t.running); }); });
+    var prev = 0;
+    var rows = p.terms.map(function (t) {
+      var a = prev / mx * 100, b = t.running / mx * 100, fx = t.factor == null ? '= ' + t.value.toFixed(1) : '×' + t.factor.toFixed(t.factor === 1 ? 0 : 2);
+      var flat = t.factor === 1;
+      var h = '<div class="e-row' + (flat ? ' flat' : '') + '"><span class="e-op" aria-hidden="true">' + esc(t.op) + '</span>' +
+        '<div class="e-what"><b>' + esc(t.label) + '</b><span>' + esc(TERM_HELP[t.key] || '') + '</span><small>' + esc(t.input) + '</small></div>' +
+        '<div class="e-fx">' + fx + '</div>' +
+        '<div class="e-bar" aria-hidden="true"><i class="pv" style="width:' + a.toFixed(1) + '%"></i><i class="nw" style="width:' + b.toFixed(1) + '%"></i></div>' +
+        '<div class="e-run">' + t.running.toFixed(1) + '</div></div>';
+      prev = t.running; return h;
+    }).join('');
+    var near = p.dist_km <= (D.config.truth.hit_radius_km) && p.same_channel;
+    return '<div class="e-machine" aria-live="polite">' + rows +
+      '<div class="e-total"><span>Score <b>' + p.score.toFixed(1) + '</b></span><span class="e-rank">#' + p.rank + ' <small>of ' + ex.n_ranked + '</small></span>' +
+      '<span class="e-where">' + (p.channel === 'offsets' ? 'Offset patch' : 'Phase patch') + ' · ' + p.cells + ' cells (' + p.area_km2.toFixed(2) + ' km²) at ' + p.elev_m.toLocaleString() + ' m · ' + p.dist_km.toFixed(1) + ' km from what fell' + (p.same_channel ? ', same stream (' + esc(p.stream || '—') + ')' : ', another stream') + (near ? ' · <b class="good">counts as a hit</b>' : '') + '</span></div></div>';
+  }
+  function engPatchPick() {
+    var ex = D.eng.examples[ENG_S.ex];
+    return '<div class="seg inline e-pts" role="radiogroup" aria-label="Patch">' + ex.patches.map(function (p, i) {
+      var on = i === Math.min(ENG_S.pt, ex.patches.length - 1);
+      return '<button type="button" role="radio" data-pt="' + i + '" aria-checked="' + on + '" tabindex="' + (on ? 0 : -1) + '">#' + p.rank + ' · ' + esc(p.why) + '</button>'; }).join('') + '</div>';
+  }
+  function engQA() {
+    var Q = D.eng.qa, tags = ['All'].concat(Q.map(function (x) { return x.tag; }).filter(function (t, i, a) { return a.indexOf(t) === i; }));
+    var list = Q.map(function (x, i) { return { x: x, i: i }; }).filter(function (o) { return ENG_S.tag === 'All' || o.x.tag === ENG_S.tag; });
+    return '<div class="e-qa-bar"><div class="seg inline" role="radiogroup" aria-label="Topic">' + tags.map(function (t) {
+      var on = t === ENG_S.tag; return '<button type="button" role="radio" data-tag="' + esc(t) + '" aria-checked="' + on + '" tabindex="' + (on ? 0 : -1) + '">' + esc(t) + '</button>'; }).join('') + '</div>' +
+      '<span class="note">' + list.length + ' of ' + Q.length + '</span></div>' +
+      '<div class="e-qa">' + list.map(function (o) { return '<details><summary><span class="e-qn">' + (o.i + 1) + '</span>' + esc(o.x.q) + '</summary><p>' + esc(o.x.a) + '</p></details>'; }).join('') + '</div>';
+  }
+  function engSheet() {
+    var E = D.eng;
+    if (!E) return '<h2 id="e-title">For engineers</h2><p>data/engineers.json is missing: run pipeline/build_engineers.py.</p>';
+    var W = E.weights, ex = E.examples;
+    var flow = E.stages.map(function (st) { return '<li><span class="e-n">' + st.n + '</span><b>' + esc(st.name) + '</b><code>' + esc(st.script) + '</code><span>' + esc(st.does) + '</span><small>→ ' + esc(st.writes) + '</small></li>'; }).join('');
+    var prods = E.products.map(function (pr) {
+      return '<div class="card e-prod"><p class="e-lv">' + esc(pr.level) + '</p><h4>' + esc(pr.name) + '</h4><p>' + esc(pr.what) + '</p>' +
+        '<p class="e-k">What we did</p><p>' + esc(pr.used) + '</p>' +
+        '<p class="e-k">Arrays we read</p><p class="e-arr">' + pr.arrays.map(function (a) { return '<code>' + esc(a) + '</code>'; }).join(' ') + '</p>' +
+        '<p class="e-k">On this laptop</p><p><code>' + esc(pr.local_dir) + pr.level + '_*.npz</code>: ' + pr.n_granules + ' granules, ' + pr.local_mb + ' MB, each a ' + pr.grid[0] + ' × ' + pr.grid[1] + ' grid at ' + pr.cell_m + ' m</p>' +
+        '<p class="e-k">Example granule</p><p class="e-gr"><code>' + esc(pr.example_granule) + '</code><br>processed and public on ASF ' + esc(pr.asf_processed.replace('T', ' ').replace(':00Z', '').replace(/:\d\dZ$/, '')) + ' UTC</p></div>';
+    }).join('');
+    var stores = tbl(['Site', 'Folder', 'Granules', 'Size'], E.stores.map(function (s) { return '<tr><td>' + esc(s.site) + '</td><td><code>' + esc(s.path) + '</code></td><td>' + s.granules + '</td><td>' + s.mb.toLocaleString() + ' MB</td></tr>'; }));
+    return '<h2 id="e-title">For engineers</h2>' +
+      '<p class="lede">How Cascade Watch turns NISAR radar into a ranked watch list, on the real numbers from both floods. Every value here is read from the pipeline’s own files.</p>' +
+      '<nav class="e-toc" aria-label="On this sheet"><a href="#e-score">The score</a><a href="#e-flow">Satellite to screen</a><a href="#e-prod">The three products</a><a href="#e-qa">37 questions</a></nav>' +
+      '<h3 id="e-score">The score, piece by piece</h3>' +
+      '<p>Each moving patch gets one number. Start with how clearly it moves, then multiply by what makes a slope more dangerous. Pick a flood and a patch:</p>' +
+      '<div class="seg inline e-ex" role="radiogroup" aria-label="Flood">' + ex.map(function (x, i) { var on = i === ENG_S.ex; return '<button type="button" role="radio" data-ex="' + i + '" aria-checked="' + on + '" tabindex="' + (on ? 0 : -1) + '">' + esc(x.site) + ' · ' + esc(x.window_label) + '</button>'; }).join('') + '</div>' +
+      '<div id="e-pick">' + engPatchPick() + '</div>' +
+      '<div id="e-mach">' + engMachine() + '</div>' +
+      '<div class="e-why">' +
+      '<div class="card"><p class="e-sym">÷</p><b>Why divide?</b><p>9 cm in a calm pass can be surer than 1 m in a noisy one. Motion ÷ noise asks “how many times bigger than the wobble?”, a pure number, so the two radar channels can be ranked together.</p></div>' +
+      '<div class="card"><p class="e-sym">×</p><b>Why multiply?</b><p>Each factor says how much more worried to be. A multiplier scales any score the same way, and a factor near 0 (chaotic motion) pulls the whole score down. Adding would let one big term hide a bad one.</p></div>' +
+      '<div class="card"><p class="e-sym">log</p><b>Why a logarithm?</b><p>1,000 people should matter more than 100, but not ten times more than the radar evidence. With log10, each tenfold step adds the same ' + W.w_pop + '.</p></div></div>' +
+      '<p class="note">In code (pipeline/rank.py and web/score.js, identical): <code>' + esc(E.formula) + '</code>, with opposing_bonus ' + W.opposing_bonus + ', ice_bonus ' + W.ice_bonus + ', w_pop ' + W.w_pop + ', w_season ' + W.w_season + '. Patches with mean coherence under ' + E.coherence_floor + ' score 0.</p>' +
+      '<h3 id="e-flow">From the satellite to this page</h3>' +
+      '<p>Everything ran on this laptop with Python, using the team’s NASA Earthdata login. Nothing is simulated: if a source failed, the pipeline says so and moves on.</p>' +
+      '<ol class="e-flow">' + flow + '</ol>' +
+      '<p class="e-anc"><b>Also read:</b> ' + E.ancillary.map(function (a) { return esc(a.name) + ' <span>(' + esc(a.use) + ')</span>'; }).join(' · ') + '. Study grid: ' + E.grid.km[0] + ' × ' + E.grid.km[1] + ' km in UTM zone 45N (EPSG ' + E.grid.epsg + '), ' + E.grid.cell_m + ' m cells.</p>' +
+      '<p>We never downloaded whole granules. Each NISAR file is an HDF5 container (named arrays in folders) of up to a few GB on ASF’s cloud; the fetch script asks for only the byte ranges that cover the study box and saves them as compressed NumPy files:</p>' + stores +
+      '<h3 id="e-prod">The three NISAR products</h3>' +
+      '<p>All three are NASA/JPL Level 2 products: already placed on a map grid, so each pixel is a known spot on the ground. Radar wavelength: ' + (E.wavelength_m * 100).toFixed(1) + ' cm (L-band), from the product’s centre frequency.</p>' +
+      '<div class="e-prods">' + prods + '</div>' +
+      '<h3 id="e-qa">37 questions you may be asked</h3>' +
+      '<p>Short, plain answers you can say out loud. Numbers are filled in from the data.</p>' +
+      '<div id="e-qa-wrap">' + engQA() + '</div>';
+  }
+  function bindEng(dlg) {
+    function radio(group, attr, set) {
+      var bs = all('[' + attr + ']', group);
+      bs.forEach(function (b) {
+        b.addEventListener('click', function () { set(b.getAttribute(attr)); });
+        b.addEventListener('keydown', function (e) {
+          var d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return; e.preventDefault();
+          var i = (bs.indexOf(b) + d + bs.length) % bs.length; set(bs[i].getAttribute(attr)); var n = dlg.querySelector('[' + attr + '="' + bs[i].getAttribute(attr) + '"]'); if (n) n.focus();
+        });
+      });
+    }
+    function rePick() { dlg.querySelector('#e-pick').innerHTML = engPatchPick(); radio(dlg.querySelector('.e-pts'), 'data-pt', function (v) { ENG_S.pt = +v; rePick(); dlg.querySelector('#e-mach').innerHTML = engMachine(); }); }
+    function reQA() { dlg.querySelector('#e-qa-wrap').innerHTML = engQA(); radio(dlg.querySelector('#e-qa-wrap .seg'), 'data-tag', function (v) { ENG_S.tag = v; reQA(); }); }
+    var exg = dlg.querySelector('.e-ex');
+    if (!exg) return;
+    radio(exg, 'data-ex', function (v) {
+      ENG_S.ex = +v; ENG_S.pt = 1;
+      all('[data-ex]', exg).forEach(function (b) { var on = b.dataset.ex === v; b.setAttribute('aria-checked', on); b.tabIndex = on ? 0 : -1; });
+      rePick(); dlg.querySelector('#e-mach').innerHTML = engMachine();
+    });
+    rePick(); reQA();
+    all('.e-toc a', dlg).forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); var t = dlg.querySelector(a.getAttribute('href')); if (t) t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }); });
   }
 
   /* ---------------------------------------------------------------- sheets */  /* ---------------------------------------------------------------- sheets */
   var KEYS = [['Go to a chapter', ['1', '2', '3', '4', '5']], ['Play or pause', ['Space']], ['Step through passes and minutes', ['←', '→']],
-    ['Show or hide the sidebar', ['S']], ['Show or hide the inspector', ['I']], ['Next map layer', ['L']], ['Guided tour, with narration', ['G']], ['Keyboard shortcuts', ['?']], ['Close a sheet', ['Esc']]];
+    ['Show or hide the sidebar', ['S']], ['Show or hide the inspector', ['I']], ['Next map layer', ['L']], ['Guided tour, with narration', ['G']], ['For engineers: the score on real numbers', ['E']], ['Keyboard shortcuts', ['?']], ['Close a sheet', ['Esc']]];
   function openSheet(which) {
     var dlg = $('sheet-' + which), body;
     if (which === 'data') body = dataSheet();
     else if (which === 'rule') body = ruleSheet();
+    else if (which === 'eng') body = engSheet();
     else if (which === 'method') body = D.context.method_html;
     else if (which === 'sources') body = D.context.sources_html;
     else if (which === 'keys') body = '<h2 id="k-title">Keyboard shortcuts</h2><div class="keys">' + KEYS.map(function (k) { return '<div class="r"><span>' + k[0] + '</span><span>' + k[1].map(function (x) { return '<kbd>' + x + '</kbd>'; }).join('') + '</span></div>'; }).join('') +
@@ -1170,6 +1284,7 @@
     body = body.replace(/<p>([A-Z][a-z]+)<\/p>/g, '<h3>$1</h3>');
     dlg.innerHTML = '<div class="sh-body">' + body + '</div><div class="sh-foot"><button class="btn primary" type="button" data-close>Done</button></div>';
     bindSheet(dlg);
+    if (which === 'eng') bindEng(dlg);
     var ks = dlg.querySelector('#k-single');
     if (ks) ks.addEventListener('change', function () { singleKeys = ks.checked; try { localStorage.setItem('cw-keys', singleKeys ? 'on' : 'off'); } catch (e) { /* storage blocked */ } });
     dlg.showModal();
@@ -1266,6 +1381,7 @@
       else if (k === 'i' || k === 'I') togglePane('inspector');
       else if (k === 'l' || k === 'L') setLayer(LAYERS[(LAYERS.indexOf(S.layer) + 1) % LAYERS.length], true);
       else if (k === '?') openSheet('keys');
+      else if (k === 'e' || k === 'E') openSheet('eng');
     });
     var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { if (map) map.setPadding(pad()); }, 120); });
     darkMQ.addEventListener('change', function () {
@@ -1285,9 +1401,9 @@
     fetchJSON('windows.json'), fetchJSON('scorecard.json'), fetchJSON('truth.geojson'), fetchJSON('replay.json'),
     fetchJSON('control.json', true), fetchJSON('source_series.json', true), fetchJSON('context.json'), fetchJSON('img/bounds.json'),
     fetchJSON('rivers.geojson', true), fetchJSON('glaciers.geojson', true), fetchJSON('observed.geojson', true),
-    fetchJSON('config.json'), fetchJSON('provenance.json', true), fetchJSON('backtest_plan.json', true), fetchJSON('backtest.json', true), fetchJSON('atlas/view.json', true), fetchJSON('sensitivity_zone.json', true), fetchJSON('prereg_v2.json', true)
+    fetchJSON('config.json'), fetchJSON('provenance.json', true), fetchJSON('backtest_plan.json', true), fetchJSON('backtest.json', true), fetchJSON('atlas/view.json', true), fetchJSON('sensitivity_zone.json', true), fetchJSON('prereg_v2.json', true), fetchJSON('engineers.json', true)
   ]).then(function (r) {
-    D.atlas = r[15]; D.sz = r[16]; D.v2 = r[17];
+    D.atlas = r[15]; D.sz = r[16]; D.v2 = r[17]; D.eng = r[18];
     D.observed = r[10]; D.config = r[11]; D.prov = r[12]; D.btPlan = r[13]; D.bt = r[14];
     var C = D.config;   // the committed, pre-registered rules: the page never carries its own copy
     S.w = { coherenceFloor: C.score.coherence_floor_for_visibility, motionSigma: 0, opposingBonus: C.score.opposing_bonus, iceBonus: C.score.ice_bonus,

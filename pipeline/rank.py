@@ -262,7 +262,8 @@ def run():
         near = [b for b in blobs if is_hit(b)]
         gun = manifest.get(f"GUNW_{name}", {})
         gof = manifest.get(f"GOFF_{name}", {})
-        avail = gof.get("asf_processingDate") or gun.get("asf_processingDate")
+        # the ranking reads both products, so a pass is usable only once the later of the two is public
+        avail = max([d for d in (gof.get("asf_processingDate"), gun.get("asf_processingDate")) if d], default=None)
         w = dict(id=name, direction=info["direction"], start=str(d0), end=str(d1), stack_days=days,
                  phase_ice_lost_share=round(info["phase_ice_lost_share"], 3),
                  ice_lost_share=round(info.get("offsets_ice_lost_share", info["phase_ice_lost_share"]), 3),

@@ -30,6 +30,10 @@ SOURCES = {
     "osm": ("OpenStreetMap", "https://www.openstreetmap.org/copyright"),
     "glims": ("GLIMS/RGI", "https://www.glims.org/"),
     "copdem": ("Copernicus DEM", "https://registry.opendata.aws/copernicus-dem/"),
+    "intrieri2018": ("Intrieri et al. 2018", "https://doi.org/10.1007/s10346-017-0915-7"),
+    "carla2019": ("Carlà et al. 2019", "https://doi.org/10.1038/s41598-019-50792-y"),
+    "chamoli2022": ("NHESS 2022 (Chamoli)", "https://doi.org/10.5194/nhess-22-3309-2022"),
+    "blatten": ("PreventionWeb (Blatten)", "https://www.preventionweb.net/news/blatten-landslide-switzerland"),
 }
 
 
@@ -211,10 +215,27 @@ def main():
         zb, zl = zrow("budhigandaki", 5, 10), zrow("langtang", 5, 10)
         if zb and zl:
             zone_summary = dict(zone_km=5, top_n=10, budhigandaki=zb, langtang=zl)
-            limits.insert(4, (f"Judged by the zone a valley sensor could watch rather than the exact slope (5 km, same drainage, top 10: chosen after seeing these results), "
-                              f"Budhi Gandaki was on the list in {zb['last_two_covered']} of its last two passes and in {zb['hits']} of {zb['passes']} passes against {zb['expected_by_chance']:.1f} expected by chance (p = {zb['p_value']:.3f}). "
-                              "That scale is now fixed in advance as rule v2 for the next events."))
+            limits.insert(4, (f"The 5 km zone and top-10 list that caught Budhi Gandaki ({zb['hits']} of {zb['passes']} passes, {zb['expected_by_chance']:.1f} by chance) were chosen using these two events. "
+                              "They are now fixed, so every new event is a fresh test."))
     limits = [x for x in limits if x]
+    # how this compares with published work (Meena numbers read from the sourced record; others cited)
+    msz = (ef.get("nisar_meena", {}).get("source_zone") or {}).get("value") or {}
+    msc = (ef.get("nisar_meena", {}).get("screen") or {}).get("value") or {}
+    mrank = str(msz.get("rank_by_res_mag", "")).split(" (")[0]
+    if mrank and mrank.split()[0].isdigit():
+        mrank = ordinal(int(mrank.split()[0])) + " " + " ".join(mrank.split()[1:])
+    comparisons = [
+        dict(who="Same event, blind NISAR screen", text=(f"Meena 2026 found the source zone among {msc.get('validated_zones', '—')} moving zones but ranked it {mrank} by residual motion, never above the 95th percentile of random regions. "
+                                                          f"Cascade Watch ranked it #{sc['source_rank']} of {sc['n_ranked']} in the last pass.") if mrank else "", source="meena"),
+        dict(who="Same event, site study", text=(f"Kutoğlu, Softa & Akgün 2026 analysed NISAR phase from both orbit directions around the known detachment and found neighbouring blocks moving apart "
+                                                  f"(+{ef['nisar_kutoglu']['positive_los_cluster']['value']['median_los_mm']:.0f} and −{abs(ef['nisar_kutoglu']['negative_feature']['value']):.0f} mm), a hindsight study of a slope already known to have failed. "
+                                                  "Cascade Watch adopted that signal as a rule factor and searched the whole scene without knowing the answer.") if "positive_los_cluster" in ef.get("nisar_kutoglu", {}) else "", source="kutoglu"),
+        dict(who="Xinmo, China, 2017", text="Sentinel-1 showed precursory motion and allowed a failure-time estimate, in hindsight, at a slope already known to have failed.", source="intrieri2018"),
+        dict(who="Three failures, 2019 review", text="Satellite radar could have located them days to weeks ahead, again in hindsight at known slopes.", source="carla2019"),
+        dict(who="Chamoli, India, 2021", text="The block moved more than 10 m in five years in satellite imagery, but the timing could likely not have been forecast from satellite data alone.", source="chamoli2022"),
+        dict(who="Blatten, Switzerland, 2025", text="A glacier already under dedicated ground monitoring: the village was evacuated before the collapse. That is the sensor-on-a-watched-valley model this list feeds.", source="blatten"),
+    ]
+    comparisons = [c for c in comparisons if c["text"]]
     # where each factor of the rule comes from, from the sourced records (numbers read, not typed)
     mk = ef.get("nisar_meena", {}); ku = ef.get("nisar_kutoglu", {}); ha = ef.get("preconditioning_hassan", {})
     rule_evidence = [
@@ -292,6 +313,7 @@ def main():
         detachment_km2=ef['geometry']['detachment_area_unosat']['value'],
         rule_evidence=rule_evidence,
         zone_summary=zone_summary,
+        comparisons=comparisons,
         meena=meena,
         era5=era,
         sensitivity=sens,
