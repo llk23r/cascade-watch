@@ -136,7 +136,11 @@
      ],
      "last_two_covered": 2
     }
-   ]
+   ],
+   "valleys_on_list_per_pass": {
+    "5": 3.7,
+    "10": 5.9
+   }
   },
   "budhigandaki": {
    "role": "test positive",
@@ -272,7 +276,11 @@
      ],
      "last_two_covered": 2
     }
-   ]
+   ],
+   "valleys_on_list_per_pass": {
+    "5": 2.9,
+    "10": 3.9
+   }
   }
  }
 }

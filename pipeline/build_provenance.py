@@ -89,6 +89,14 @@ def main():
     }
     (DATA / "provenance.json").write_text(json.dumps(out, indent=1))
     (DATA / "config.json").write_text(cfg.read_text())   # the page reads the committed rules, never its own copy
+    v2 = ROOT / "pipeline" / "prereg_v2.json"
+    if v2.exists():   # rule v2 and the commit that fixed it
+        plan = json.loads(v2.read_text())
+        first = git("log", "--reverse", "--format=%H|%cI|%s", "--", "pipeline/prereg_v2.json").splitlines()
+        if first:
+            h, t, sub = first[0].split("|", 2)
+            plan["_committed"] = {"hash": h, "short": h[:7], "time": t, "subject": sub}
+        (DATA / "prereg_v2.json").write_text(json.dumps(plan, indent=1))
     bt = ROOT / "pipeline" / "backtest.json"
     if bt.exists():   # the pre-registered backtest plan and the commit that fixed it
         plan = json.loads(bt.read_text())

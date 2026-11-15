@@ -32,7 +32,7 @@
       total: pre.length, inTop: ranks.filter(function (r) { return r && r <= topN; }).length,
       missing: pre.filter(function (w, i) { return !ranks[i]; }).map(spokenWin),
       syab: syab, g: g, p90: ser.offsets_p90_m, meena: meena && meena.disp_m, earlier: earlier, days: days, hit: hit,
-      pass: D.scorecard.pass || {}, tripT: S.d.record + S.d.recognise + S.d.confirm + S.d.broadcast, bt: bt
+      pass: D.scorecard.pass || {}, tripT: S.d.record + S.d.recognise + S.d.confirm + S.d.broadcast, bt: bt, zs: D.context.zone_summary
     };
   }
 
@@ -76,7 +76,7 @@
       { ch: 5, title: 'The answer', target: el('#answer'),
         say: 'The answer, by the test fixed in advance: ' + (F.pass.passed ? 'yes' : 'no') + '. The source valley ' + passRanks.join(', but ') + '.' },
       { ch: 5, title: 'The real test', target: el('#backtest'),
-        say: F.bt ? ('We then ran the same rule, unchanged, on a second disaster: the Budhi Gandaki rock avalanche of October 2026. It failed there too: the source ranked ' + (F.bt.positive_pass.ranks[0] ? F.bt.positive_pass.ranks[0] : 'nowhere') + ' and then was not ranked at all. And in every valley we tried, about one pass in two put a false alarm on the list. So NISAR sees the motion, but this rule is a shortlist for closer watching, not a forecast.') :
+        say: F.bt && F.zs ? ('We then ran the same rule, unchanged, on a second disaster: the Budhi Gandaki rock avalanche of October 2026. At the exact slope it missed. But a warning protects a valley, not a slope. Within ' + F.zs.zone_km + ' kilometres, about what one valley sensor can watch, a top-' + F.zs.top_n + ' list covered it in both of its last two passes, roughly twice as often as chance. We found that scale afterwards, so we have fixed it in advance for the next events.') :
           'The same rule, unchanged, is being run on other events; the results appear here.' },
       { ch: 5, title: 'Check everything', target: el('[data-open="data"]'),
         say: 'Every number you heard comes from files you can open: the NISAR granules from NASA’s archive, the river gauge records, and the rules file. Press Data to see them, or Method for how it works. You can explore on your own now.' }

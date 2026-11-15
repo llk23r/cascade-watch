@@ -116,6 +116,30 @@
    "subject": "Backtest results: Budhi Gandaki, Manang and Langtang",
    "touches_config": false,
    "adds_results": false
+  },
+  {
+   "hash": "9c81f29758c2e50357c81953813f67a55a608d37",
+   "short": "9c81f29",
+   "time": "2026-11-15T11:22:13-05:00",
+   "subject": "Regenerate Langtang on the corrected DEM; narrated tour; rule explainer; film voiceover",
+   "touches_config": false,
+   "adds_results": true
+  },
+  {
+   "hash": "4e94622fde8f6cbe683d817652360062213b76ea",
+   "short": "4e94622",
+   "time": "2026-11-15T12:02:03-05:00",
+   "subject": "Sensitivity of the backtest to zone size and watch-list length (post hoc)",
+   "touches_config": false,
+   "adds_results": false
+  },
+  {
+   "hash": "6ee6adc2528ff59f193532510556919cac7b59ad",
+   "short": "6ee6adc",
+   "time": "2026-11-15T12:04:01-05:00",
+   "subject": "Pre-register rule v2 for future events: 5 km zone, top 10",
+   "touches_config": false,
+   "adds_results": false
   }
  ],
  "granules": [
@@ -950,7 +974,7 @@
  "files": [
   {
    "path": "data/backtest.json",
-   "bytes": 125454
+   "bytes": 125245
   },
   {
    "path": "data/backtest_plan.json",
@@ -962,7 +986,7 @@
   },
   {
    "path": "data/context.json",
-   "bytes": 21692
+   "bytes": 23306
   },
   {
    "path": "data/control.json",
@@ -979,6 +1003,14 @@
   {
    "path": "data/sensitivity.json",
    "bytes": 3401
+  },
+  {
+   "path": "data/sensitivity_topn.json",
+   "bytes": 20966
+  },
+  {
+   "path": "data/sensitivity_zone.json",
+   "bytes": 5011
   },
   {
    "path": "data/source_series.json",

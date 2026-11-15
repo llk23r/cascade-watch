@@ -136,6 +136,7 @@
   "The screen keeps this valley near the top most of the summer (6 of 7 ascending passes in the top 5) and after the collapse too (#10, #3, #22, #7, #1). It says 'watch this valley', not 'it falls next week'.",
   "Only 4 of those 7 pairs were public on ASF before the collapse; 3 (15 May\u219227 May, 27 May\u21928 Jun, 8 Jun\u219220 Jun) were processed afterwards. The last pass went public 37 hours before the collapse.",
   "Backtest, with the same rules: on the Budhi Gandaki rock avalanche (Oct 2026) the source ranked #10 then not ranked, so the test fails there too. False alarms (another valley in the top 5 in two passes in a row): Budhi Gandaki 5 in 11 passes, Manang (no failure) 3 in 8 passes, Langtang 4 in 7 passes.",
+  "Judged by the zone a valley sensor could watch rather than the exact slope (5 km, same drainage, top 10: chosen after seeing these results), Budhi Gandaki was on the list in 2 of its last two passes and in 7 of 11 passes against 3.6 expected by chance (p = 0.026). That scale is now fixed in advance as rule v2 for the next events.",
   "The rules were written after the event, by people who had read post-event studies of it. Pre-registration only guards against tuning on our own results.",
   "Phase patches carry millimetre uncertainties (the bootstrap error of the patch mean, which shrinks with patch size), so large phase patches dominate a score of motion over noise.",
   "The headline phase is not corrected for tropospheric delay, which at 5,510 m can mimic motion. A sensitivity run that subtracts each product's own wet and hydrostatic screens gives #2 in the last pass and still not ranked one pass earlier.",
@@ -210,6 +211,36 @@
    "source": "hassan"
   }
  ],
+ "zone_summary": {
+  "zone_km": 5,
+  "top_n": 10,
+  "budhigandaki": {
+   "zone_km": 5,
+   "top_n": 10,
+   "passes": 11,
+   "hits": 7,
+   "expected_by_chance": 3.59,
+   "p_value": 0.0256,
+   "last_two_best_rank": [
+    5,
+    9
+   ],
+   "last_two_covered": 2
+  },
+  "langtang": {
+   "zone_km": 5,
+   "top_n": 10,
+   "passes": 7,
+   "hits": 6,
+   "expected_by_chance": 4.71,
+   "p_value": 0.2461,
+   "last_two_best_rank": [
+    19,
+    1
+   ],
+   "last_two_covered": 1
+  }
+ },
  "meena": [
   {
    "id": "A098_20260620_20260702",

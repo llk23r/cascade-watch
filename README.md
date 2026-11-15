@@ -83,7 +83,7 @@ The page follows the system light or dark appearance, reduced motion, reduced tr
 
 ## Backtest: did the rule hold?
 
-No. `pipeline/backtest.json` fixed the sites, boxes, truth and windows in git before any NISAR value inside the new boxes was read; `pipeline/backtest.py` runs the same rules (`CW_SITE` selects the box) and writes `data/backtest.json`.
+At the exact slope, no. In the zone a warning needs, yes (found after the fact; now pre-registered as rule v2). `pipeline/backtest.json` fixed the sites, boxes, truth and windows in git before any NISAR value inside the new boxes was read; `pipeline/backtest.py` runs the same rules (`CW_SITE` selects the box) and writes `data/backtest.json`.
 
 | Site | Role | Pre-registered test | False alarms |
 |---|---|---|---|
@@ -91,7 +91,20 @@ No. `pipeline/backtest.json` fixed the sites, boxes, truth and windows in git be
 | Manang (no recorded failure) | control | — | 3 in 8 passes |
 | Langtang (rules written after it) | development | **not passed**: not ranked, then #2 of 193 | 4 in 7 passes |
 
-What that means: NISAR's L-band radar does see slopes move through the monsoon, where Sentinel-1 did not (Sah 2026). But motion is everywhere in glaciated valleys, and this rule cannot tell which slope fails next: it is a shortlist for closer watching, not a forecast. The bigger, proven gain is cutting alert time once a slope fails (Acharya & Paudel 2026). Budhi Gandaki has no mapped outline, so its truth is an approximate scar point; a few hundred metres either way could change its result.
+**Judged by the zone instead of the exact slope.** A warning protects a valley, not a slope. `pipeline/sensitivity_zone.py` counts passes where a top-N patch falls within a zone around the failure (same drainage), against what a random list of the same size would catch:
+
+| Zone, top 10 | Langtang | Budhi Gandaki |
+|---|---|---|
+| 2 km | 6/7 (chance 3.08) | 1/11 (chance 1.0) |
+| 3 km | 6/7 (chance 3.66) | 3/11 (chance 1.34) |
+| 5 km | 6/7 (chance 4.71) | 7/11 (chance 3.59) |
+| 8 km | 7/7 (chance 6.0) | 9/11 (chance 7.48) |
+| tributary | 7/7 (chance 6.96) | 11/11 (chance 10.91) |
+| Valleys on the list per pass | 5.9 | 3.9 |
+
+At 5 km, about what one valley sensor can watch, Budhi Gandaki was on a top-10 list in both of its last two passes (#5, #9) and in 7 of 11 passes against 3.6 by chance (p = 0.026). Too small a zone is a coin-toss on an approximate point; the whole valley is caught by any list. A list entry never sounds a siren (that needs a detected collapse), so a longer list costs sensors, not evacuations. Zone and list size were chosen after seeing these results from about ten combinations, so `pipeline/prereg_v2.json` (commit 6ee6adc) fixes them in advance for the next events.
+
+What that means: NISAR's L-band radar sees slopes move through the monsoon, where Sentinel-1 did not (Sah 2026). The rule cannot name the exact slope; at valley-sensor scale it covered the zone that failed before both disasters. The other proven gain is cutting alert time once a slope fails (Acharya & Paudel 2026). Budhi Gandaki has no mapped outline, so its truth is an approximate scar point; a few hundred metres either way could change its result.
 
 ## The guided tour and the deck
 
@@ -150,6 +163,7 @@ All thresholds and weights are in [`pipeline/config.json`](pipeline/config.json)
 
 - **Sentinel-1 C-band control.** `pipeline/fetch_s1.py` is ready: 8 S1 pairs on descending orbit 121, matched to the NISAR windows. ASF's HyP3 service first needs the account owner to accept the ASF Terms of Service at <https://urs.earthdata.nasa.gov/approve_app?client_id=BO_n7nTIlMljdvU6kRRB3g>. After that, run `python pipeline/fetch_s1.py all` (then `wait`, then `process manifest`) and rerun the ranking on the S1 rasters. Until then the page shows the control as pending, and quotes Sah (2026): routine 12-day Sentinel-1 products showed no motion above ~13 mm/month at this slope.
 
+- **Test rule v2.** The next NISAR-era failures are its first real test.
 - **More backtest events.** Only one clean test positive exists so far (Budhi Gandaki). Lete (Kali Gandaki) needs an optical scar map first; Weisshorn East is a partial ice break-off. Winter NISAR pairs back to Nov 2025 were not fetched.
 
 ## Challenge checklist

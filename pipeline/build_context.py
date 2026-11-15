@@ -203,6 +203,17 @@ def main():
         limits.insert(3, (f"Backtest, with the same rules: on the Budhi Gandaki rock avalanche (Oct 2026) the source ranked "
                           f"{' then '.join('#' + str(r) if r else 'not ranked' for r in pr['ranks'])}, so the test fails there too. "
                           f"False alarms (another valley in the top {topn} in two passes in a row): Budhi Gandaki {fa(b_)}, Manang (no failure) {fa(m_) if m_ else '—'}, Langtang {fa(bt['sites']['langtang'])}."))
+    sz = load("sensitivity_zone.json")
+    zone_summary = None
+    if sz:
+        def zrow(site, z, n):
+            return next((r for r in sz["sites"][site]["rows"] if r["zone_km"] == z and r["top_n"] == n), None)
+        zb, zl = zrow("budhigandaki", 5, 10), zrow("langtang", 5, 10)
+        if zb and zl:
+            zone_summary = dict(zone_km=5, top_n=10, budhigandaki=zb, langtang=zl)
+            limits.insert(4, (f"Judged by the zone a valley sensor could watch rather than the exact slope (5 km, same drainage, top 10: chosen after seeing these results), "
+                              f"Budhi Gandaki was on the list in {zb['last_two_covered']} of its last two passes and in {zb['hits']} of {zb['passes']} passes against {zb['expected_by_chance']:.1f} expected by chance (p = {zb['p_value']:.3f}). "
+                              "That scale is now fixed in advance as rule v2 for the next events."))
     limits = [x for x in limits if x]
     # where each factor of the rule comes from, from the sourced records (numbers read, not typed)
     mk = ef.get("nisar_meena", {}); ku = ef.get("nisar_kutoglu", {}); ha = ef.get("preconditioning_hassan", {})
@@ -280,6 +291,7 @@ def main():
         why_missing=why_missing,
         detachment_km2=ef['geometry']['detachment_area_unosat']['value'],
         rule_evidence=rule_evidence,
+        zone_summary=zone_summary,
         meena=meena,
         era5=era,
         sensitivity=sens,

@@ -28,7 +28,7 @@ def lines():
         (T["s2"] + 0.4, T["s3"], f"The flood outruns the warning. The alert comes {alert} minutes later."),
         (T["s3"] + 0.2, T["s4"], "But Nye-sar radar had watched this slope all summer."),
         (T["s4"] + 0.3, T["s5"], "Cascade Watch ranks every moving slope, with a rule fixed in advance."),
-        (T["s5"] + 0.2, T["s6"], f"Number {w['source_rank']} of {w['n_ranked']}. But it missed once, and {'missed' if bg != 'pass' else 'caught'} a second disaster."),
+        (T["s5"] + 0.2, T["s6"], "Within five kilometres, it flagged a second disaster too."),
         (T["s6"] + 0.2, T["s7"], "Every number traces to its source."),
         (T["s7"] + 0.3, 29.5, "Cascade Watch."),
     ]

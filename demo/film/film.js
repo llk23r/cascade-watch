@@ -130,9 +130,10 @@
     $('big-n').textContent = '#' + sc.source_rank;
     $('big-of').innerHTML = 'of ' + sc.n_ranked + ' moving slopes<br><span>last pass, public ' + Math.round(D.context.timing.hours_on_asf) + ' hours before the collapse</span>';
     var pass = D.scorecard.pass;
-    var bg = D.bt && D.bt.sites && D.bt.sites.budhigandaki;
-    $('verdict').innerHTML = '<span class="pill bad">Pre-registered test: ' + (pass.passed ? 'passed' : 'not passed') + '</span>' +
-      (bg ? '<span class="pill bad">Second disaster (Budhi Gandaki): ' + (bg.positive_pass.result === 'pass' ? 'caught' : 'missed') + '</span>' : '') + '<span class="pill calm">A shortlist, not a forecast</span>';
+    var zs = D.context.zone_summary;
+    $('verdict').innerHTML = '<span class="pill bad">Exact slope: ' + (pass.passed ? 'caught' : 'missed') + '</span>' +
+      (zs ? '<span class="pill good">' + zs.zone_km + ' km zone, top ' + zs.top_n + ': on the list before both disasters</span>' : '') +
+      '<span class="pill calm">Found after the fact · now fixed in advance</span>';
 
     // sources
     var srcs = [

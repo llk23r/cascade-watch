@@ -969,7 +969,7 @@
       '<div class="fx" id="fx"></div>' +
       '<button type="button" class="btn rule-more" data-open="rule">' + icon('info') + 'Where the rule comes from, what it would have done, and whether it held</button>' +
       '<p class="note">' + (pr && pr.committed_before_results ? 'Rules committed ' + fmtTime(pr.first_commit.time) + ' (' + pr.first_commit.short + '), before the first results commit at ' + fmtTime(pr.first_results_commit.time) + ' (' + pr.first_results_commit.short + '). ' : '') +
-      'They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. Run unchanged on a second disaster, the rule failed (The Answer has the backtest).</p>' +
+      'They were written after the event, by people who had read post-event studies of it, so pre-registration only guards against tuning on our own results. Run unchanged on a second disaster, it missed the exact slope but kept the 5 km zone around it on a top-10 list (The Answer has the backtest).</p>' +
       '</div>';
   }
   function paintRule() {
@@ -1104,10 +1104,32 @@
     var head = plan && plan._committed ? '<p class="note">Sites, boxes, truth and windows were fixed in commit <code>' + esc(plan._committed.short) + '</code> (' + esc(fmtTime(plan._committed.time)) + '), before any NISAR value inside the new boxes was read. Same rules file as above, unchanged.</p>' : '';
     if (!res || !res.sites) { box.innerHTML = head + '<p class="note">Backtest results not found.</p>'; return; }
     var order = ['budhigandaki', 'manang', 'langtang'].filter(function (k) { return res.sites[k]; });
-    var b = res.sites.budhigandaki;
-    box.innerHTML = '<div class="callout bad">' + icon('warn') + '<div><b>It did not hold.</b> On a second disaster, the same rule missed the source' + (b ? ' (#' + b.positive_pass.ranks[0] + ', then not ranked)' : '') + ', and every valley we tried put a false alarm on the list about every other pass. NISAR sees the motion; this rule is a shortlist for closer watching, not a forecast.</div></div>' +
-      tbl(['Site', 'Pre-registered test', 'False alarms'], order.map(function (k) { return btRow(k, res.sites[k]); })) + head +
-      '<p class="note">False alarm: another valley in the top ' + res.top_n + ' in two passes in a row. Budhi Gandaki has no mapped outline, so its truth is an approximate scar point.</p>' + fileLinks(['backtest.json', 'backtest_plan.json']);
+    var b = res.sites.budhigandaki, zs = D.context.zone_summary;
+    box.innerHTML = zoneCallout() +
+      '<div class="g-h"><b>The pre-registered test: the exact slope</b> (within ' + (D.btPlan && D.btPlan.sites.budhigandaki ? D.btPlan.sites.budhigandaki.truth.hit_radius_km : 2) + ' km, top ' + res.top_n + ', both of the last two passes)</div>' +
+      tbl(['Site', 'Result', 'False alarms'], order.map(function (k) { return btRow(k, res.sites[k]); })) +
+      zoneTable() + head +
+      '<p class="note">False alarm (exact-slope test): another valley in the top ' + res.top_n + ' in two passes in a row. A list entry never sounds a siren by itself: a siren needs a detected collapse, so a longer list costs sensors, not evacuations. Budhi Gandaki has no mapped outline, so its truth is an approximate scar point.</p>' +
+      fileLinks(['backtest.json', 'sensitivity_zone.json', 'prereg_v2.json', 'backtest_plan.json']);
+  }
+
+  function zoneCallout() {
+    var zs = D.context.zone_summary, res = D.bt; if (!zs || !res) return '';
+    var b = res.sites.budhigandaki, zb = zs.budhigandaki, v2 = D.v2 && D.v2._committed;
+    return '<div class="callout">' + icon('info') + '<div><b>At the exact slope, it missed.</b> On a second disaster, the Budhi Gandaki rock avalanche, the source ranked ' +
+      b.positive_pass.ranks.map(function (r) { return r ? '#' + r : 'not ranked'; }).join(', then ') + '. ' +
+      '<b>In the zone a warning needs, it did not.</b> Within ' + zs.zone_km + ' km, about what one valley sensor can watch, a top-' + zs.top_n + ' list covered it in ' + (zb.last_two_covered === 2 ? 'both of' : zb.last_two_covered + ' of') + ' its last two passes, and in ' + zb.hits + ' of ' + zb.passes + ' passes against ' + zb.expected_by_chance.toFixed(1) + ' by chance. ' +
+      'We found that scale after the fact, so it is now fixed in advance as rule v2' + (v2 ? ' (commit ' + esc(v2.short) + ')' : '') + ' for the next events.</div></div>';
+  }
+  function zoneTable() {
+    var sz = D.sz; if (!sz) return '';
+    var zones = [2, 3, 5, 8, 'tributary'], N = 10;
+    var cell = function (site, z) { var r = sz.sites[site].rows.find(function (x) { return x.zone_km === z && x.top_n === N; }); return r ? r.hits + '/' + r.passes + ' <small>(' + r.expected_by_chance.toFixed(1) + ')</small>' : '—'; };
+    var vl = function (site) { var v = sz.sites[site].valleys_on_list_per_pass; return v ? v[String(N)] : '—'; };
+    return '<div class="g-h"><b>Judged by the zone instead</b> (top ' + N + ', same drainage; passes on the list, with what chance would give)</div>' +
+      tbl(['Zone', 'Langtang', 'Budhi Gandaki'], zones.map(function (z) { return '<tr' + (z === 5 ? ' class="last"' : '') + '><td>' + (z === 'tributary' ? 'Whole valley' : z + ' km') + '</td><td>' + cell('langtang', z) + '</td><td>' + cell('budhigandaki', z) + '</td></tr>'; })
+        .concat(['<tr><td>Valleys on list</td><td>' + vl('langtang') + '</td><td>' + vl('budhigandaki') + '</td></tr>'])) +
+      '<p class="note">Too small a zone is a coin-toss on an approximate point; the whole valley is caught by any list, because half the moving ground is there. The ranking adds value in between.</p>';
   }
 
   /* ---------------------------------------------------------------- the rule, explained */
@@ -1129,8 +1151,9 @@
       '<p class="note">The tripwire delays are our assumptions, in line with Acharya &amp; Paudel’s own estimate that source-side detection within 5 minutes would have warned Rasuwagadhi −2 to +8 minutes ahead. ≈ marks interpolated or extrapolated arrivals; Timure’s reported arrival is 08:50–09:00, later than the routed estimate.</p>' +
       '<h3>Did it hold up?</h3>' +
       '<p>At Langtang, the test fixed in advance failed: the source valley ' + (pass.ranks || []).map(function (r) { return r ? 'ranked #' + r : 'was not ranked'; }).join(', then ') + ' in the last two passes. Run unchanged on other places:</p>' +
-      (res && res.sites ? tbl(['Site', 'Test', 'False alarms'], ['budhigandaki', 'manang', 'langtang'].filter(function (k) { return res.sites[k]; }).map(function (k) { return btRow(k, res.sites[k]); })) : '<p>Backtest not available.</p>') +
-      '<h3>What we conclude</h3><p>NISAR’s L-band radar does see slopes move through the monsoon, where Sentinel-1 did not. But motion is everywhere in glaciated valleys, and this rule cannot tell which slope will fail next: it missed Budhi Gandaki and raises a false alarm about every other pass. It is useful as a triage list to decide where ground sensors go, and the bigger, proven gain is cutting the alert time once a slope does fail.</p>';
+      (res && res.sites ? tbl(['Site', 'Exact-slope test', 'False alarms'], ['budhigandaki', 'manang', 'langtang'].filter(function (k) { return res.sites[k]; }).map(function (k) { return btRow(k, res.sites[k]); })) : '<p>Backtest not available.</p>') +
+      zoneCallout() + zoneTable() +
+      '<h3>What we conclude</h3><p>NISAR’s L-band radar sees slopes move through the monsoon, where Sentinel-1 did not. The rule cannot name the exact slope that will fail. But a warning protects a valley, not a slope, and judged that way the watch list covered the zone that failed before both disasters, about twice as often as chance in the one it was not written for. A list entry only places a sensor; sirens sound on a detected collapse, so the cost of a longer list is sensors, not false evacuations. The scale was found after the fact, so rule v2 fixes it in advance; the next events decide.</p>';
   }
 
   /* ---------------------------------------------------------------- sheets */  /* ---------------------------------------------------------------- sheets */
@@ -1262,9 +1285,9 @@
     fetchJSON('windows.json'), fetchJSON('scorecard.json'), fetchJSON('truth.geojson'), fetchJSON('replay.json'),
     fetchJSON('control.json', true), fetchJSON('source_series.json', true), fetchJSON('context.json'), fetchJSON('img/bounds.json'),
     fetchJSON('rivers.geojson', true), fetchJSON('glaciers.geojson', true), fetchJSON('observed.geojson', true),
-    fetchJSON('config.json'), fetchJSON('provenance.json', true), fetchJSON('backtest_plan.json', true), fetchJSON('backtest.json', true), fetchJSON('atlas/view.json', true)
+    fetchJSON('config.json'), fetchJSON('provenance.json', true), fetchJSON('backtest_plan.json', true), fetchJSON('backtest.json', true), fetchJSON('atlas/view.json', true), fetchJSON('sensitivity_zone.json', true), fetchJSON('prereg_v2.json', true)
   ]).then(function (r) {
-    D.atlas = r[15];
+    D.atlas = r[15]; D.sz = r[16]; D.v2 = r[17];
     D.observed = r[10]; D.config = r[11]; D.prov = r[12]; D.btPlan = r[13]; D.bt = r[14];
     var C = D.config;   // the committed, pre-registered rules: the page never carries its own copy
     S.w = { coherenceFloor: C.score.coherence_floor_for_visibility, motionSigma: 0, opposingBonus: C.score.opposing_bonus, iceBonus: C.score.ice_bonus,

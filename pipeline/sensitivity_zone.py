@@ -54,7 +54,8 @@ def main():
                 l2 = [best[wins.index(w)] if w in wins else None for w in last2]
                 rows.append(dict(zone_km=z or "tributary", top_n=N, passes=len(wins), hits=hits, expected_by_chance=round(sum(ps), 2),
                                  p_value=round(tail(ps, hits), 4), last_two_best_rank=l2, last_two_covered=sum(1 for b in l2 if b and b <= N)))
-        out["sites"][site] = dict(role=r["role"], tributary_to=r.get("source_path_first_river"), rows=rows)
+        valleys = {str(N): round(sum(len({(p.get("channel_name") or p["id"]) for p in B[w][:N]}) for w in wins) / len(wins), 1) for N in SIZES}
+        out["sites"][site] = dict(role=r["role"], tributary_to=r.get("source_path_first_river"), rows=rows, valleys_on_list_per_pass=valleys)
     bt.TOP_N = bt.CFG["pass_condition"]["top_n"]
     (DATA / "sensitivity_zone.json").write_text(json.dumps(out, indent=1))
     for s, v in out["sites"].items():
