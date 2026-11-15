@@ -27,6 +27,12 @@
     "wavelength_from_product_center_frequency": true
   },
   "offsets": {
+    "source_product": "GOFF (raw, unculled, unfiltered dense offsets; variances in m^2)",
+    "layer_choice": "the GOFF layer (32/64/128 px windows) with the lowest robust noise of fall-line motion over stable terrain, chosen per window",
+    "cull_max_sigma_m": 1.0,
+    "cull_min_snr": 5.0,
+    "cull_local_window_cells": 5,
+    "cull_local_mad_k": 3.0,
     "background": "subtract median over the box of quality pixels",
     "noise_estimate": "1.4826 * MAD of fall-line motion over non-glacier pixels with slope < 20 deg",
     "motion_threshold_sigma": 3.0,
