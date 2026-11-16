@@ -3,7 +3,7 @@
 **A replay of the 26 August 2026 Langtang flood on real NISAR radar.**
 NASA Space Apps Challenge 2026 · *Dancing with the SARs* · Toronto · Rahul Acharya and Ganga Gautam
 
-**Live app:** https://llk23r.github.io/cascade-watch/ · **30-second demo:** https://llk23r.github.io/cascade-watch/demo/cascade-watch-30s.mp4 · **Code:** https://github.com/llk23r/cascade-watch
+**Live app:** https://vitamincontext.com/cascade-watch/ · **30-second demo:** https://vitamincontext.com/cascade-watch/demo/cascade-watch-30s.mp4 · **Code:** https://github.com/llk23r/cascade-watch
 
 **What it does.** Cascade Watch reads every NISAR radar pass over a Himalayan valley, measures which slopes are moving, and ranks them with one transparent score (how clearly the slope moves, whether it moves as one block, cracks between blocks, glacier ice on steep rock, people living downstream). The top valleys become a short watch list where a ground sensor could sound sirens within minutes of a collapse. The app replays the Langtang disaster on the real data: where the slope that fell ranked, pass by pass, using only data that was public in time, and how the same unchanged rule did on a second disaster (Budhi Gandaki, Oct 2026). Every number links to its source file.
 
