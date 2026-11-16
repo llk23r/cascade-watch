@@ -1,0 +1,119 @@
+{
+ "note": "Post hoc sensitivity: each study box was drawn around a known event; this ranks against all three boxes on the same track and pass.",
+ "rows": [
+  {
+   "target": "langtang",
+   "window": "A098_20260515_20260527",
+   "n_pooled": 272,
+   "boxes": [
+    "budhigandaki",
+    "langtang"
+   ],
+   "own_rank": 3,
+   "pooled_rank": 8,
+   "pooled_zone_rank": 8
+  },
+  {
+   "target": "langtang",
+   "window": "A098_20260527_20260608",
+   "n_pooled": 246,
+   "boxes": [
+    "budhigandaki",
+    "langtang"
+   ],
+   "own_rank": 1,
+   "pooled_rank": 1,
+   "pooled_zone_rank": 1
+  },
+  {
+   "target": "langtang",
+   "window": "A098_20260608_20260620",
+   "n_pooled": 235,
+   "boxes": [
+    "budhigandaki",
+    "langtang"
+   ],
+   "own_rank": 4,
+   "pooled_rank": 11,
+   "pooled_zone_rank": 11
+  },
+  {
+   "target": "langtang",
+   "window": "A098_20260620_20260702",
+   "n_pooled": 400,
+   "boxes": [
+    "budhigandaki",
+    "langtang",
+    "manang"
+   ],
+   "own_rank": 1,
+   "pooled_rank": 3,
+   "pooled_zone_rank": 3
+  },
+  {
+   "target": "langtang",
+   "window": "A098_20260702_20260714",
+   "n_pooled": 264,
+   "boxes": [
+    "budhigandaki",
+    "langtang",
+    "manang"
+   ],
+   "own_rank": 1,
+   "pooled_rank": 1,
+   "pooled_zone_rank": 1
+  },
+  {
+   "target": "langtang",
+   "window": "A098_20260714_20260726",
+   "n_pooled": 373,
+   "boxes": [
+    "budhigandaki",
+    "langtang",
+    "manang"
+   ],
+   "own_rank": null,
+   "pooled_rank": null,
+   "pooled_zone_rank": 75
+  },
+  {
+   "target": "langtang",
+   "window": "A098_20260726_20260819",
+   "n_pooled": 585,
+   "boxes": [
+    "budhigandaki",
+    "langtang",
+    "manang"
+   ],
+   "own_rank": 2,
+   "pooled_rank": 3,
+   "pooled_zone_rank": 1
+  },
+  {
+   "target": "budhigandaki",
+   "window": "A098_20260912_20260924",
+   "n_pooled": 668,
+   "boxes": [
+    "budhigandaki",
+    "langtang",
+    "manang"
+   ],
+   "own_rank": 10,
+   "pooled_rank": 27,
+   "pooled_zone_rank": 16
+  },
+  {
+   "target": "budhigandaki",
+   "window": "A098_20260924_20261006",
+   "n_pooled": 376,
+   "boxes": [
+    "budhigandaki",
+    "langtang",
+    "manang"
+   ],
+   "own_rank": null,
+   "pooled_rank": null,
+   "pooled_zone_rank": 27
+  }
+ ]
+}

@@ -213,15 +213,17 @@ def main():
     top = ex_lt["patches"][0]
     n_gran_total = sum(s["granules"] for s in sites_store)
 
+    pooled = J(DATA / "sensitivity_pooled.json")["rows"]
+    pl = next(r for r in pooled if r["target"] == "langtang" and r["window"] == lt_w)
+    pb = next(r for r in pooled if r["target"] == "budhigandaki" and r["window"] == bg_w)
     Q = []
     def q(tag, question, answer):
         Q.append(dict(tag=tag, q=question, a=answer))
 
     # The satellite and its data
-    q("Data", "What is NISAR?", "A radar satellite built by NASA and ISRO, India's space agency. It images the same ground every 12 days, day or night, through cloud.")
+    q("Data", "What is NISAR?", "A radar satellite built by NASA and ISRO, India's space agency. It passes over the same ground every 12 days, day or night, through cloud, and comparing two passes (a pair) shows how the ground moved.")
     q("Data", "Why use radar instead of normal satellite photos?", "Radar sends its own microwave pulses, so darkness and cloud do not block it. Langtang was under monsoon cloud for most of the summer.")
     q("Data", "What does L-band mean?", f"It is the radar's wavelength: {lam * 100:.1f} cm, read from the product's centre frequency. Long waves keep a steady echo over snow and rough slopes, where Sentinel-1's 5.6 cm C-band loses it.")
-    q("Data", "What is a pass, and what is a pair?", "A pass is one flight over the same strip of ground; NISAR repeats it every 12 days. A pair compares two passes to measure how the ground moved in between.")
     q("Data", "What is GUNW?", "NASA's Geocoded Unwrapped Interferogram: the change in radar phase between two passes, already on a map grid. We turn that phase change into millimetres of motion toward or away from the satellite.")
     q("Data", "What is GOFF?", "NASA's Geocoded Pixel Offsets: how far each small image window shifted between two passes, found by matching texture. It measures fast motion, decimetres to metres, that phase cannot follow.")
     q("Data", "What is GCOV?", "Radar brightness maps at 10 m, corrected for terrain. We use them only for the before-and-after pictures, not in the score.")
@@ -248,7 +250,8 @@ def main():
     q("Score", "Walk me through the Langtang source score.", f"{st['snr']['input']} = {st['snr']['value']:.0f}; × {st['dir']['factor']:.2f} consistency = {st['dir']['running']:.0f}; × {st['pop']['factor']:.2f} for people = {st['pop']['running']:.0f}; × {st['season']['factor']:.2f} season = {st['season']['running']:.0f}. That was #{src['rank']} of {ex_lt['n_ranked']}; the #{top['rank']} patch, {top['dist_km']:.1f} km away on the same stream, won by also having ice on steep rock.")
     q("Score", "Why not just rank by the biggest motion?", f"We tried that as a baseline: ranking by raw offset size alone put the Langtang source #{lp['baseline_rank']} of {lp['n_offsets']}. Dividing by noise and adding the other factors moved it to #{lp['source_rank']} of {lp['n_ranked']}.")
     # Testing and results
-    q("Results", "How do we know the rule was not tuned to Langtang?", "The rules file was written and time-stamped in git before any NISAR value was read. Then the unchanged rules ran on Budhi Gandaki, a disaster they had never seen.")
+    q("Results", "How do we know the rule was not tuned to Langtang?", "The rules were written and time-stamped before any NISAR value was read, but the factors came from published studies of Langtang, so the rule is not blind to it. That is why the same frozen rule was then run on Budhi Gandaki, a disaster none of those studies covered.")
+    q("Results", "Did Cascade Watch know where to look?", f"Partly: we drew each {CFG['grid']['x_edges'][1] // 1000 - CFG['grid']['x_edges'][0] // 1000} × {round((CFG['grid']['y_edges'][1] - CFG['grid']['y_edges'][0]) / 1000)} km box around a known disaster, although the ranking itself never used where the slope was. Ranked together across three boxes on one orbit, the Langtang source stayed #{pl['pooled_rank']} of {pl['n_pooled']} but the Budhi Gandaki zone fell to #{pb['pooled_zone_rank']} of {pb['n_pooled']}, so a blind, region-wide test is still to do.")
     q("Results", "What counts as a hit?", f"A ranked patch within {hit_km:g} km of the mapped source that drains into the same stream, following the steepest-descent (D8) path on the DEM. The truth is used only after ranking, never to rank.")
     q("Results", "What did Langtang show?", f"In the last pass before the collapse the source ranked #{lp['source_rank']} of {lp['n_ranked']} moving slopes. The strict test (top {CFG['pass_condition']['top_n']} in both of the last two passes) failed because the source was not ranked in {wlabel(miss_w)}.")
     q("Results", f"Why did the {wlabel(miss_w)} pass miss?", (f"It had the {'noisiest' if noisiest else 'noisy'} offsets of the summer: the cut was {OC['motion_threshold_sigma']:g} × {miss_noise:.2f} = {OC['motion_threshold_sigma'] * miss_noise:.2f} m"
@@ -258,7 +261,7 @@ def main():
     q("Results", "What does 'about twice chance' mean?", f"A random list of {zone_n} patches each pass would cover the zone in about {zb['expected_by_chance']:.1f} of {zb['passes']} passes; Cascade Watch covered it in {zb['hits']}. The chance of doing that well by luck is about {zb['p_value']:.3f} (Poisson-binomial).")
     q("Results", f"Is the {zone_km:g} km zone cherry-picked?", "Yes, it was chosen after seeing these two events, so they are development data, not proof. It is now fixed in advance as rule v2, so every new NISAR event is a real test.")
     q("Results", "How many false alarms?", f"Valleys other than the source that stayed in the top {CFG['pass_condition']['top_n']} two passes running: {fa['budhigandaki']['n_false_alarms']} in {fa['budhigandaki']['n_passes']} passes at Budhi Gandaki, {fa['langtang']['n_false_alarms']} in {fa['langtang']['n_passes']} at Langtang, {fa['manang']['n_false_alarms']} in {fa['manang']['n_passes']} at a control valley with no disaster. That is why the list only places sensors, and only a sensed collapse sounds a siren.")
-    q("Results", "What does this add to the published NISAR studies of Langtang?", (f"Kutoğlu et al. (the Turkish team) studied the slope already known to have failed, and Meena's blind screen of the same data ranked the source zone {mrank_txt} by motion alone. Cascade Watch searched the whole scene without knowing the answer, with rules fixed in advance, and put it #{lp['source_rank']} of {lp['n_ranked']} (their zones differ from our patches, so this is rough)."
+    q("Results", "What does this add to the published NISAR studies of Langtang?", (f"Kutoğlu et al. (the Turkish team) proved the known slope moved, looking back; Meena's region-wide screen ranked the source zone {mrank_txt} by motion alone. Cascade Watch adds one fixed score, a ranking against neighbours (#{lp['source_rank']} of {lp['n_ranked']}), a false-alarm count and a second disaster, though in a much smaller box drawn around the event."
                                                              if mrank_txt else "Kutoğlu et al. and Meena studied the known slope in hindsight; Cascade Watch searched the whole scene blind."))
     q("Results", "What would the warning have gained at Timure?", f"A ground tripwire on the watched valley could sound sirens about {T:.1f} minutes after the collapse instead of {A:.1f}. Against the reported arrival at Timure that is {lo} to {hi} minutes of warning: a what-if, with delays we assumed.")
     assert len(Q) == 37, len(Q)

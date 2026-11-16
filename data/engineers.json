@@ -518,7 +518,7 @@
   {
    "tag": "Data",
    "q": "What is NISAR?",
-   "a": "A radar satellite built by NASA and ISRO, India's space agency. It images the same ground every 12 days, day or night, through cloud."
+   "a": "A radar satellite built by NASA and ISRO, India's space agency. It passes over the same ground every 12 days, day or night, through cloud, and comparing two passes (a pair) shows how the ground moved."
   },
   {
    "tag": "Data",
@@ -529,11 +529,6 @@
    "tag": "Data",
    "q": "What does L-band mean?",
    "a": "It is the radar's wavelength: 24.2 cm, read from the product's centre frequency. Long waves keep a steady echo over snow and rough slopes, where Sentinel-1's 5.6 cm C-band loses it."
-  },
-  {
-   "tag": "Data",
-   "q": "What is a pass, and what is a pair?",
-   "a": "A pass is one flight over the same strip of ground; NISAR repeats it every 12 days. A pair compares two passes to measure how the ground moved in between."
   },
   {
    "tag": "Data",
@@ -653,7 +648,12 @@
   {
    "tag": "Results",
    "q": "How do we know the rule was not tuned to Langtang?",
-   "a": "The rules file was written and time-stamped in git before any NISAR value was read. Then the unchanged rules ran on Budhi Gandaki, a disaster they had never seen."
+   "a": "The rules were written and time-stamped before any NISAR value was read, but the factors came from published studies of Langtang, so the rule is not blind to it. That is why the same frozen rule was then run on Budhi Gandaki, a disaster none of those studies covered."
+  },
+  {
+   "tag": "Results",
+   "q": "Did Cascade Watch know where to look?",
+   "a": "Partly: we drew each 37 × 33 km box around a known disaster, although the ranking itself never used where the slope was. Ranked together across three boxes on one orbit, the Langtang source stayed #3 of 585 but the Budhi Gandaki zone fell to #16 of 668, so a blind, region-wide test is still to do."
   },
   {
    "tag": "Results",
@@ -693,7 +693,7 @@
   {
    "tag": "Results",
    "q": "What does this add to the published NISAR studies of Langtang?",
-   "a": "Kutoğlu et al. (the Turkish team) studied the slope already known to have failed, and Meena's blind screen of the same data ranked the source zone 43rd of 101 by motion alone. Cascade Watch searched the whole scene without knowing the answer, with rules fixed in advance, and put it #2 of 193 (their zones differ from our patches, so this is rough)."
+   "a": "Kutoğlu et al. (the Turkish team) proved the known slope moved, looking back; Meena's region-wide screen ranked the source zone 43rd of 101 by motion alone. Cascade Watch adds one fixed score, a ranking against neighbours (#2 of 193), a false-alarm count and a second disaster, though in a much smaller box drawn around the event."
   },
   {
    "tag": "Results",

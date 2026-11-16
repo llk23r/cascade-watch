@@ -1,7 +1,11 @@
 # Cascade Watch
 
 **A replay of the 26 August 2026 Langtang flood on real NISAR radar.**
-NASA Space Apps Challenge 2026 · *Dancing with the SARs* · Toronto
+NASA Space Apps Challenge 2026 · *Dancing with the SARs* · Toronto · Rahul Acharya and Ganga Gautam
+
+**Live app:** https://llk23r.github.io/cascade-watch/ · **30-second demo:** https://llk23r.github.io/cascade-watch/demo/cascade-watch-30s.mp4 · **Code:** https://github.com/llk23r/cascade-watch
+
+**What it does.** Cascade Watch reads every NISAR radar pass over a Himalayan valley, measures which slopes are moving, and ranks them with one transparent score (how clearly the slope moves, whether it moves as one block, cracks between blocks, glacier ice on steep rock, people living downstream). The top valleys become a short watch list where a ground sensor could sound sirens within minutes of a collapse. The app replays the Langtang disaster on the real data: where the slope that fell ranked, pass by pass, using only data that was public in time, and how the same unchanged rule did on a second disaster (Budhi Gandaki, Oct 2026). Every number links to its source file.
 
 > With rules fixed in advance, would NISAR have put the Langtang valley on a watch list before it fell?
 
@@ -146,8 +150,8 @@ The toolbar's `</>` button (or **E**) opens a sheet built from `data/engineers.j
 
 | Work | What it did | Cascade Watch |
 |---|---|---|
-| Kutoğlu, Softa & Akgün 2026 (Remote Sensing 18, 3727) | NISAR phase, both orbit directions, around the known detachment: blocks beside it moving apart (+63 / −71 mm). Hindsight, one known site. | Uses that signal as a rule factor, but searches the whole 37 × 33 km scene without knowing the answer. |
-| Meena 2026 (preprint, Zenodo 22730419) | Measured ~1 m of pre-failure motion; a blind screen found the source among 101 zones but ranked it 43rd of 101 by residual motion (from their Table S7). | Same pass, rules fixed in advance: #2 of 193. Zones differ from our patches, so the comparison is rough. |
+| Kutoğlu, Softa & Akgün 2026 (Remote Sensing 18, 3727) | NISAR phase, both orbit directions, around the known detachment: blocks beside it moving apart (+63 / −71 mm). Hindsight, one known site. | Uses that signal as one factor and ranks every moving slope in a 37 × 33 km box against each other; the source location is used only to grade. The box itself was drawn around the event. |
+| Meena 2026 (preprint, Zenodo 22730419) | Measured ~1 m of pre-failure motion; a blind screen found the source among 101 zones but ranked it 43rd of 101 by residual motion (from their Table S7). | Same pass, rules fixed in advance: #2 of 193, but in a box drawn around the event and about 95× smaller than Meena's screen, so this is not a head-to-head comparison. |
 | Intrieri 2018 (Xinmo), Carlà 2019 | Sentinel-1 precursors and failure-time estimates, in hindsight at known slopes. | Forward screen with a pre-registered rule, then a backtest on a disaster it never saw. |
 | Chamoli 2022 (NHESS 22, 3309) | >10 m of motion over five years, timing likely not forecastable from satellite alone. | Agrees: the list places sensors; sirens need a detected collapse. |
 
@@ -178,11 +182,19 @@ The toolbar's `</>` button (or **E**) opens a sheet built from `data/engineers.j
 - Arrival times between gauges are interpolated along the flow path; beyond Betrawati they are extrapolated.
 
 ## Not done
+- **A blind, region-wide test.** Each 37 × 33 km box was drawn around a known event. Ranked together across three boxes on the same orbit, the Langtang source stays #3 of 585, but the Budhi Gandaki zone falls to #16 of 668 and #27 of 376 in its last two passes.
 
 - **Sentinel-1 C-band control.** `pipeline/fetch_s1.py` is ready: 8 S1 pairs on descending orbit 121, matched to the NISAR windows. ASF's HyP3 service first needs the account owner to accept the ASF Terms of Service at <https://urs.earthdata.nasa.gov/approve_app?client_id=BO_n7nTIlMljdvU6kRRB3g>. After that, run `python pipeline/fetch_s1.py all` (then `wait`, then `process manifest`) and rerun the ranking on the S1 rasters. Until then the page shows the control as pending, and quotes Sah (2026): routine 12-day Sentinel-1 products showed no motion above ~13 mm/month at this slope.
 
 - **Test rule v2.** The next NISAR-era failures are its first real test.
 - **More backtest events.** Only one clean test positive exists so far (Budhi Gandaki). Lete (Kali Gandaki) needs an optical scar map first; Weisshorn East is a partial ice break-off. Winter NISAR pairs back to Nov 2025 were not fetched.
+
+## Use of AI (Space Apps disclosure)
+
+- **Code and analysis:** written with an AI coding assistant (Claude Code, Anthropic), directed and reviewed by the team. The exact scoring formula and weights were drafted with it from the published Langtang studies, then fixed in `pipeline/config.json` before any NISAR value was read.
+- **Narration audio:** the guided tour and the film voiceover are AI-generated speech (Kokoro-82M text-to-speech, voice af_heart); noted in the audio files' metadata.
+- **Images and video:** the opening landscape views are AI visualizations painted by World Labs Atlas on the real Copernicus DEM terrain, and are labelled "AI visualization" on screen. All maps, charts and numbers are computed from the real data, not generated.
+- **Not AI:** every measurement, rank and statistic comes from the NISAR products and the cited datasets through the open pipeline in `pipeline/`.
 
 ## Challenge checklist
 
